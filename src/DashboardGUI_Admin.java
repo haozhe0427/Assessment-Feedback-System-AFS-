@@ -3,10 +3,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-// <================== DASHBOARD GUI ==================>
+// <================== DASHBOARD GUI (ADMIN) ==================>
 public class DashboardGUI_Admin extends JFrame implements ActionListener{
+
+    JButton logOutButton = new JButton("Log Out");
+
+
     DashboardGUI_Admin() {
-        JButton logOutButton = new JButton("Log Out");
+        // <========= LOG OUT BUTTON =========>
         logOutButton.setBounds(25,15,125,40);
         logOutButton.setFont(new Font("Dialog", Font.PLAIN,20));
         logOutButton.setFocusable(false);
@@ -20,8 +24,8 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
         this.add(logOutButton);
 
 
+
         // <========= GUI FRAME =========>
-        JFrame frame = new JFrame();
         this.setTitle("Assessment Feedback System (AFS)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
