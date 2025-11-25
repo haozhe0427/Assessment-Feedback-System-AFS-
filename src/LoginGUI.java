@@ -1,13 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 // <================== LOGIN GUI ==================>
 public class LoginGUI extends JFrame implements ActionListener {
 
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
-    JTextField userIDField = new JTextField();
+    public JTextField userIDField = new JTextField();
     JLabel passwordLabel = new JLabel("Password:");
     JPasswordField passwordField = new JPasswordField();
     JCheckBox showPasswordBox = new JCheckBox();
@@ -144,8 +148,16 @@ public class LoginGUI extends JFrame implements ActionListener {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new DashboardGUI_Admin();
+                String userID = userIDField.getText();
+                String password = new String(passwordField.getPassword());
+
+                if (userID.isEmpty() && password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null,
+                                                  "Please enter userID and password",
+                                                  "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    credentialValidation();
+                }
             }
         });
         this.add(loginButton);
@@ -162,6 +174,52 @@ public class LoginGUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+
+    // <========= METHODS =========>
+    // <========= 1) credentialValidation METHOD =========>
+    public void credentialValidation () {
+        String filePath = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
+        String userID = userIDField.getText();
+        String password = new String(passwordField.getPassword());
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(" ; ");
+
+                if (data.length >= 8) {
+                    String storedID = data[0];
+                    String storedPassword = data[1];
+                    String userRole = data[6];
+
+                    if (storedID.equals(userID) && storedPassword.equals(password)) {
+                        if (userRole.equals("Admin")) {
+                            dispose();
+                            new DashboardGUI_Admin();
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                                          "Invalid account. Please try again",
+                                                          "Error",JOptionPane.ERROR_MESSAGE);
+                        }
+                        return;
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(null,
+                    "Invalid userID / password. Please try again",
+                    "Error",JOptionPane.ERROR_MESSAGE);
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                                          "Account list is not found",
+                                          "Warning",JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                                          "Something went wrong. Please contact technician team for support",
+                                          "Error",JOptionPane.WARNING_MESSAGE);
+        }
     }
 
 

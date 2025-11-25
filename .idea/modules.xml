@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AssesmentFeedbackSystem.iml" filepath="$PROJECT_DIR$/AssesmentFeedbackSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AssessmentFeedbackSystem.iml" filepath="$PROJECT_DIR$/AssessmentFeedbackSystem.iml" />
     </modules>
   </component>
 </project>
