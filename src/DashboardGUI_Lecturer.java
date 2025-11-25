@@ -3,13 +3,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-// <================== DASHBOARD GUI (ADMIN) ==================>
-public class DashboardGUI_Admin extends JFrame implements ActionListener{
+// <================== DASHBOARD GUI (LECTURER) ==================>
+public class DashboardGUI_Lecturer extends JFrame implements ActionListener {
 
     JButton logOutButton = new JButton("Log Out");
 
 
-    DashboardGUI_Admin() {
+    DashboardGUI_Lecturer () {
         // <========= LOG OUT BUTTON =========>
         logOutButton.setBounds(25,15,125,40);
         logOutButton.setFont(new Font("Segoe UI", Font.BOLD,20));
