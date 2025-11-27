@@ -11,7 +11,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
-    public JTextField userIDField = new JTextField();
+    JTextField userIDField = new JTextField();
     JLabel passwordLabel = new JLabel("Password:");
     JPasswordField passwordField = new JPasswordField();
     JCheckBox showPasswordBox = new JCheckBox();
@@ -20,6 +20,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
     LoginGUI() {
+        // <================== COMPONENTS (START) ==================>
         // <========= LOGIN LABEL =========>
         loginLabel.setForeground(Color.white);
         loginLabel.setBounds(0,20,395,100);
@@ -87,7 +88,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             public void mouseClicked(MouseEvent e) {
                 passwordField.setEditable(true);
                 passwordField.setEchoChar('•');
-                if (passwordField.getText().equals("Please Enter Password")) {
+                if (new String(passwordField.getPassword()).equals("Please Enter Password")) {
                     passwordField.setText("");
                     passwordField.setForeground(Color.black);
                     passwordField.setFont(new Font("Segoe UI", Font.BOLD,15));
@@ -98,7 +99,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                if (passwordField.getText().isEmpty()) {
+                if (new String(passwordField.getPassword()).isEmpty()) {
                     passwordField.setEditable(false);
                     passwordField.setEchoChar((char) 0);
                     passwordField.setText("Please Enter Password");
@@ -122,14 +123,14 @@ public class LoginGUI extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (showPasswordBox.isSelected()) {
-                    if (passwordField.getText().equals("Please Enter Password")) {
+                    if (new String(passwordField.getPassword()).equals("Please Enter Password")) {
                         passwordField.setText("Please Enter Password");
                     } else {
                         passwordField.setEchoChar((char) 0);
                     }
                 }
                 if (!showPasswordBox.isSelected()) {
-                    if (passwordField.getText().equals("Please Enter Password")) {
+                    if (new String(passwordField.getPassword()).equals("Please Enter Password")) {
                         passwordField.setText("Please Enter Password");
                     } else {
                         passwordField.setEchoChar('•');
@@ -161,6 +162,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             }
         });
         this.add(loginButton);
+        // <================== COMPONENTS (END) ==================>
 
 
 
@@ -177,7 +179,8 @@ public class LoginGUI extends JFrame implements ActionListener {
     }
 
 
-    // <========= METHODS =========>
+
+    // <================== METHODS (START) ==================>
     // <========= 1) credentialValidation METHOD =========>
     public void credentialValidation () {
         String filePath = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
@@ -221,6 +224,7 @@ public class LoginGUI extends JFrame implements ActionListener {
                                           "Error",JOptionPane.WARNING_MESSAGE);
         }
     }
+    // <================== METHODS (END) ==================>
 
 
 
