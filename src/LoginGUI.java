@@ -16,7 +16,11 @@ public class LoginGUI extends JFrame implements ActionListener {
     JPasswordField passwordField = new JPasswordField();
     JCheckBox showPasswordBox = new JCheckBox();
     JButton loginButton = new JButton("Login");
-    ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\OneDrive\\Pictures\\Screenshots\\Icon.png");
+    ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\Icon.png");
+
+    String userIDField_message = "Enter Your User ID Here";
+    String passwordField_message = "Please Enter Password";
+    String filePath = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
 
 
     LoginGUI() {
@@ -40,7 +44,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
         // <========= USER ID FIELD =========>
         userIDField.setEditable(false);
-        userIDField.setText("Enter Your User ID Here");
+        userIDField.setText(userIDField_message);
         userIDField.setForeground(Color.gray);
         userIDField.setBounds(20,190,365,30);
         userIDField.setFont(new Font("Segoe UI", Font.PLAIN, 15));
@@ -48,7 +52,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             @Override
             public void mouseClicked(MouseEvent e) {
                 userIDField.setEditable(true);
-                if (userIDField.getText().equals("Enter Your User ID Here")) {
+                if (userIDField.getText().equals(userIDField_message)) {
                     userIDField.setText("");
                     userIDField.setFont(new Font("Segoe UI", Font.BOLD, 15));
                     userIDField.setForeground(Color.black);
@@ -58,7 +62,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             public void mouseExited(MouseEvent e) {
                 if (userIDField.getText().isEmpty()) {
                     userIDField.setEditable(false);
-                    userIDField.setText("Enter Your User ID Here");
+                    userIDField.setText(userIDField_message);
                     userIDField.setFont(new Font("Segoe UI", Font.PLAIN, 15));
                     userIDField.setForeground(Color.gray);
                 }
@@ -79,7 +83,7 @@ public class LoginGUI extends JFrame implements ActionListener {
         // <========= PASSWORD FIELD =========>
         passwordField.setEditable(false);
         passwordField.setEchoChar((char) 0);
-        passwordField.setText("Please Enter Password");
+        passwordField.setText(passwordField_message);
         passwordField.setForeground(Color.gray);
         passwordField.setBounds(20, 340, 365,30);
         passwordField.setFont(new Font("Segoe UI", Font.PLAIN,15));
@@ -88,7 +92,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             public void mouseClicked(MouseEvent e) {
                 passwordField.setEditable(true);
                 passwordField.setEchoChar('•');
-                if (new String(passwordField.getPassword()).equals("Please Enter Password")) {
+                if (new String(passwordField.getPassword()).equals(passwordField_message)) {
                     passwordField.setText("");
                     passwordField.setForeground(Color.black);
                     passwordField.setFont(new Font("Segoe UI", Font.BOLD,15));
@@ -102,7 +106,7 @@ public class LoginGUI extends JFrame implements ActionListener {
                 if (new String(passwordField.getPassword()).isEmpty()) {
                     passwordField.setEditable(false);
                     passwordField.setEchoChar((char) 0);
-                    passwordField.setText("Please Enter Password");
+                    passwordField.setText(passwordField_message);
                     passwordField.setFont(new Font("Segoe UI", Font.PLAIN,15));
                     passwordField.setForeground(Color.gray);
                 }
@@ -119,22 +123,19 @@ public class LoginGUI extends JFrame implements ActionListener {
         showPasswordBox.setFocusable(false);
         showPasswordBox.setText("Show Password");
         showPasswordBox.setBackground(new Color(46, 26, 71));
-        showPasswordBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (showPasswordBox.isSelected()) {
-                    if (new String(passwordField.getPassword()).equals("Please Enter Password")) {
-                        passwordField.setText("Please Enter Password");
-                    } else {
-                        passwordField.setEchoChar((char) 0);
-                    }
+        showPasswordBox.addActionListener(_ -> {
+            if (showPasswordBox.isSelected()) {
+                if (new String(passwordField.getPassword()).equals(passwordField_message)) {
+                    passwordField.setText(passwordField_message);
+                } else {
+                    passwordField.setEchoChar((char) 0);
                 }
-                if (!showPasswordBox.isSelected()) {
-                    if (new String(passwordField.getPassword()).equals("Please Enter Password")) {
-                        passwordField.setText("Please Enter Password");
-                    } else {
-                        passwordField.setEchoChar('•');
-                    }
+            }
+            if (!showPasswordBox.isSelected()) {
+                if (new String(passwordField.getPassword()).equals(passwordField_message)) {
+                    passwordField.setText(passwordField_message);
+                } else {
+                    passwordField.setEchoChar('•');
                 }
             }
         });
@@ -146,19 +147,47 @@ public class LoginGUI extends JFrame implements ActionListener {
         loginButton.setBounds(100, 450, 200,30);
         loginButton.setFont(new Font("Segoe UI", Font.BOLD,20));
         loginButton.setFocusable(false);
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String userID = userIDField.getText();
-                String password = new String(passwordField.getPassword());
+        loginButton.addActionListener(_ -> {
+            String userID = userIDField.getText();
+            String password = new String(passwordField.getPassword());
 
-                if (userID.isEmpty() && password.isEmpty()) {
-                    JOptionPane.showMessageDialog(null,
-                                                  "Please enter userID and password",
-                                                  "Warning", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    credentialValidation();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(" ; ");
+
+                    if (data.length >= 8) {
+                        String storedID = data[0];
+                        String storedPassword = data[1];
+                        String userRole = data[6];
+
+                        if (storedID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
+                            if (userRole.equals("Admin")) {
+                                dispose();
+                                new DashboardGUI_Admin();
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Invalid account. Please try again",
+                                        "Error",JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                    }
                 }
+                JOptionPane.showMessageDialog(null,
+                        "Invalid userID / password. Please try again",
+                        "Warning",JOptionPane.WARNING_MESSAGE);
+
+            } catch (FileNotFoundException fileNotFoundException) {
+                JOptionPane.showMessageDialog(null,
+                        "Account list is not found",
+                        "Warning",JOptionPane.WARNING_MESSAGE);
+            } catch (IOException ioException) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error",JOptionPane.WARNING_MESSAGE);
             }
         });
         this.add(loginButton);
@@ -166,9 +195,9 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
 
-        // <========= GUI FRAME =========>
+        // <========= GUI FRAME (START) =========>
         this.setIconImage(imageIcon.getImage());
-        this.setTitle("Login");
+        this.setTitle("Assessment Feedback System (Login)");
         this.getContentPane().setBackground(new Color(46, 26, 71));
         this.setSize(420,600);
         this.setLayout(null);
@@ -176,55 +205,8 @@ public class LoginGUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        // <========= GUI FRAME (END) =========>
     }
-
-
-
-    // <================== METHODS (START) ==================>
-    // <========= 1) credentialValidation METHOD =========>
-    public void credentialValidation () {
-        String filePath = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
-        String userID = userIDField.getText();
-        String password = new String(passwordField.getPassword());
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(" ; ");
-
-                if (data.length >= 8) {
-                    String storedID = data[0];
-                    String storedPassword = data[1];
-                    String userRole = data[6];
-
-                    if (storedID.equals(userID) && storedPassword.equals(password)) {
-                        if (userRole.equals("Admin")) {
-                            dispose();
-                            new DashboardGUI_Admin();
-                        } else {
-                            JOptionPane.showMessageDialog(null,
-                                                          "Invalid account. Please try again",
-                                                          "Error",JOptionPane.ERROR_MESSAGE);
-                        }
-                        return;
-                    }
-                }
-            }
-            JOptionPane.showMessageDialog(null,
-                    "Invalid userID / password. Please try again",
-                    "Error",JOptionPane.ERROR_MESSAGE);
-
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                                          "Account list is not found",
-                                          "Warning",JOptionPane.WARNING_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                                          "Something went wrong. Please contact technician team for support",
-                                          "Error",JOptionPane.WARNING_MESSAGE);
-        }
-    }
-    // <================== METHODS (END) ==================>
 
 
 
