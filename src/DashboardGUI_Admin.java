@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 // <================== DASHBOARD GUI (ADMIN) ==================>
 public class DashboardGUI_Admin extends JFrame implements ActionListener{
@@ -9,17 +13,43 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
     JPanel topPanel = new JPanel();
     JButton logOutButton = new JButton("Log Out");
     JLabel AFSLabel = new JLabel("Assessment Feedback System");
-    JLabel welcomeLabel = new JLabel("Welcome back, Ding Hao Zhe");
+    JLabel welcomeLabel = new JLabel();
     JButton manageAccountButton = new JButton("Manage Account");
     JButton assignLecturersButton = new JButton("Assign Lecturer");
     JButton gradingSystemButton = new JButton("Grading System");
     JButton manageClassesButton = new JButton("Manage Classes");
 
-    ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\Icon.png");
-    ImageIcon manageAccountIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\skills.png");
-    ImageIcon lecturerIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\video-lecture.png");
-    ImageIcon gradingSystemIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\market-research.png");
-    ImageIcon classesIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\classroom.png");
+    public String getName () {
+        String userID = LoginGUI.userIDField.getText();
+        String userName = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.filePath))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(" ; ");
+
+                if (data.length >= 8) {
+                    String storedID = data[0];
+
+                    if (storedID.equalsIgnoreCase(userID)) {
+                        userName = data[2];
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        return userName;
+    }
+
 
 
     DashboardGUI_Admin() {
@@ -52,6 +82,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
 
 
         // <========= GREETING LABEL =========>
+        welcomeLabel.setText("Welcome back, " + getName());
         welcomeLabel.setBounds(0,150,820,40);
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
@@ -60,55 +91,79 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
 
 
         // <========= MANAGE ACCOUNT BUTTON =========>
-        manageAccountIcon = new ImageIcon(manageAccountIcon.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
+        PicturesAndTextFile.manageAccountIcon = new ImageIcon(PicturesAndTextFile.manageAccountIcon.getImage().
+                getScaledInstance(40,40, Image.SCALE_SMOOTH));
+
         manageAccountButton.setBounds(130,240,250,100);
         manageAccountButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         manageAccountButton.setHorizontalTextPosition(JButton.CENTER);
         manageAccountButton.setVerticalTextPosition(JButton.NORTH);
         manageAccountButton.setFocusable(false);
-        manageAccountButton.setIcon(manageAccountIcon);
+        manageAccountButton.setIcon(PicturesAndTextFile.manageAccountIcon);
+        manageAccountButton.addActionListener(_ -> {
+            dispose();
+            new ManageAccountGUI_Admin();
+        });
         this.add(manageAccountButton);
 
 
 
         // <========= ASSIGN LECTURER BUTTON =========>
-        lecturerIcon = new ImageIcon(lecturerIcon.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
+        PicturesAndTextFile.lecturerIcon = new ImageIcon(PicturesAndTextFile.lecturerIcon.getImage().
+                getScaledInstance(40,40, Image.SCALE_SMOOTH));
+
         assignLecturersButton.setBounds(420,240,250,100);
         assignLecturersButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         assignLecturersButton.setHorizontalTextPosition(JButton.CENTER);
         assignLecturersButton.setVerticalTextPosition(JButton.NORTH);
         assignLecturersButton.setFocusable(false);
-        assignLecturersButton.setIcon(lecturerIcon);
+        assignLecturersButton.setIcon(PicturesAndTextFile.lecturerIcon);
+        assignLecturersButton.addActionListener(_ -> {
+            dispose();
+            new AssignLecturerGUI_Admin();
+        });
         this.add(assignLecturersButton);
 
 
 
         // <========= GRADING SYSTEM BUTTON =========>
-        gradingSystemIcon = new ImageIcon(gradingSystemIcon.getImage().getScaledInstance(40,40, Image.SCALE_SMOOTH));
+        PicturesAndTextFile.gradingSystemIcon = new ImageIcon(PicturesAndTextFile.gradingSystemIcon.getImage().
+                getScaledInstance(40,40, Image.SCALE_SMOOTH));
+
         gradingSystemButton.setBounds(130,390,250,100);
         gradingSystemButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         gradingSystemButton.setHorizontalTextPosition(JButton.CENTER);
         gradingSystemButton.setVerticalTextPosition(JButton.NORTH);
         gradingSystemButton.setFocusable(false);
-        gradingSystemButton.setIcon(gradingSystemIcon);
+        gradingSystemButton.setIcon(PicturesAndTextFile.gradingSystemIcon);
+        gradingSystemButton.addActionListener(_ -> {
+            dispose();
+            new GradingSystemGUI_Admin();
+        });
         this.add(gradingSystemButton);
 
 
 
         // <========= MANAGE CLASSES BUTTON =========>
-        classesIcon = new ImageIcon(classesIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+        PicturesAndTextFile.classesIcon = new ImageIcon(PicturesAndTextFile.classesIcon.getImage().
+                getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+
         manageClassesButton.setBounds(420,390,250,100);
         manageClassesButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         manageClassesButton.setHorizontalTextPosition(JButton.CENTER);
         manageClassesButton.setVerticalTextPosition(JButton.NORTH);
         manageClassesButton.setFocusable(false);
-        manageClassesButton.setIcon(classesIcon);
+        manageClassesButton.setIcon(PicturesAndTextFile.classesIcon);
+        manageClassesButton.addActionListener(_ -> {
+            dispose();
+            new ManageAccountGUI_Admin();
+        });
         this.add(manageClassesButton);
 
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(imageIcon.getImage());
+        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);

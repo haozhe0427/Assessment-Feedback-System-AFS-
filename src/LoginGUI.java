@@ -11,17 +11,14 @@ public class LoginGUI extends JFrame implements ActionListener {
 
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
-    JTextField userIDField = new JTextField();
+    static JTextField userIDField = new JTextField();
     JLabel passwordLabel = new JLabel("Password:");
     JPasswordField passwordField = new JPasswordField();
     JCheckBox showPasswordBox = new JCheckBox();
     JButton loginButton = new JButton("Login");
-    ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\Icon.png");
 
     String userIDField_message = "Enter Your User ID Here";
     String passwordField_message = "Please Enter Password";
-    String filePath = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
-
 
     LoginGUI() {
         // <================== COMPONENTS (START) ==================>
@@ -151,7 +148,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             String userID = userIDField.getText();
             String password = new String(passwordField.getPassword());
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.filePath))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -196,7 +193,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
         // <========= GUI FRAME (START) =========>
-        this.setIconImage(imageIcon.getImage());
+        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Login)");
         this.getContentPane().setBackground(new Color(46, 26, 71));
         this.setSize(420,600);
