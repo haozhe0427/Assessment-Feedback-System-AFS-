@@ -5,7 +5,7 @@ public class PicturesAndTextFile {
     // Account.txt file is use in:
     // 1) LoginGUI.java
     // 2) DashboardGUI_Admin/java
-    static String filePath = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
+    static String accountFile = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
 
 
 

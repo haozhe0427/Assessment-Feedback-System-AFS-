@@ -11,7 +11,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
-    static JTextField userIDField = new JTextField();
+    public static JTextField userIDField = new JTextField();
     JLabel passwordLabel = new JLabel("Password:");
     JPasswordField passwordField = new JPasswordField();
     JCheckBox showPasswordBox = new JCheckBox();
@@ -148,7 +148,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             String userID = userIDField.getText();
             String password = new String(passwordField.getPassword());
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.filePath))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.accountFile))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {

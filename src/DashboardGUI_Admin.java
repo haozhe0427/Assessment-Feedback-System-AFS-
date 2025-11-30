@@ -19,39 +19,6 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
     JButton gradingSystemButton = new JButton("Grading System");
     JButton manageClassesButton = new JButton("Manage Classes");
 
-    public String getName () {
-        String userID = LoginGUI.userIDField.getText();
-        String userName = null;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.filePath))) {
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(" ; ");
-
-                if (data.length >= 8) {
-                    String storedID = data[0];
-
-                    if (storedID.equalsIgnoreCase(userID)) {
-                        userName = data[2];
-                    }
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Account list is not found",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Something went wrong. Please contact technician team for support",
-                    "Error", JOptionPane.WARNING_MESSAGE);
-        }
-        return userName;
-    }
-
-
-
     DashboardGUI_Admin() {
         // <========= TOP PANEL =========>
         topPanel.setBackground(new Color(153,255,153));
@@ -82,7 +49,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
 
 
         // <========= GREETING LABEL =========>
-        welcomeLabel.setText("Welcome back, " + getName());
+        welcomeLabel.setText("Welcome back, " + Name.getName());
         welcomeLabel.setBounds(0,150,820,40);
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
