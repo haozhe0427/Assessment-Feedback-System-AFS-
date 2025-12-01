@@ -148,43 +148,55 @@ public class LoginGUI extends JFrame implements ActionListener {
             String userID = userIDField.getText();
             String password = new String(passwordField.getPassword());
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.accountFile))) {
-                String line;
+            if (userID.equals(userIDField_message) && password.equals(passwordField_message)) {
+                JOptionPane.showMessageDialog(null,
+                        "Please enter userID and password",
+                        "Error",JOptionPane.ERROR_MESSAGE);
 
-                while ((line = reader.readLine()) != null) {
-                    String[] data = line.split(" ; ");
+            } else if (userID.equals(userIDField_message) || password.equals(passwordField_message)) {
+                JOptionPane.showMessageDialog(null,
+                        "Please enter userID and password",
+                        "Error",JOptionPane.ERROR_MESSAGE);
 
-                    if (data.length >= 8) {
-                        String storedID = data[0];
-                        String storedPassword = data[1];
-                        String userRole = data[6];
+            } else {
+                try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.accountFile))) {
+                    String line;
 
-                        if (storedID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
-                            if (userRole.equals("Admin")) {
-                                dispose();
-                                new DashboardGUI_Admin();
-                                return;
-                            } else {
-                                JOptionPane.showMessageDialog(null,
-                                        "Invalid account. Please try again",
-                                        "Error",JOptionPane.ERROR_MESSAGE);
-                                return;
+                    while ((line = reader.readLine()) != null) {
+                        String[] data = line.split(" ; ");
+
+                        if (data.length >= 8) {
+                            String storedID = data[0];
+                            String storedPassword = data[1];
+                            String userRole = data[6];
+
+                            if (storedID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
+                                if (userRole.equals("Admin")) {
+                                    dispose();
+                                    new DashboardGUI_Admin();
+                                    return;
+                                } else {
+                                    JOptionPane.showMessageDialog(null,
+                                            "Invalid account. Please try again",
+                                            "Error",JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
                             }
                         }
                     }
-                }
-                JOptionPane.showMessageDialog(null,
-                        "Invalid userID / password. Please try again",
-                        "Warning",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid userID / password. Please try again",
+                            "Warning",JOptionPane.WARNING_MESSAGE);
 
-            } catch (FileNotFoundException fileNotFoundException) {
-                JOptionPane.showMessageDialog(null,
-                        "Account list is not found",
-                        "Warning",JOptionPane.WARNING_MESSAGE);
-            } catch (IOException ioException) {
-                JOptionPane.showMessageDialog(null,
-                        "Something went wrong. Please contact technician team for support",
-                        "Error",JOptionPane.WARNING_MESSAGE);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    JOptionPane.showMessageDialog(null,
+                            "Account list is not found",
+                            "Warning",JOptionPane.WARNING_MESSAGE);
+                } catch (IOException ioException) {
+                    JOptionPane.showMessageDialog(null,
+                            "Something went wrong. Please contact technician team for support",
+                            "Error",JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
         this.add(loginButton);
