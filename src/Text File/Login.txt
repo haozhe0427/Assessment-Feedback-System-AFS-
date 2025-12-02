@@ -1,0 +1,6 @@
+UserID ; Password ; Name ; UserRole
+
+AD000001 ; 12345 ; Ding Hao Zhe ; Admin
+AL000001 ; 12345 ; Lwin Phone Thit ; Academic Leaders
+LC000001 ; 12345 ; Joshua Koroh Pudin ; Lecturers
+ST000001 ; 12345 ; Nyan Lin Thet ; Student
