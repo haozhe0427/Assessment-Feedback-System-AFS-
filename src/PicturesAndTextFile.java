@@ -2,10 +2,11 @@ import javax.swing.*;
 
 public class PicturesAndTextFile {
 
-    // Account.txt file is use in:
-    // 1) LoginGUI.java
-    // 2) DashboardGUI_Admin/java
-    public static String accountFile = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
+    public static String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Login.txt";
+    public static String AdminAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AdminAccount.txt";
+    public static String AcademicLeadersAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AcademicLeadersAccount.txt";
+    public static String LecturerAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\LecturerAccount.txt";
+    public static String StudentAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\StudentAccount.txt";
 
 
 

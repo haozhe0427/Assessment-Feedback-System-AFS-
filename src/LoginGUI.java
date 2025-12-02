@@ -159,16 +159,16 @@ public class LoginGUI extends JFrame implements ActionListener {
                         "Error",JOptionPane.ERROR_MESSAGE);
 
             } else {
-                try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.accountFile))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
                     String line;
 
                     while ((line = reader.readLine()) != null) {
                         String[] data = line.split(" ; ");
 
-                        if (data.length >= 8) {
+                        if (data.length >= 4) {
                             String storedID = data[0];
                             String storedPassword = data[1];
-                            String userRole = data[6];
+                            String userRole = data[3];
 
                             if (storedID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
                                 if (userRole.equals("Admin")) {

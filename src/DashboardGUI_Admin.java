@@ -8,7 +8,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
 
     JPanel topPanel = new JPanel();
     JButton logOutButton = new JButton("Log Out");
-    JLabel AFSLabel = new JLabel("Assessment Feedback System");
+    JLabel AFSLabel = new JLabel("Assessment Feedback System", JLabel.CENTER);
     JLabel welcomeLabel = new JLabel();
     JButton manageAccountButton = new JButton("Manage Account");
     JButton assignLecturersButton = new JButton("Assign Lecturer");
@@ -19,7 +19,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
         // <========= TOP PANEL =========>
         topPanel.setBackground(new Color(153,255,153));
         topPanel.setLayout(null);
-        topPanel.setBounds(0,0,820,200);
+        topPanel.setBounds(0,0,820,190);
         this.add(topPanel);
 
 
@@ -38,15 +38,14 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
 
         // <========= AFS LABEL =========>
         AFSLabel.setBounds(0,75,820,50);
-        AFSLabel.setHorizontalAlignment(JLabel.CENTER);
         AFSLabel.setFont(new Font("Impact", Font.PLAIN, 50));
         topPanel.add(AFSLabel);
 
 
 
         // <========= GREETING LABEL =========>
-        welcomeLabel.setText("Welcome back, " + Name.getName());
-        welcomeLabel.setBounds(0,150,820,40);
+        welcomeLabel.setText("Welcome back, " + Name.getAdminName());
+        welcomeLabel.setBounds(0,140,820,35);
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
         topPanel.add(welcomeLabel);
@@ -119,7 +118,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
         manageClassesButton.setIcon(PicturesAndTextFile.classesIcon);
         manageClassesButton.addActionListener(_ -> {
             dispose();
-            new ManageAccountGUI_Admin();
+            new ManageClassesGUI_Admin();
         });
         this.add(manageClassesButton);
 
