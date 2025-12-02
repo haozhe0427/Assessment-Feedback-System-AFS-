@@ -23,7 +23,7 @@ public class LoginGUI extends JFrame implements ActionListener {
     LoginGUI() {
         // <================== COMPONENTS (START) ==================>
         // <========= LOGIN LABEL =========>
-        loginLabel.setForeground(Color.white);
+        loginLabel.setForeground(Color.black);
         loginLabel.setBounds(0,20,395,100);
         loginLabel.setHorizontalAlignment(JLabel.CENTER);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -32,7 +32,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
         // <========= USER ID LABEL =========>
-        userIDLabel.setForeground(Color.white);
+        userIDLabel.setForeground(Color.black);
         userIDLabel.setBounds(20,150,150,30);
         userIDLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         this.add(userIDLabel);
@@ -70,7 +70,7 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
         // <========= PASSWORD LABEL =========>
-        passwordLabel.setForeground(Color.white);
+        passwordLabel.setForeground(Color.black);
         passwordLabel.setBounds(20, 300, 150, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD,18));
         this.add(passwordLabel);
@@ -114,12 +114,12 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
         // <========= SHOW PASSWORD CHECKBOX =========>
-        showPasswordBox.setForeground(Color.white);
+        showPasswordBox.setForeground(Color.black);
         showPasswordBox.setBounds(20,370,300,30);
         showPasswordBox.setFont(new Font("Segoe UI", Font.BOLD, 14));
         showPasswordBox.setFocusable(false);
         showPasswordBox.setText("Show Password");
-        showPasswordBox.setBackground(new Color(46, 26, 71));
+        showPasswordBox.setBackground(new Color(255,250,250));
         showPasswordBox.addActionListener(_ -> {
             if (showPasswordBox.isSelected()) {
                 if (new String(passwordField.getPassword()).equals(passwordField_message)) {
@@ -207,7 +207,7 @@ public class LoginGUI extends JFrame implements ActionListener {
         // <========= GUI FRAME (START) =========>
         this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Login)");
-        this.getContentPane().setBackground(new Color(46, 26, 71));
+        this.getContentPane().setBackground(new Color(255, 250, 250));
         this.setSize(420,600);
         this.setLayout(null);
         this.setResizable(false);

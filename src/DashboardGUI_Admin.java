@@ -128,6 +128,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
         this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.getContentPane().setBackground(new Color(255,250,250));
         this.setLayout(null);
         this.setSize(820,600);
         this.setResizable(false);
