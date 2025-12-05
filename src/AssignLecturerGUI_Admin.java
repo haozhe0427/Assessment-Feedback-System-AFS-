@@ -3,10 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class AssignLecturerGUI_Admin extends JFrame{
 
@@ -19,9 +16,8 @@ public class AssignLecturerGUI_Admin extends JFrame{
     JTable lecturersTable;
     JLabel assignToLabel = new JLabel("Assign to:");
     String[] academicLeaders = new String[15];
-    JComboBox academicLeaders_cb = new JComboBox<>(academicLeaders);
+    JComboBox<String> academicLeaders_cb = new JComboBox<>(academicLeaders);
     JButton assignButton = new JButton("Assign");
-    JButton updateButton = new JButton("Update");
     JButton deleteButton = new JButton("Delete");
 
     AssignLecturerGUI_Admin () {
@@ -106,20 +102,82 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
 
-
         // <========= ASSIGN BUTTON =========>
         assignButton.setBounds(910,270, 250,70);
         assignButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         assignButton.setFocusable(false);
+        assignButton.addActionListener(_ -> {
+            if (lecturerField.getText().isEmpty() || academicLeaders_cb.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Please select lecturer and academic leader",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String selectedLecturer = lecturerField.getText();
+            String selectedAcademicLeader = academicLeaders_cb.getSelectedItem().toString();
+
+            StringBuilder updatedLecturers = new StringBuilder();
+            boolean isUpdated = false;
+            boolean isDuplicate = false;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    String[] LecturerInfo = line.split(" ; ");
+                    String lecturerName = LecturerInfo[1];
+                    String assignStatus = LecturerInfo[5];
+
+                    if (selectedLecturer.equals(lecturerName)) {
+                        if (selectedAcademicLeader.equals(assignStatus)) {
+                            isDuplicate = true;
+                        } else {
+                            LecturerInfo[5] = selectedAcademicLeader;
+                            isUpdated = true;
+                        }
+                    }
+                    updatedLecturers.append(String.join(" ; ", LecturerInfo)).append("\n");
+                }
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Lecturer Account list is not found",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error", JOptionPane.WARNING_MESSAGE);
+            }
+
+
+            // REWRITE THE FILE
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.LecturerAccount)) {
+                writer.write(updatedLecturers.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing to file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+
+            if (isDuplicate) {
+                JOptionPane.showMessageDialog(null,
+                        "Lecturer is already assigned to this Academic Leader",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (isUpdated) {
+                JOptionPane.showMessageDialog(null,
+                        "Lecturer successfully assigned/updated",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                tableModel.setRowCount(0);
+                displayLecturers();
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Lecturer not found",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         this.add(assignButton);
-
-
-
-        // <========= UPDATE BUTTON =========>
-        updateButton.setBounds(910,370, 250,70);
-        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
-        updateButton.setFocusable(false);
-        this.add(updateButton);
 
 
 
