@@ -28,7 +28,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
         // <========= TOP PANEL =========>
         topPanel.setBackground(new Color(153,255,153));
         topPanel.setLayout(null);
-        topPanel.setBounds(0,0,1000,150);
+        topPanel.setBounds(0,0,1200,150);
         this.add(topPanel);
 
 
@@ -46,8 +46,8 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= "ASSIGN LECTURER" LABEL =========>
-        assignLecturerLabel.setBounds(0,75,1000,50);
-        assignLecturerLabel.setFont(new Font("Impact", Font.PLAIN, 50));
+        assignLecturerLabel.setBounds(0,75,1200,60);
+        assignLecturerLabel.setFont(new Font("Impact", Font.PLAIN, 60));
         topPanel.add(assignLecturerLabel);
 
 
@@ -67,7 +67,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= LECTURERS TABLE =========>
-        String[] columnNames = {"Lecturer ID", "Name", "Gender", "Age", "Areas"};
+        String[] columnNames = {"Lecturer ID", "Name", "Gender", "Age", "Areas", "Assigned to"};
         tableModel = new DefaultTableModel(columnNames, 0);
         lecturersTable = new JTable(tableModel);
 
@@ -76,7 +76,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
         lecturersTable.setDefaultEditor(Object.class, null);
 
         JScrollPane scrollPane = new JScrollPane(lecturersTable);
-        scrollPane.setBounds(30, 270, 625, 270);
+        scrollPane.setBounds(30, 270, 850, 270);
         displayLecturers();
         this.add(scrollPane);
 
@@ -92,14 +92,14 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= "ASSIGN TO" LABEL =========>
-        assignToLabel.setBounds(700, 170, 100, 30);
+        assignToLabel.setBounds(910, 170, 100, 30);
         assignToLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         this.add(assignToLabel);
 
 
 
         // <========= ACADEMIC LEADERS COMBO BOX =========>
-        academicLeaders_cb.setBounds(700,205,250,30);
+        academicLeaders_cb.setBounds(910,205,250,30);
         academicLeaders_cb.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         displayAcademicLeadersName();
         this.add(academicLeaders_cb);
@@ -108,7 +108,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= ASSIGN BUTTON =========>
-        assignButton.setBounds(700,270, 250,70);
+        assignButton.setBounds(910,270, 250,70);
         assignButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         assignButton.setFocusable(false);
         this.add(assignButton);
@@ -116,7 +116,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= UPDATE BUTTON =========>
-        updateButton.setBounds(700,370, 250,70);
+        updateButton.setBounds(910,370, 250,70);
         updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         updateButton.setFocusable(false);
         this.add(updateButton);
@@ -124,7 +124,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= DELETE BUTTON =========>
-        deleteButton.setBounds(700,470, 250,70);
+        deleteButton.setBounds(910,470, 250,70);
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         deleteButton.setFocusable(false);
         this.add(deleteButton);
@@ -136,7 +136,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
         this.setTitle("Assign Lecturer");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
-        this.setSize(1000,600);
+        this.setSize(1200,600);
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
