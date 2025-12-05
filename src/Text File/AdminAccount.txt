@@ -1,3 +1,1 @@
-UserID ; Password ; Name ; Gender ; Age ; UserRole
-
 AD000001 ; 12345 ; Ding Hao Zhe ; M ; 20 ; Admin

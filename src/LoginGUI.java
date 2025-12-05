@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 // <================== LOGIN GUI ==================>
-public class LoginGUI extends JFrame implements ActionListener {
+public class LoginGUI extends JFrame {
 
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
@@ -216,9 +216,4 @@ public class LoginGUI extends JFrame implements ActionListener {
         this.setVisible(true);
         // <========= GUI FRAME (END) =========>
     }
-
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {}
 }

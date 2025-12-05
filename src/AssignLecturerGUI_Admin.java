@@ -1,5 +1,12 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class AssignLecturerGUI_Admin extends JFrame{
 
@@ -8,9 +15,11 @@ public class AssignLecturerGUI_Admin extends JFrame{
     JLabel assignLecturerLabel = new JLabel("Assign Lecturer", JLabel.CENTER);
     JLabel lecturerLabel = new JLabel("Lecturer:");
     JTextField lecturerField = new JTextField();
-    JTable lecturersTable = new JTable();
+    DefaultTableModel tableModel;
+    JTable lecturersTable;
     JLabel assignToLabel = new JLabel("Assign to:");
-    JComboBox academicLeaders_cb;
+    String[] academicLeaders = new String[15];
+    JComboBox academicLeaders_cb = new JComboBox<>(academicLeaders);
     JButton assignButton = new JButton("Assign");
     JButton updateButton = new JButton("Update");
     JButton deleteButton = new JButton("Delete");
@@ -19,7 +28,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
         // <========= TOP PANEL =========>
         topPanel.setBackground(new Color(153,255,153));
         topPanel.setLayout(null);
-        topPanel.setBounds(0,0,820,150);
+        topPanel.setBounds(0,0,1000,150);
         this.add(topPanel);
 
 
@@ -37,7 +46,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= "ASSIGN LECTURER" LABEL =========>
-        assignLecturerLabel.setBounds(0,75,820,50);
+        assignLecturerLabel.setBounds(0,75,1000,50);
         assignLecturerLabel.setFont(new Font("Impact", Font.PLAIN, 50));
         topPanel.add(assignLecturerLabel);
 
@@ -51,37 +60,55 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= LECTURER FIELD =========>
-        lecturerField.setBounds(30,205,300,30);
+        lecturerField.setBounds(30,205,400,30);
         lecturerField.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         this.add(lecturerField);
 
 
 
         // <========= LECTURERS TABLE =========>
-        lecturersTable.setBounds(30, 270, 450,270);
-        lecturersTable.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        this.add(lecturersTable);
+        String[] columnNames = {"Lecturer ID", "Name", "Gender", "Age", "Areas"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        lecturersTable = new JTable(tableModel);
+
+        lecturersTable.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+        lecturersTable.setRowHeight(20);
+        lecturersTable.setDefaultEditor(Object.class, null);
+
+        JScrollPane scrollPane = new JScrollPane(lecturersTable);
+        scrollPane.setBounds(30, 270, 625, 270);
+        displayLecturers();
+        this.add(scrollPane);
+
+        lecturersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = lecturersTable.getSelectedRow();
+                String name = tableModel.getValueAt(selectedRow, 1).toString();
+                lecturerField.setText(name);
+            }
+        });
 
 
 
         // <========= "ASSIGN TO" LABEL =========>
-        assignToLabel.setBounds(520, 170, 100, 30);
+        assignToLabel.setBounds(700, 170, 100, 30);
         assignToLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         this.add(assignToLabel);
 
 
 
         // <========= ACADEMIC LEADERS COMBO BOX =========>
-        String[] academicLeaders = new String[10];
-        academicLeaders_cb = new JComboBox<>(academicLeaders);
-        academicLeaders_cb.setBounds(520,205,250,30);
+        academicLeaders_cb.setBounds(700,205,250,30);
         academicLeaders_cb.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        displayAcademicLeadersName();
         this.add(academicLeaders_cb);
 
 
 
+
         // <========= ASSIGN BUTTON =========>
-        assignButton.setBounds(520,270, 250,70);
+        assignButton.setBounds(700,270, 250,70);
         assignButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         assignButton.setFocusable(false);
         this.add(assignButton);
@@ -89,7 +116,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= UPDATE BUTTON =========>
-        updateButton.setBounds(520,370, 250,70);
+        updateButton.setBounds(700,370, 250,70);
         updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         updateButton.setFocusable(false);
         this.add(updateButton);
@@ -97,7 +124,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= DELETE BUTTON =========>
-        deleteButton.setBounds(520,470, 250,70);
+        deleteButton.setBounds(700,470, 250,70);
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         deleteButton.setFocusable(false);
         this.add(deleteButton);
@@ -109,9 +136,58 @@ public class AssignLecturerGUI_Admin extends JFrame{
         this.setTitle("Assign Lecturer");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
-        this.setSize(820,600);
+        this.setSize(1000,600);
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+    }
+
+
+
+    public void displayLecturers () {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] lecturersInfo = line.split(" ; ");
+                tableModel.addRow(lecturersInfo);
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Lecturer Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+
+
+    public void displayAcademicLeadersName () {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AcademicLeadersAccount))) {
+            String line;
+            int i = 0;
+
+            while ((line = reader.readLine()) != null) {
+                String[] academicLeadersInfo = line.split(" ; ");
+
+                if (academicLeadersInfo.length >= 5) {
+                    academicLeaders[i] = academicLeadersInfo[1];
+                    i++;
+                }
+            }
+            academicLeaders_cb.setModel(new DefaultComboBoxModel<>(academicLeaders));
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Lecturer Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
     }
 }

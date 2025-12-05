@@ -1,3 +1,1 @@
-UserID ; Password ; Name ; Gender ; Age ; Areas ; UserRole
-
-LC000001 ; 12345 ; Joshua Koroh Pudin ; M ; 20 ; School of Computing ; Lecturers
+LC000001 ; Joshua Koroh Pudin ; M ; 20 ; School of Computing

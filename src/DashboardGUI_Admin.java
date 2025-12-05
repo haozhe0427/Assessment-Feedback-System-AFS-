@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 // <================== DASHBOARD GUI (ADMIN) ==================>
-public class DashboardGUI_Admin extends JFrame implements ActionListener{
+public class DashboardGUI_Admin extends JFrame {
 
     JPanel topPanel = new JPanel();
     JButton logOutButton = new JButton("Log Out");
@@ -44,7 +42,7 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
 
 
         // <========= GREETING LABEL =========>
-        welcomeLabel.setText("Welcome back, " + Name.getAdminName());
+        welcomeLabel.setText("Welcome back, " + Name.getName());
         welcomeLabel.setBounds(0,140,820,35);
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
@@ -135,9 +133,4 @@ public class DashboardGUI_Admin extends JFrame implements ActionListener{
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
-
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {}
 }

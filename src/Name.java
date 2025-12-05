@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Name {
-    public static String getAdminName () {
+    public static String getName () {
         String userID = LoginGUI.userIDField.getText();
         String userName = null;
 

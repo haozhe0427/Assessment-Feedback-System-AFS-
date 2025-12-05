@@ -1,3 +1,2 @@
-UserID ; Password ; Name ; Gender ; Age ; Areas ; UserRole
 
-AL000001 ; 12345 ; Lwin Phone Thit ; M ; 20 ; School of Computing ; Academic Leaders
+AL000001 ; Lwin Phone Thit ; M ; 20 ; School of Computing
