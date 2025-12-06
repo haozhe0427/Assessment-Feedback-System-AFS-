@@ -7,7 +7,7 @@ public class PicturesAndTextFile {
     public static String AcademicLeadersAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AcademicLeadersAccount.txt";
     public static String LecturerAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\LecturerAccount.txt";
     public static String StudentAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\StudentAccount.txt";
-
+    public static String GradingSystem = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\GradingSystem.txt";
 
 
     // This Picture is used in:
