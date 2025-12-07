@@ -1,20 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 
-// <================== DASHBOARD GUI (ADMIN) ==================>
 public class DashboardGUI_Admin extends JFrame {
 
     JPanel topPanel = new JPanel();
-    JButton logOutButton = new JButton("Log Out");
     JLabel AFSLabel = new JLabel("Assessment Feedback System", JLabel.CENTER);
     JLabel welcomeLabel = new JLabel();
+    JButton logOutButton = new JButton("Log Out");
     JButton manageAccountButton = new JButton("Manage Account");
     JButton assignLecturersButton = new JButton("Assign Lecturer");
     JButton gradingSystemButton = new JButton("Grading System");
     JButton manageClassesButton = new JButton("Manage Classes");
 
     DashboardGUI_Admin() {
-        // <========= TOP PANEL =========>
+        // <================== JPanel ==================>
+        // <========= 1) topPanel =========>
         topPanel.setBackground(new Color(153,255,153));
         topPanel.setLayout(null);
         topPanel.setBounds(0,0,820,190);
@@ -22,7 +22,24 @@ public class DashboardGUI_Admin extends JFrame {
 
 
 
-        // <========= LOG OUT BUTTON =========>
+        // <================== JLabel ==================>
+        // <========= 1) AFSLabel =========>
+        AFSLabel.setBounds(0,75,820,50);
+        AFSLabel.setFont(new Font("Impact", Font.PLAIN, 50));
+        topPanel.add(AFSLabel);
+
+
+        // <========= 2) welcomeLabel =========>
+        welcomeLabel.setText("Welcome back, " + Name.getName());
+        welcomeLabel.setBounds(0,140,820,35);
+        welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
+        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        topPanel.add(welcomeLabel);
+
+
+
+        // <================== JButton ==================>
+        // <========= 1) logOutButton =========>
         logOutButton.setBounds(25,15,125,40);
         logOutButton.setFont(new Font("Comic Sans MS", Font.BOLD,20));
         logOutButton.setFocusable(false);
@@ -33,24 +50,7 @@ public class DashboardGUI_Admin extends JFrame {
         topPanel.add(logOutButton);
 
 
-
-        // <========= AFS LABEL =========>
-        AFSLabel.setBounds(0,75,820,50);
-        AFSLabel.setFont(new Font("Impact", Font.PLAIN, 50));
-        topPanel.add(AFSLabel);
-
-
-
-        // <========= GREETING LABEL =========>
-        welcomeLabel.setText("Welcome back, " + Name.getName());
-        welcomeLabel.setBounds(0,140,820,35);
-        welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        topPanel.add(welcomeLabel);
-
-
-
-        // <========= MANAGE ACCOUNT BUTTON =========>
+        // <========= 2) manageAccountButton =========>
         PicturesAndTextFile.manageAccountIcon = new ImageIcon(PicturesAndTextFile.manageAccountIcon.getImage().
                 getScaledInstance(40,40, Image.SCALE_SMOOTH));
 
@@ -67,8 +67,7 @@ public class DashboardGUI_Admin extends JFrame {
         this.add(manageAccountButton);
 
 
-
-        // <========= ASSIGN LECTURER BUTTON =========>
+        // <========= 3) assignLecturersButton =========>
         PicturesAndTextFile.lecturerIcon = new ImageIcon(PicturesAndTextFile.lecturerIcon.getImage().
                 getScaledInstance(40,40, Image.SCALE_SMOOTH));
 
@@ -85,8 +84,7 @@ public class DashboardGUI_Admin extends JFrame {
         this.add(assignLecturersButton);
 
 
-
-        // <========= GRADING SYSTEM BUTTON =========>
+        // <========= 4) gradingSystemButton =========>
         PicturesAndTextFile.gradingSystemIcon = new ImageIcon(PicturesAndTextFile.gradingSystemIcon.getImage().
                 getScaledInstance(40,40, Image.SCALE_SMOOTH));
 
@@ -103,8 +101,7 @@ public class DashboardGUI_Admin extends JFrame {
         this.add(gradingSystemButton);
 
 
-
-        // <========= MANAGE CLASSES BUTTON =========>
+        // <========= 5) manageClassesButton =========>
         PicturesAndTextFile.classesIcon = new ImageIcon(PicturesAndTextFile.classesIcon.getImage().
                 getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 

@@ -6,13 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-// <================== LOGIN GUI ==================>
 public class LoginGUI extends JFrame {
 
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
-    public static JTextField userIDField = new JTextField();
     JLabel passwordLabel = new JLabel("Password:");
+    public static JTextField userIDField = new JTextField();
     JPasswordField passwordField = new JPasswordField();
     JCheckBox showPasswordBox = new JCheckBox();
     JButton loginButton = new JButton("Login");
@@ -21,8 +20,8 @@ public class LoginGUI extends JFrame {
     String passwordField_message = "Please Enter Password";
 
     LoginGUI() {
-        // <================== COMPONENTS (START) ==================>
-        // <========= LOGIN LABEL =========>
+        // <================== JLabel ==================>
+        // <========= 1) LoginLabel =========>
         loginLabel.setForeground(Color.black);
         loginLabel.setBounds(0,20,395,100);
         loginLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -30,16 +29,23 @@ public class LoginGUI extends JFrame {
         this.add(loginLabel);
 
 
-
-        // <========= USER ID LABEL =========>
+        // <========= 2) userIDLabel =========>
         userIDLabel.setForeground(Color.black);
         userIDLabel.setBounds(20,150,150,30);
         userIDLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         this.add(userIDLabel);
 
 
+        // <========= 3) passwordLabel =========>
+        passwordLabel.setForeground(Color.black);
+        passwordLabel.setBounds(20, 300, 150, 30);
+        passwordLabel.setFont(new Font("Segoe UI", Font.BOLD,18));
+        this.add(passwordLabel);
 
-        // <========= USER ID FIELD =========>
+
+
+        // <================== JTextField ==================>
+        // <========= 1) userIDField =========>
         userIDField.setEditable(false);
         userIDField.setText(userIDField_message);
         userIDField.setForeground(Color.gray);
@@ -69,15 +75,8 @@ public class LoginGUI extends JFrame {
 
 
 
-        // <========= PASSWORD LABEL =========>
-        passwordLabel.setForeground(Color.black);
-        passwordLabel.setBounds(20, 300, 150, 30);
-        passwordLabel.setFont(new Font("Segoe UI", Font.BOLD,18));
-        this.add(passwordLabel);
-
-
-
-        // <========= PASSWORD FIELD =========>
+        // <================== JPasswordField ==================>
+        // <========= 1) passwordField =========>
         passwordField.setEditable(false);
         passwordField.setEchoChar((char) 0);
         passwordField.setText(passwordField_message);
@@ -113,7 +112,8 @@ public class LoginGUI extends JFrame {
 
 
 
-        // <========= SHOW PASSWORD CHECKBOX =========>
+        // <================== JCheckBox ==================>
+        // <========= 1) ShowPasswordBox =========>
         showPasswordBox.setForeground(Color.black);
         showPasswordBox.setBounds(20,370,300,30);
         showPasswordBox.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -140,7 +140,8 @@ public class LoginGUI extends JFrame {
 
 
 
-        // <========= LOGIN BUTTON =========>
+        // <================== JButton ==================>
+        // <========= 1) LoginButton =========>
         loginButton.setBounds(100, 450, 200,30);
         loginButton.setFont(new Font("Segoe UI", Font.BOLD,20));
         loginButton.setFocusable(false);
@@ -165,7 +166,7 @@ public class LoginGUI extends JFrame {
                     while ((line = reader.readLine()) != null) {
                         String[] data = line.split(" ; ");
 
-                        if (data.length >= 4) {
+                        if (data.length >= 5) {
                             String storedID = data[0];
                             String storedPassword = data[1];
                             String userRole = data[3];
@@ -200,11 +201,10 @@ public class LoginGUI extends JFrame {
             }
         });
         this.add(loginButton);
-        // <================== COMPONENTS (END) ==================>
 
 
 
-        // <========= GUI FRAME (START) =========>
+        // <========= GUI FRAME =========>
         this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Login)");
         this.getContentPane().setBackground(new Color(255, 250, 250));
@@ -214,6 +214,5 @@ public class LoginGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        // <========= GUI FRAME (END) =========>
     }
 }

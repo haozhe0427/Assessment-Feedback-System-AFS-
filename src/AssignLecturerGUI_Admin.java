@@ -8,20 +8,21 @@ import java.io.*;
 public class AssignLecturerGUI_Admin extends JFrame{
 
     JPanel topPanel = new JPanel();
-    JButton exitButton = new JButton("Exit");
     JLabel assignLecturerLabel = new JLabel("Assign Lecturer", JLabel.CENTER);
     JLabel lecturerLabel = new JLabel("Lecturer:");
-    JTextField lecturerField = new JTextField();
-    DefaultTableModel tableModel;
-    JTable lecturersTable;
     JLabel assignToLabel = new JLabel("Assign to:");
-    String[] academicLeaders = new String[15];
-    JComboBox<String> academicLeaders_cb = new JComboBox<>(academicLeaders);
+    JTextField lecturerField = new JTextField();
+    JButton exitButton = new JButton("Exit");
     JButton assignButton = new JButton("Assign");
     JButton deleteButton = new JButton("Delete");
+    DefaultTableModel tableModel;
+    JTable lecturersTable;
+    String[] academicLeaders = new String[15];
+    JComboBox<String> academicLeaders_cb = new JComboBox<>(academicLeaders);
 
     AssignLecturerGUI_Admin () {
-        // <========= TOP PANEL =========>
+        // <================== JPanel ==================>
+        // <========= 1) topPanel =========>
         topPanel.setBackground(new Color(153,255,153));
         topPanel.setLayout(null);
         topPanel.setBounds(0,0,1200,150);
@@ -29,7 +30,36 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
 
-        // <========= EXIT BUTTON =========>
+        // <================== TextField ==================>
+        // <========= 1) assignLecturerLabel =========>
+        assignLecturerLabel.setBounds(0,75,1200,60);
+        assignLecturerLabel.setFont(new Font("Impact", Font.PLAIN, 60));
+        topPanel.add(assignLecturerLabel);
+
+
+        // <========= 2) lecturerLabel =========>
+        lecturerLabel.setBounds(30, 170, 100, 30);
+        lecturerLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        this.add(lecturerLabel);
+
+
+        // <========= 3) assignToLabel =========>
+        assignToLabel.setBounds(910, 170, 100, 30);
+        assignToLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        this.add(assignToLabel);
+
+
+
+        // <================== JTextField ==================>
+        // <========= 1) lecturerField =========>
+        lecturerField.setBounds(30,205,400,30);
+        lecturerField.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        this.add(lecturerField);
+
+
+
+        // <================== JButton ==================>
+        // <========= 1) exitButton =========>
         exitButton.setBounds(25,15,125,40);
         exitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         exitButton.setFocusable(false);
@@ -40,69 +70,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
         topPanel.add(exitButton);
 
 
-
-        // <========= "ASSIGN LECTURER" LABEL =========>
-        assignLecturerLabel.setBounds(0,75,1200,60);
-        assignLecturerLabel.setFont(new Font("Impact", Font.PLAIN, 60));
-        topPanel.add(assignLecturerLabel);
-
-
-
-        // <========= "LECTURER" LABEL =========>
-        lecturerLabel.setBounds(30, 170, 100, 30);
-        lecturerLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-        this.add(lecturerLabel);
-
-
-
-        // <========= LECTURER FIELD =========>
-        lecturerField.setBounds(30,205,400,30);
-        lecturerField.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        this.add(lecturerField);
-
-
-
-        // <========= LECTURERS TABLE =========>
-        String[] columnNames = {"Lecturer ID", "Name", "Gender", "Age", "Areas", "Assigned to"};
-        tableModel = new DefaultTableModel(columnNames, 0);
-        lecturersTable = new JTable(tableModel);
-
-        lecturersTable.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
-        lecturersTable.setRowHeight(20);
-        lecturersTable.setDefaultEditor(Object.class, null);
-
-        JScrollPane scrollPane = new JScrollPane(lecturersTable);
-        scrollPane.setBounds(30, 270, 850, 270);
-        displayLecturers();
-        this.add(scrollPane);
-
-        lecturersTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int selectedRow = lecturersTable.getSelectedRow();
-                String name = tableModel.getValueAt(selectedRow, 1).toString();
-                lecturerField.setText(name);
-            }
-        });
-
-
-
-        // <========= "ASSIGN TO" LABEL =========>
-        assignToLabel.setBounds(910, 170, 100, 30);
-        assignToLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-        this.add(assignToLabel);
-
-
-
-        // <========= ACADEMIC LEADERS COMBO BOX =========>
-        academicLeaders_cb.setBounds(910,205,250,30);
-        academicLeaders_cb.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        displayAcademicLeadersName();
-        this.add(academicLeaders_cb);
-
-
-
-        // <========= ASSIGN BUTTON =========>
+        // <========= 2) assignButton =========>
         assignButton.setBounds(910,370, 250,70);
         assignButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         assignButton.setFocusable(false);
@@ -180,8 +148,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
         this.add(assignButton);
 
 
-
-        // <========= DELETE BUTTON =========>
+        // <========= 3) deleteButton =========>
         deleteButton.setBounds(910,470, 250,70);
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         deleteButton.setFocusable(false);
@@ -194,7 +161,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
             }
 
             String selectedLecturer = lecturerField.getText();
-            String selectedAcademicLeader = academicLeaders_cb.getSelectedItem().toString();
 
             StringBuilder updatedLecturers = new StringBuilder();
             boolean isUpdated = false;
@@ -260,6 +226,41 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
 
+        // <================== JComboBox ==================>
+        // <========= 1) academicLeaders_cb =========>
+        academicLeaders_cb.setBounds(910,205,250,30);
+        academicLeaders_cb.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        displayAcademicLeadersName();
+        this.add(academicLeaders_cb);
+
+
+
+        // <================== JTable & DefaultTableModel ==================>
+        // <========= 1) lecturerTable & tableModel =========>
+        String[] columnNames = {"Lecturer ID", "Name", "Gender", "Age", "Areas", "Assigned to"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        lecturersTable = new JTable(tableModel);
+
+        lecturersTable.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+        lecturersTable.setRowHeight(20);
+        lecturersTable.setDefaultEditor(Object.class, null);
+
+        JScrollPane scrollPane = new JScrollPane(lecturersTable);
+        scrollPane.setBounds(30, 270, 850, 270);
+        displayLecturers();
+        this.add(scrollPane);
+
+        lecturersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = lecturersTable.getSelectedRow();
+                String name = tableModel.getValueAt(selectedRow, 1).toString();
+                lecturerField.setText(name);
+            }
+        });
+
+
+
         // <========= GUI FRAME =========>
         this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assign Lecturer");
@@ -273,7 +274,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
 
-    public void displayLecturers () {
+    public void displayLecturers () { // display every lecturer's info
         try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount))) {
             String line;
 
@@ -294,7 +295,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
 
-    public void displayAcademicLeadersName () {
+    public void displayAcademicLeadersName () { // display every academic leader's name ONLY
         try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AcademicLeadersAccount))) {
             String line;
             int i = 0;

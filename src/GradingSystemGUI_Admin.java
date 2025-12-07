@@ -8,22 +8,23 @@ import java.io.*;
 public class GradingSystemGUI_Admin extends JFrame {
 
     JPanel topPanel = new JPanel();
-    JButton exitButton = new JButton("Exit");
     JLabel gradingSystemLabel = new JLabel("Grading System", JLabel.CENTER);
+    JLabel marksLabel = new JLabel("Marks:");
+    JLabel gradeLabel = new JLabel("Grade:");
+    JLabel gpaLabel = new JLabel("GPA:");
+    JLabel statusLabel = new JLabel("Status:");
+    JButton exitButton = new JButton("Exit");
+    JButton updateButton = new JButton("Update");
+    JTextField marksField = new JTextField();
+    JTextField gradeField = new JTextField();
+    JTextField gpaField = new JTextField();
+    JTextField statusField = new JTextField();
     DefaultTableModel tableModel;
     JTable gradeTable;
-    JLabel marksLabel = new JLabel("Marks:");
-    JTextField marksField = new JTextField();
-    JLabel gradeLabel = new JLabel("Grade:");
-    JTextField gradeField = new JTextField();
-    JLabel gpaLabel = new JLabel("GPA:");
-    JTextField gpaField = new JTextField();
-    JLabel statusLabel = new JLabel("Status:");
-    JTextField statusField = new JTextField();
-    JButton updateButton = new JButton("Update");
 
     GradingSystemGUI_Admin () {
-        // <========= TOP PANEL =========>
+        // <================== JPanel ==================>
+        // <========= 1) topPanel =========>
         topPanel.setBackground(new Color(153,255,153));
         topPanel.setLayout(null);
         topPanel.setBounds(0,0,985,150);
@@ -31,7 +32,40 @@ public class GradingSystemGUI_Admin extends JFrame {
 
 
 
-        // <========= EXIT BUTTON =========>
+        // <================== JLabel ==================>
+        // <========= 1) gradingSystemLabel =========>
+        gradingSystemLabel.setBounds(0,75,985,60);
+        gradingSystemLabel.setFont(new Font("Impact", Font.PLAIN, 60));
+        topPanel.add(gradingSystemLabel);
+
+
+        // <========= 2) marksLabel =========>
+        marksLabel.setBounds(720, 230, 100,16);
+        marksLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        this.add(marksLabel);
+
+
+        // <========= 3) gradeLabel =========>
+        gradeLabel.setBounds(720, 280, 100,16);
+        gradeLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        this.add(gradeLabel);
+
+
+        // <========= 4) gpaLabel =========>
+        gpaLabel.setBounds(720, 330, 100,16);
+        gpaLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        this.add(gpaLabel);
+
+
+        // <========= 5) statusLabel =========>
+        statusLabel.setBounds(720, 380, 100,16);
+        statusLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        this.add(statusLabel);
+
+
+
+        // <================== JButton ==================>
+        // <========= 1) exitButton =========>
         exitButton.setBounds(25,15,125,40);
         exitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         exitButton.setFocusable(false);
@@ -42,101 +76,7 @@ public class GradingSystemGUI_Admin extends JFrame {
         topPanel.add(exitButton);
 
 
-
-        // <========= GRADING SYSTEM LABEL =========>
-        gradingSystemLabel.setBounds(0,75,985,60);
-        gradingSystemLabel.setFont(new Font("Impact", Font.PLAIN, 60));
-        topPanel.add(gradingSystemLabel);
-
-
-
-        // <========= GRADE TABLE =========>
-        String[] columnNames = {"Marks", "Grade", "GPA", "Status"};
-        tableModel = new DefaultTableModel(columnNames, 0);
-        gradeTable = new JTable(tableModel);
-
-        gradeTable.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-        gradeTable.setRowHeight(30);
-        gradeTable.setDefaultEditor(Object.class, null);
-
-        JScrollPane scrollPane = new JScrollPane(gradeTable);
-        scrollPane.setBounds(30,180,670,383);
-        displayGrade();
-        this.add(scrollPane);
-
-        gradeTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int selectedRow = gradeTable.getSelectedRow();
-
-                String marks = tableModel.getValueAt(selectedRow, 0).toString();
-                String grade = tableModel.getValueAt(selectedRow, 1).toString();
-                String gpa = tableModel.getValueAt(selectedRow, 2).toString();
-                String status = tableModel.getValueAt(selectedRow, 3).toString();
-
-                marksField.setText(marks);
-                gradeField.setText(grade);
-                gpaField.setText(gpa);
-                statusField.setText(status);
-
-                marksField.setEditable(true);
-                gradeField.setEditable(true);
-                gpaField.setEditable(true);
-                statusField.setEditable(true);
-            }
-        });
-
-
-
-        // <========= MARKS LABEL & FIELD =========>
-        marksLabel.setBounds(720, 230, 100,16);
-        marksLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-        this.add(marksLabel);
-
-        marksField.setBounds(790, 227, 150, 26);
-        marksField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        marksField.setEditable(false);
-        this.add(marksField);
-
-
-
-        // <========= GRADE LABEL & FIELD =========>
-        gradeLabel.setBounds(720, 280, 100,16);
-        gradeLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-        this.add(gradeLabel);
-
-        gradeField.setBounds(790, 277, 150, 26);
-        gradeField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        gradeField.setEditable(false);
-        this.add(gradeField);
-
-
-
-        // <========= GPA LABEL =========>
-        gpaLabel.setBounds(720, 330, 100,16);
-        gpaLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-        this.add(gpaLabel);
-
-        gpaField.setBounds(790, 327, 150, 26);
-        gpaField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        gpaField.setEditable(false);
-        this.add(gpaField);
-
-
-
-        // <=========STATUS LABEL =========>
-        statusLabel.setBounds(720, 380, 100,16);
-        statusLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
-        this.add(statusLabel);
-
-        statusField.setBounds(790, 377, 150, 26);
-        statusField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        statusField.setEditable(false);
-        this.add(statusField);
-
-
-
-        // <========= UPDATE BUTTON =========>
+        // <========= 2) updateButton =========>
         updateButton.setBounds(720, 511, 220, 50);
         updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         updateButton.setFocusable(false);
@@ -234,6 +174,75 @@ public class GradingSystemGUI_Admin extends JFrame {
 
 
 
+        // <================== JTextField ==================>
+        // <========= 1) marksField =========>
+        marksField.setBounds(790, 227, 150, 26);
+        marksField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        marksField.setEditable(false);
+        this.add(marksField);
+
+
+        // <========= 2) gradeField =========>
+        gradeField.setBounds(790, 277, 150, 26);
+        gradeField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        gradeField.setEditable(false);
+        this.add(gradeField);
+
+
+        // <========= 3) gpaField =========>
+        gpaField.setBounds(790, 327, 150, 26);
+        gpaField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        gpaField.setEditable(false);
+        this.add(gpaField);
+
+
+        // <=========4) statusField =========>
+        statusField.setBounds(790, 377, 150, 26);
+        statusField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        statusField.setEditable(false);
+        this.add(statusField);
+
+
+
+        // <================== JTable & DefaultTableModel ==================>
+        // <========= 1) gradeTable =========>
+        String[] columnNames = {"Marks", "Grade", "GPA", "Status"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        gradeTable = new JTable(tableModel);
+
+        gradeTable.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        gradeTable.setRowHeight(30);
+        gradeTable.setDefaultEditor(Object.class, null);
+
+        JScrollPane scrollPane = new JScrollPane(gradeTable);
+        scrollPane.setBounds(30,180,670,383);
+        displayGrade();
+        this.add(scrollPane);
+
+        gradeTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = gradeTable.getSelectedRow();
+
+                String marks = tableModel.getValueAt(selectedRow, 0).toString();
+                String grade = tableModel.getValueAt(selectedRow, 1).toString();
+                String gpa = tableModel.getValueAt(selectedRow, 2).toString();
+                String status = tableModel.getValueAt(selectedRow, 3).toString();
+
+                marksField.setText(marks);
+                gradeField.setText(grade);
+                gpaField.setText(gpa);
+                statusField.setText(status);
+
+                marksField.setEditable(true);
+                gradeField.setEditable(true);
+                gpaField.setEditable(true);
+                statusField.setEditable(true);
+            }
+        });
+
+
+
         // <========= GUI FRAME =========>
         this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
@@ -247,7 +256,7 @@ public class GradingSystemGUI_Admin extends JFrame {
 
 
 
-    public void displayGrade () {
+    public void displayGrade () { // display grade's info
         try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.GradingSystem))) {
             String line;
 
