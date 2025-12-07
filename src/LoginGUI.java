@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class LoginGUI extends JFrame {
 
@@ -149,55 +146,65 @@ public class LoginGUI extends JFrame {
             String userID = userIDField.getText();
             String password = new String(passwordField.getPassword());
 
-            if (userID.equals(userIDField_message) && password.equals(passwordField_message)) {
+            if (userID.equals(userIDField_message) || password.equals(passwordField_message)) {
                 JOptionPane.showMessageDialog(null,
                         "Please enter userID and password",
-                        "Error",JOptionPane.ERROR_MESSAGE);
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            } else if (userID.equals(userIDField_message) || password.equals(passwordField_message)) {
-                JOptionPane.showMessageDialog(null,
-                        "Please enter userID and password",
-                        "Error",JOptionPane.ERROR_MESSAGE);
+            try (BufferedReader reader1 = new BufferedReader(new FileReader(PicturesAndTextFile.Login));
+            BufferedReader reader2 = new BufferedReader(new FileReader(PicturesAndTextFile.AdminAccount))) {
 
-            } else {
-                try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
-                    String line;
+                String line1, line2;
+                while ((line1 = reader1.readLine()) != null) {
+//                    String[] loginInfo = line1.split(" ; ");
+//                    String storedUserID = loginInfo[0];
+//                    String storedPassword = loginInfo[1];
+//                    String userRole = loginInfo[3];
+//
+//                    if (storedUserID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
+//                        if (userRole.equals("Student")) {
+//                            dispose();
+//                            new AssignLecturerGUI_Admin();
+//                        } else {
+//                            JOptionPane.showMessageDialog(null,
+//                                    "Invalid account. Please try again",
+//                                    "Error",JOptionPane.ERROR_MESSAGE);
+//                        }
+//                        return;
+//                    }
+                    while ((line2 = reader2.readLine()) != null) {
+                        String[] adminInfo = line2.split(" ; ");
+                        String adminID = adminInfo[0];
+                        String adminPassword = adminInfo[1];
+                        String isAdmin = adminInfo[3];
 
-                    while ((line = reader.readLine()) != null) {
-                        String[] data = line.split(" ; ");
-
-                        if (data.length >= 5) {
-                            String storedID = data[0];
-                            String storedPassword = data[1];
-                            String userRole = data[3];
-
-                            if (storedID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
-                                if (userRole.equals("Admin")) {
-                                    dispose();
-                                    new DashboardGUI_Admin();
-                                    return;
-                                } else {
-                                    JOptionPane.showMessageDialog(null,
-                                            "Invalid account. Please try again",
-                                            "Error",JOptionPane.ERROR_MESSAGE);
-                                    return;
-                                }
+                        if (adminID.equalsIgnoreCase(userID) && adminPassword.equals(password)) {
+                            if (isAdmin.equals("Admin")) {
+                                dispose();
+                                new DashboardGUI_Admin();
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Invalid account. Please try again",
+                                        "Error",JOptionPane.ERROR_MESSAGE);
                             }
+                            return;
                         }
                     }
-                    JOptionPane.showMessageDialog(null,
-                            "Invalid userID / password. Please try again",
-                            "Warning",JOptionPane.WARNING_MESSAGE);
-
-                } catch (FileNotFoundException fileNotFoundException) {
-                    JOptionPane.showMessageDialog(null,
-                            "Account list is not found",
-                            "Warning",JOptionPane.WARNING_MESSAGE);
-                } catch (IOException ioException) {
-                    JOptionPane.showMessageDialog(null,
-                            "Something went wrong. Please contact technician team for support",
-                            "Error",JOptionPane.WARNING_MESSAGE);
                 }
+                JOptionPane.showMessageDialog(null,
+                        "Invalid userID / password. Please try again",
+                        "Warning",JOptionPane.WARNING_MESSAGE);
+
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Account list is not found",
+                        "Warning",JOptionPane.WARNING_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error",JOptionPane.WARNING_MESSAGE);
             }
         });
         this.add(loginButton);
