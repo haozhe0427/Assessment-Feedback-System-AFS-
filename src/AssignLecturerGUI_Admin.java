@@ -89,7 +89,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
             boolean isUpdated = false;
             boolean isDuplicate = false;
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AssignLecturer))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -119,7 +119,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
             // REWRITE THE FILE
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.LecturerAccount)) {
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.AssignLecturer)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -166,7 +166,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
             boolean isUpdated = false;
             boolean isDuplicate = false;
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AssignLecturer))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -196,7 +196,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
             // REWRITE THE FILE
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.LecturerAccount)) {
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.AssignLecturer)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -275,7 +275,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
     public void displayLecturers () { // display every lecturer's info
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AssignLecturer))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -304,7 +304,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 String[] academicLeadersInfo = line.split(" ; ");
 
                 if (academicLeadersInfo.length >= 5) {
-                    academicLeaders[i] = academicLeadersInfo[1];
+                    academicLeaders[i] = academicLeadersInfo[2];
                     i++;
                 }
             }

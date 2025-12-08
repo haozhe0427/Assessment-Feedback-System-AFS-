@@ -5,7 +5,6 @@ public class PicturesAndTextFile {
     // STORE PICTURES AND TEXT FILES ONLY
 
 
-
     // 1) Login.txt
     public static String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Login.txt";
 
@@ -23,6 +22,9 @@ public class PicturesAndTextFile {
 
     // 6) GradingSystem.txt
     public static String GradingSystem = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\GradingSystem.txt";
+
+    // 7) AssignLecturer.txt
+    public static String AssignLecturer = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AssignLecturer.txt";
 
 
 

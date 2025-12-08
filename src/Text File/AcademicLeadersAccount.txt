@@ -1,2 +1,1 @@
-AL000001 ; Lwin Phone Thit ; M ; 20 ; School of Computing
-
+AL000001 ; 12345 ; Lwin Phone Thit ; M ; Academic Leader ; School of Computing

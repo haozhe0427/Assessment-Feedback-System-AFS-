@@ -1,1 +1,1 @@
-LC000001 ; Joshua Koroh Pudin ; M ; 20 ; School of Computing ; NULL
+LC000001 ; 12345 ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing

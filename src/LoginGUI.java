@@ -161,7 +161,7 @@ public class LoginGUI extends JFrame {
 //                    String[] loginInfo = line1.split(" ; ");
 //                    String storedUserID = loginInfo[0];
 //                    String storedPassword = loginInfo[1];
-//                    String userRole = loginInfo[3];
+//                    String userRole = loginInfo[4];
 //
 //                    if (storedUserID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
 //                        if (userRole.equals("Student")) {
