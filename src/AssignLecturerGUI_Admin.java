@@ -95,13 +95,13 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 while ((line = reader.readLine()) != null) {
                     String[] LecturerInfo = line.split(" ; ");
                     String lecturerName = LecturerInfo[1];
-                    String assignStatus = LecturerInfo[5];
+                    String assignStatus = LecturerInfo[3];
 
                     if (selectedLecturer.equals(lecturerName)) {
                         if (selectedAcademicLeader.equals(assignStatus)) {
                             isDuplicate = true;
                         } else {
-                            LecturerInfo[5] = selectedAcademicLeader;
+                            LecturerInfo[3] = selectedAcademicLeader;
                             isUpdated = true;
                         }
                     }
@@ -172,13 +172,13 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 while ((line = reader.readLine()) != null) {
                     String[] LecturerInfo = line.split(" ; ");
                     String lecturerName = LecturerInfo[1];
-                    String assignStatus = LecturerInfo[5];
+                    String assignStatus = LecturerInfo[3];
 
                     if (selectedLecturer.equals(lecturerName)) {
                         if (assignStatus.equals("NULL")) {
                             isDuplicate = true;
                         } else {
-                            LecturerInfo[5] = "NULL";
+                            LecturerInfo[3] = "NULL";
                             isUpdated = true;
                         }
                     }
@@ -237,7 +237,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
         // <================== JTable & DefaultTableModel ==================>
         // <========= 1) lecturerTable & tableModel =========>
-        String[] columnNames = {"Lecturer ID", "Name", "Gender", "Age", "Areas", "Assigned to"};
+        String[] columnNames = {"Lecturer ID", "Name", "Areas", "Assigned to"};
         tableModel = new DefaultTableModel(columnNames, 0);
         lecturersTable = new JTable(tableModel);
 
@@ -304,7 +304,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 String[] academicLeadersInfo = line.split(" ; ");
 
                 if (academicLeadersInfo.length >= 5) {
-                    academicLeaders[i] = academicLeadersInfo[2];
+                    academicLeaders[i] = academicLeadersInfo[3];
                     i++;
                 }
             }

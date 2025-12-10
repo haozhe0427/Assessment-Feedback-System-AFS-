@@ -1,1 +1,1 @@
-AL000001 ; 12345 ; Lwin Phone Thit ; M ; Academic Leader ; School of Computing
+AL000001 ; 12345 ; AL000001@mail.apu.edu.my ; Lwin Phone Thit ; M ; Academic Leader ; School of Computing

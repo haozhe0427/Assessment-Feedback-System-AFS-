@@ -39,11 +39,11 @@ public class ManageAccountGUI_Admin extends JFrame {
     // JComboBox
     String[] selectUserRole = {"Academic Leaders", "Lecturer", "Student"};
     JComboBox<String> selectUserRole_cb = new JComboBox<>(selectUserRole);
-    String[] createUserRole = {"Academic Leaders", "Lecturer", "Student"};
+    String[] createUserRole = {"Academic Leaders", "Lecturer", "Student", ""};
     JComboBox<String> createUserRole_cb = new JComboBox<>(createUserRole);
-    String[] selectAreas = {"School of Computing", "School of Technology", "School of Game Development", "School of Digital Marketing"};
+    String[] selectAreas = {"School of Computing", "School of Technology", "School of Game Development", "School of Digital Marketing", ""};
     JComboBox<String> selectAreas_cb = new JComboBox<>(selectAreas);
-    String[] selectCourse = {"SE", "CS", "IT", "CYS", "CC", "AI"};
+    String[] selectCourse = {"SE", "CS", "IT", "CYS", "CC", "AI", ""};
     JComboBox<String> selectCourse_cb = new JComboBox<>(selectCourse);
 
     // DefaultTableModel & JTable
@@ -52,11 +52,17 @@ public class ManageAccountGUI_Admin extends JFrame {
 
     // JButton
     JButton exitButton = new JButton("Exit");
-    JButton clearButton = new JButton("Clear");
+    JButton clearButton1 = new JButton("Clear");
     JButton searchButton = new JButton("Search");
     JButton updateButton = new JButton("Update");
     JButton deleteButton = new JButton("Delete");
     JButton createButton = new JButton("Create");
+    JButton createAccountButton = new JButton("Create Account");
+    JButton clearButton2 = new JButton("Clear");
+
+    String selectedUserID = userIDField.getText();
+    String userRole = (String) createUserRole_cb.getSelectedItem();
+    String selectedUserAreas = (String) selectAreas_cb.getSelectedItem();
 
     ManageAccountGUI_Admin () {
         // <================== JPanel ==================>
@@ -173,12 +179,14 @@ public class ManageAccountGUI_Admin extends JFrame {
         male_rb.setBounds(900, 325, 50 ,30);
         male_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
         male_rb.setEnabled(false);
+        male_rb.setFocusable(false);
         this.add(male_rb);
 
         // <========= 2) female_rb =========>
         female_rb.setBounds(950, 325, 50, 30);
         female_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
         female_rb.setEnabled(false);
+        female_rb.setFocusable(false);
         this.add(female_rb);
 
 
@@ -192,17 +200,49 @@ public class ManageAccountGUI_Admin extends JFrame {
         // <========= 2) createUserRole_cb =========>
         createUserRole_cb.setBounds(900, 360, 250, 30);
         createUserRole_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        createUserRole_cb.setEnabled(false);
+        createUserRole_cb.setSelectedIndex(3);
+        createUserRole_cb.addActionListener(_ -> {
+            String LC_number = "000001";
+            String ST_number = "000001";
+            String AL_number = "000001";
+
+            if (userRole.equals("Academic Leaders")) {
+                userIDField.setText("AL" + AL_number);
+                passwordField.setText("AL" + AL_number + "@password");
+                emailField.setText("AL" + AL_number + "@mail.apu.edu.my");
+                selectCourse_cb.setEnabled(false);
+                selectCourse_cb.setSelectedIndex(6);
+            }
+            if (userRole.equals("Lecturer")) {
+                userIDField.setText("LC" + LC_number);
+                passwordField.setText("LC" + LC_number + "@password");
+                emailField.setText("LC" + LC_number + "@mail.apu.edu.my");
+                selectCourse_cb.setEnabled(false);
+                selectCourse_cb.setSelectedIndex(6);
+            }
+            if (userRole.equals("Student")){
+                userIDField.setText("ST" + ST_number);
+                passwordField.setText("ST" + ST_number + "@password");
+                emailField.setText("ST" + ST_number + "@mail.apu.edu.my");
+                selectCourse_cb.setEnabled(true);
+                selectCourse_cb.setSelectedIndex(0);
+            }
+        });
         this.add(createUserRole_cb);
 
         // <========= 3) selectAreas_cb =========>
         selectAreas_cb.setBounds(900, 395, 250, 30);
         selectAreas_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        selectAreas_cb.setEnabled(false);
+        selectAreas_cb.setSelectedIndex(4);
         this.add(selectAreas_cb);
 
         // <========= 4) selectCourse_cb =========>
         selectCourse_cb.setBounds(1000, 535, 150, 30);
         selectCourse_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
         selectCourse_cb.setEnabled(false);
+        selectCourse_cb.setSelectedIndex(6);
         this.add(selectCourse_cb);
 
 
@@ -248,16 +288,19 @@ public class ManageAccountGUI_Admin extends JFrame {
                     case "Academic Leaders" -> {
                         createUserRole_cb.setSelectedIndex(0);
                         selectCourse_cb.setEnabled(false);
+                        selectCourse_cb.setSelectedIndex(6);
                     }
                     case "Lecturer" -> {
                         createUserRole_cb.setSelectedIndex(1);
                         selectCourse_cb.setEnabled(false);
+                        selectCourse_cb.setSelectedIndex(6);
                     }
                     default -> {
                         createUserRole_cb.setSelectedIndex(2);
                         selectCourse_cb.setEnabled(true);
                     }
                 }
+                createUserRole_cb.setEnabled(true);
 
                 String areas = tableModel.getValueAt(selectedRow, 5).toString();
                 switch (areas) {
@@ -266,6 +309,9 @@ public class ManageAccountGUI_Admin extends JFrame {
                     case "School of Game Development" -> selectAreas_cb.setSelectedIndex(2);
                     default -> selectAreas_cb.setSelectedIndex(3);
                 }
+                selectAreas_cb.setEnabled(true);
+
+                getUserEmail();
             }
         });
 
@@ -282,15 +328,15 @@ public class ManageAccountGUI_Admin extends JFrame {
         });
         topPanel.add(exitButton);
 
-        // <========= 2) clearButton =========>
-        clearButton.setBounds(30, 290, 100, 40);
-        clearButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        clearButton.setFocusable(false);
-        clearButton.addActionListener(_ -> {
+        // <========= 2) clearButton1 =========>
+        clearButton1.setBounds(30, 290, 100, 40);
+        clearButton1.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        clearButton1.setFocusable(false);
+        clearButton1.addActionListener(_ -> {
             tableModel.setRowCount(0);
             displayAllAccount();
         });
-        this.add(clearButton);
+        this.add(clearButton1);
 
         // <========= 3) searchButton =========>
         searchButton.setBounds(510, 290, 100, 40);
@@ -359,6 +405,16 @@ public class ManageAccountGUI_Admin extends JFrame {
         deleteButton.setBounds(925, 709, 100, 40);
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         deleteButton.setFocusable(false);
+        deleteButton.addActionListener(_ -> {
+            String studentCourse = selectCourse_cb.getSelectedItem().toString();
+
+            if (!userRole.isEmpty() && !selectedUserAreas.isEmpty()) {
+                if (userRole.equals("Academic Leaders")) {
+
+                }
+            }
+
+        });
         this.add(deleteButton);
 
         // <========= 6) createButton =========>
@@ -366,6 +422,71 @@ public class ManageAccountGUI_Admin extends JFrame {
         createButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         createButton.setFocusable(false);
         this.add(createButton);
+
+        // <========= 7) createAccountButton =========>
+        createAccountButton.setBounds(627, 290, 150, 40);
+        createAccountButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        createAccountButton.setFocusable(false);
+        createAccountButton.addActionListener(_ -> {
+            String AL_number = "000001";
+
+            userIDField.setText("AL" + AL_number);
+            passwordField.setText("AL" + AL_number + "@password");
+            emailField.setText("AL" + AL_number + "@mail.apu.edu.my");
+
+            nameField.setText("");
+            nameField.setEditable(true);
+
+            male_rb.setSelected(false);
+            male_rb.setEnabled(true);
+
+            female_rb.setSelected(false);
+            female_rb.setEnabled(true);
+
+            createUserRole_cb.setEnabled(true);
+            createUserRole_cb.setSelectedIndex(0);
+
+            selectAreas_cb.setEnabled(true);
+            selectAreas_cb.setSelectedIndex(0);
+
+            selectCourse_cb.setSelectedIndex(6);
+        });
+        this.add(createAccountButton);
+
+        // <========= 8) clearButton2 =========>
+        clearButton2.setBounds(800, 655, 350, 40);
+        clearButton2.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        clearButton2.setFocusable(false);
+        clearButton2.addActionListener(_ -> {
+            userIDField.setText("");
+            userIDField.setEditable(false);
+
+            passwordField.setText("");
+            passwordField.setEditable(false);
+
+            nameField.setText("");
+            nameField.setEditable(false);
+
+            male_rb.setSelected(false);
+            male_rb.setEnabled(false);
+
+            female_rb.setSelected(false);
+            female_rb.setEnabled(false);
+
+            createUserRole_cb.setEnabled(false);
+            createUserRole_cb.setSelectedIndex(3);
+
+            selectAreas_cb.setEnabled(false);
+            selectAreas_cb.setSelectedIndex(4);
+
+            emailField.setText("");
+            emailField.setEditable(false);
+
+            selectCourse_cb.setEnabled(false);
+            selectCourse_cb.setSelectedIndex(6);
+        });
+        this.add(clearButton2);
+
 
 
         // <========= GUI FRAME =========>
@@ -388,6 +509,87 @@ public class ManageAccountGUI_Admin extends JFrame {
                 String[] accountInfo = line.split(" ; ");
                 tableModel.addRow(accountInfo);
             }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+
+
+    public void getUserEmail () {
+        String selectedUserID = userIDField.getText();
+
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(PicturesAndTextFile.AcademicLeadersAccount));
+        BufferedReader reader2 = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount));
+        BufferedReader reader3 = new BufferedReader(new FileReader(PicturesAndTextFile.StudentAccount))) {
+
+            String line1, line2, line3;
+            while ((line1 = reader1.readLine()) != null) {
+                String[] academicLeadersInfo = line1.split(" ; ");
+                String academicLeadersID = academicLeadersInfo[0];
+
+                if (selectedUserID.equals(academicLeadersID)) {
+                    String academicLeadersEmail = academicLeadersInfo[2];
+                    emailField.setText(academicLeadersEmail);
+                    return;
+                }
+
+                while ((line2 = reader2.readLine()) != null) {
+                    String[] lecturerInfo = line2.split(" ; ");
+                    String lecturerID = lecturerInfo[0];
+
+                    if (selectedUserID.equals(lecturerID)) {
+                        String lecturerEmail = lecturerInfo[2];
+                        emailField.setText(lecturerEmail);
+                        return;
+                    }
+
+                    while ((line3 = reader3.readLine()) != null) {
+                        String[] studentInfo = line3.split(" ; ");
+                        String studentId = studentInfo[0];
+
+                        if (selectedUserID.equals(studentId)) {
+                            String studentEmail = studentInfo[2];
+                            emailField.setText(studentEmail);
+                            return;
+                        }
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+
+
+    public void userAreasValidation () {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] AccountInfo = line.split(" ; ");
+                String userID = AccountInfo[0];
+                String userAreas = AccountInfo[5];
+
+                if (selectedUserID.equals(userID) && selectedUserAreas.equals(userAreas)) {
+
+                }
+            }
+
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,
                     "Account list is not found",

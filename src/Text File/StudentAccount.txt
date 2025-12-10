@@ -1,1 +1,1 @@
-ST000001 ; 12345 ; Nyan Lin Thet ; M ; Student ; School of Computing
+ST000001 ; 12345 ; ST000001@mail.apu.edu.my ; Nyan Lin Thet ; M ; Student ; School of Computing
