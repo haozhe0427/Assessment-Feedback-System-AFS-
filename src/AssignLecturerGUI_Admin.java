@@ -7,16 +7,27 @@ import java.io.*;
 
 public class AssignLecturerGUI_Admin extends JFrame{
 
+    // JPanel
     JPanel topPanel = new JPanel();
+
+    // JLabel
     JLabel assignLecturerLabel = new JLabel("Assign Lecturer", JLabel.CENTER);
     JLabel lecturerLabel = new JLabel("Lecturer:");
     JLabel assignToLabel = new JLabel("Assign to:");
+
+    // JTextField
     JTextField lecturerField = new JTextField();
+
+    // JButton
     JButton exitButton = new JButton("Exit");
     JButton assignButton = new JButton("Assign");
     JButton deleteButton = new JButton("Delete");
+
+    // DefaultTableModel & JTable
     DefaultTableModel tableModel;
     JTable lecturersTable;
+
+    // JComboBox
     String[] academicLeaders = new String[15];
     JComboBox<String> academicLeaders_cb = new JComboBox<>(academicLeaders);
 
@@ -36,12 +47,10 @@ public class AssignLecturerGUI_Admin extends JFrame{
         assignLecturerLabel.setFont(new Font("Impact", Font.PLAIN, 60));
         topPanel.add(assignLecturerLabel);
 
-
         // <========= 2) lecturerLabel =========>
         lecturerLabel.setBounds(30, 170, 100, 30);
         lecturerLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         this.add(lecturerLabel);
-
 
         // <========= 3) assignToLabel =========>
         assignToLabel.setBounds(910, 170, 100, 30);
@@ -68,7 +77,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
             new DashboardGUI_Admin();
         });
         topPanel.add(exitButton);
-
 
         // <========= 2) assignButton =========>
         assignButton.setBounds(910,370, 250,70);
@@ -117,7 +125,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-
             // REWRITE THE FILE
             try (FileWriter writer = new FileWriter(PicturesAndTextFile.AssignLecturer)) {
                 writer.write(updatedLecturers.toString());
@@ -126,7 +133,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error writing to file",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
-
 
             if (isDuplicate) {
                 JOptionPane.showMessageDialog(null,
@@ -146,7 +152,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
             }
         });
         this.add(assignButton);
-
 
         // <========= 3) deleteButton =========>
         deleteButton.setBounds(910,470, 250,70);
@@ -194,7 +199,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-
             // REWRITE THE FILE
             try (FileWriter writer = new FileWriter(PicturesAndTextFile.AssignLecturer)) {
                 writer.write(updatedLecturers.toString());
@@ -203,7 +207,6 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error writing to file",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
-
 
             if (isDuplicate) {
                 JOptionPane.showMessageDialog(null,

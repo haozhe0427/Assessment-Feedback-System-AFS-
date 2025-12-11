@@ -5,12 +5,21 @@ import java.io.*;
 
 public class LoginGUI extends JFrame {
 
+    // JLabel
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
     JLabel passwordLabel = new JLabel("Password:");
+
+    // JTextField
     public static JTextField userIDField = new JTextField();
+
+    // JPasswordField
     JPasswordField passwordField = new JPasswordField();
+
+    // JCheckBox
     JCheckBox showPasswordBox = new JCheckBox();
+
+    // JButton
     JButton loginButton = new JButton("Login");
 
     String userIDField_message = "Enter Your User ID Here";
@@ -25,13 +34,11 @@ public class LoginGUI extends JFrame {
         loginLabel.setFont(new Font("Arial", Font.BOLD, 30));
         this.add(loginLabel);
 
-
         // <========= 2) userIDLabel =========>
         userIDLabel.setForeground(Color.black);
         userIDLabel.setBounds(20,150,150,30);
         userIDLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         this.add(userIDLabel);
-
 
         // <========= 3) passwordLabel =========>
         passwordLabel.setForeground(Color.black);

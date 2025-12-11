@@ -7,18 +7,27 @@ import java.io.*;
 
 public class GradingSystemGUI_Admin extends JFrame {
 
+    // JPanel
     JPanel topPanel = new JPanel();
+
+    // JLabel
     JLabel gradingSystemLabel = new JLabel("Grading System", JLabel.CENTER);
     JLabel marksLabel = new JLabel("Marks:");
     JLabel gradeLabel = new JLabel("Grade:");
     JLabel gpaLabel = new JLabel("GPA:");
     JLabel statusLabel = new JLabel("Status:");
+
+    // JButton
     JButton exitButton = new JButton("Exit");
     JButton updateButton = new JButton("Update");
+
+    // JTextField
     JTextField marksField = new JTextField();
     JTextField gradeField = new JTextField();
     JTextField gpaField = new JTextField();
     JTextField statusField = new JTextField();
+
+    // DefaultTableModel & JTable
     DefaultTableModel tableModel;
     JTable gradeTable;
 
@@ -38,24 +47,20 @@ public class GradingSystemGUI_Admin extends JFrame {
         gradingSystemLabel.setFont(new Font("Impact", Font.PLAIN, 60));
         topPanel.add(gradingSystemLabel);
 
-
         // <========= 2) marksLabel =========>
         marksLabel.setBounds(720, 230, 100,16);
         marksLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         this.add(marksLabel);
-
 
         // <========= 3) gradeLabel =========>
         gradeLabel.setBounds(720, 280, 100,16);
         gradeLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         this.add(gradeLabel);
 
-
         // <========= 4) gpaLabel =========>
         gpaLabel.setBounds(720, 330, 100,16);
         gpaLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
         this.add(gpaLabel);
-
 
         // <========= 5) statusLabel =========>
         statusLabel.setBounds(720, 380, 100,16);
@@ -74,7 +79,6 @@ public class GradingSystemGUI_Admin extends JFrame {
             new DashboardGUI_Admin();
         });
         topPanel.add(exitButton);
-
 
         // <========= 2) updateButton =========>
         updateButton.setBounds(720, 511, 220, 50);
@@ -96,14 +100,12 @@ public class GradingSystemGUI_Admin extends JFrame {
                 return;
             }
 
-
             int confirm = JOptionPane.showConfirmDialog(null,
                     "Are you sure want to update this grading system ?",
                     "confirmation", JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) {
                 return;
             }
-
 
             StringBuilder updatedGrades = new StringBuilder();
             int selectedRow = gradeTable.getSelectedRow();
@@ -152,7 +154,6 @@ public class GradingSystemGUI_Admin extends JFrame {
                         "Error writing to file",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
-
             JOptionPane.showMessageDialog(null,
                     "Update successfully",
                     "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -181,20 +182,17 @@ public class GradingSystemGUI_Admin extends JFrame {
         marksField.setEditable(false);
         this.add(marksField);
 
-
         // <========= 2) gradeField =========>
         gradeField.setBounds(790, 277, 150, 26);
         gradeField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         gradeField.setEditable(false);
         this.add(gradeField);
 
-
         // <========= 3) gpaField =========>
         gpaField.setBounds(790, 327, 150, 26);
         gpaField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         gpaField.setEditable(false);
         this.add(gpaField);
-
 
         // <=========4) statusField =========>
         statusField.setBounds(790, 377, 150, 26);
