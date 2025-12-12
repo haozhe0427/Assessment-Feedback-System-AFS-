@@ -3,10 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class ManageClassesGUI_Admin extends JFrame {
 
@@ -16,11 +13,12 @@ public class ManageClassesGUI_Admin extends JFrame {
     JButton refreshButton = new JButton("Refresh");
     JButton updateButton = new JButton("Update");
     JButton deleteButton = new JButton("Delete");
-    JButton createButton = new JButton("Create");
 
     // JComboBox
-    String[] classroom = {};
-    JComboBox<String> classroom_cb = new JComboBox<>(classroom);
+    JComboBox<String> block_cb;
+    JComboBox<String> level_cb;
+    JComboBox<String> roomNumber_cb;
+
 
     // JLabel
     JLabel manageAccountLabel = new JLabel("Manage Classes", JLabel.CENTER);
@@ -29,19 +27,13 @@ public class ManageClassesGUI_Admin extends JFrame {
     JLabel moduleIDLabel = new JLabel("Module ID:");
     JLabel moduleNameLabel = new JLabel("Module's Name:");
     JLabel lecturerLabel = new JLabel("Lecturer:");
-    JLabel classLabel = new JLabel("Class:");
     JLabel blockLabel = new JLabel("Block:");
-    JLabel roomLabel = new JLabel("Room:");
+    JLabel levelLabel = new JLabel("Level:");
+    JLabel classLabel = new JLabel("Class:");
+    JLabel roomNumberLabel = new JLabel("Room Number:");
 
     // JPanel
     JPanel topPanel = new JPanel();
-
-    // JRadioButton
-    JRadioButton A_rb = new JRadioButton("A");
-    JRadioButton B_rb = new JRadioButton("B");
-    JRadioButton C_rb = new JRadioButton("C");
-    JRadioButton D_rb = new JRadioButton("D");
-    JRadioButton E_rb = new JRadioButton("E");
 
     // JTextField
     JTextField modules_ID_NameField = new JTextField();
@@ -79,15 +71,15 @@ public class ManageClassesGUI_Admin extends JFrame {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] moduleInfo = line.split(" ; ");
-                    String storedModuleID = moduleInfo[0];
-                    String storedModuleName = moduleInfo[1];
+                    String currentModuleID = moduleInfo[0];
+                    String currentModuleName = moduleInfo[1];
 
-                    if (searchModuleID.equals(storedModuleID)) {
-                        String[] result = {storedModuleID, moduleInfo[1], moduleInfo[5], moduleInfo[6]};
+                    if (searchModuleID.equals(currentModuleID)) {
+                        String[] result = {currentModuleID, moduleInfo[1], moduleInfo[5], moduleInfo[6]};
                         tableModel.addRow(result);
                     }
-                    if (searchModuleName.equals(storedModuleName)) {
-                        String[] result = {moduleInfo[0], storedModuleName, moduleInfo[5], moduleInfo[6]};
+                    if (searchModuleName.equals(currentModuleName)) {
+                        String[] result = {moduleInfo[0], currentModuleName, moduleInfo[5], moduleInfo[6]};
                         tableModel.addRow(result);
                     }
                 }
@@ -104,8 +96,8 @@ public class ManageClassesGUI_Admin extends JFrame {
         });
         this.add(searchButton);
 
-        // <========= 4) refreshButton =========>
-        refreshButton.setBounds(30, 195, 100, 30);
+        // <========= 3) refreshButton =========>
+        refreshButton.setBounds(30, 210, 100, 30);
         refreshButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         refreshButton.setFocusable(false);
         refreshButton.addActionListener(_ -> {
@@ -114,31 +106,214 @@ public class ManageClassesGUI_Admin extends JFrame {
         });
         this.add(refreshButton);
 
-        // <========= 3) updateButton =========>
-        updateButton.setBounds(790, 589, 100, 40);
-        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        updateButton.setFocusable(false);
-        this.add(updateButton);
-
         // <========= 4) deleteButton =========>
-        deleteButton.setBounds(915, 589, 100, 40);
+        deleteButton.setBounds(790, 589, 100, 40);
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         deleteButton.setFocusable(false);
+        deleteButton.addActionListener(_ -> {
+            String selectedModuleID = moduleIDField.getText();
+            String selectedModuleName = moduleNameField.getText();
+            String selectedLecturer = lecturerField.getText();
+            StringBuilder updatedClass = new StringBuilder();
+
+            if (selectedModuleID.isEmpty() || selectedModuleName.isEmpty() || selectedLecturer.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Please select any module info",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Are you sure want to delete this class ?",
+                    "confirmation", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    String[] moduleInfo = line.split(" ; ");
+                    String currentModuleID = moduleInfo[0];
+                    String currentModuleName = moduleInfo[1];
+                    String currentLecturer = moduleInfo[6];
+                    String classroom = moduleInfo[5];
+
+                    if (currentModuleID.equals(selectedModuleID) &&
+                            currentModuleName.equals(selectedModuleName) &&
+                            currentLecturer.equals(selectedLecturer)) {
+                        if (classroom.equals("x-x-x")) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Module haven't assign to any class yet",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        } else {
+                            moduleInfo[5] = "x-x-x";
+                            JOptionPane.showMessageDialog(null,
+                                    "Class successfully removed",
+                                    "Success", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    updatedClass.append(String.join(" ; ", moduleInfo)).append("\n");
+                }
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Modules list is not found",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error", JOptionPane.WARNING_MESSAGE);
+            }
+
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Modules)) {
+                writer.write(updatedClass.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing to file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            moduleIDField.setText("");
+            moduleNameField.setText("");
+            lecturerField.setText("");
+            block_cb.setSelectedIndex(5);
+            level_cb.setSelectedIndex(5);
+            roomNumber_cb.setSelectedIndex(10);
+            tableModel.setRowCount(0);
+            displayModules();
+        });
         this.add(deleteButton);
 
-        // <========= 5) createButton =========>
-        createButton.setBounds(1040, 589, 100, 40);
-        createButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        createButton.setFocusable(false);
-        this.add(createButton);
+        // <========= 5) updateButton =========>
+        updateButton.setBounds(1110, 589, 100, 40);
+        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        updateButton.setFocusable(false);
+        updateButton.addActionListener(_ -> {
+            String selectedModuleID = moduleIDField.getText();
+            String selectedModuleName = moduleNameField.getText();
+            String selectedLecturer = lecturerField.getText();
+
+            String selectedBlock = (String) block_cb.getSelectedItem();
+            String selectedLevel = (String) level_cb.getSelectedItem();
+            String selectedRoomNumber = (String) roomNumber_cb.getSelectedItem();
+
+            StringBuilder updatedClass = new StringBuilder();
+
+            if (selectedModuleID.isEmpty() || selectedModuleName.isEmpty() || selectedLecturer.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Please select any module info",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Are you sure want to update this class ?",
+                    "confirmation", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    String[] moduleInfo = line.split(" ; ");
+                    String storedModuleID = moduleInfo[0];
+                    String classroom = moduleInfo[5];
+
+                    String[] classroomInfo = classroom.split("-");
+                    String currentBlock = classroomInfo[0];
+                    String currentLevel = classroomInfo[1];
+                    String currentRoomNumber = classroomInfo[2];
+
+                    if (currentBlock.equals(selectedBlock) &&
+                            currentLevel.equals(selectedLevel) &&
+                            currentRoomNumber.equals(selectedRoomNumber)) {
+                        JOptionPane.showMessageDialog(null,
+                                "Update unsuccessful",
+                                "Warning", JOptionPane.WARNING_MESSAGE);
+
+                        return;
+                    }
+                    if (selectedBlock.equals("x") ||
+                            selectedLevel.equals("x") ||
+                            selectedRoomNumber.equals("x")) {
+                        JOptionPane.showMessageDialog(null,
+                                "Please select the valid classroom",
+                                "Warning", JOptionPane.WARNING_MESSAGE);
+
+                        return;
+                    }
+                    if (storedModuleID.equals(selectedModuleID)) {
+                        classroomInfo[0] = selectedBlock;
+                        classroomInfo[1] = selectedLevel;
+                        classroomInfo[2] = selectedRoomNumber;
+                        String newClassroom = classroomInfo[0] + "-" + classroomInfo[1] + "-" + classroomInfo[2];
+
+                        moduleInfo[5] = newClassroom;
+
+                        JOptionPane.showMessageDialog(null,
+                                "Class successfully updated / assigned",
+                                "Success", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    updatedClass.append(String.join(" ; ", moduleInfo)).append("\n");
+                }
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Modules list is not found",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error", JOptionPane.WARNING_MESSAGE);
+            }
+
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Modules)) {
+                writer.write(updatedClass.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing to file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            moduleIDField.setText("");
+            moduleNameField.setText("");
+            lecturerField.setText("");
+            block_cb.setSelectedIndex(5);
+            level_cb.setSelectedIndex(5);
+            roomNumber_cb.setSelectedIndex(10);
+            tableModel.setRowCount(0);
+            displayModules();
+        });
+        this.add(updateButton);
 
 
 
         // <================== JComboBox ==================>
-        // <========= 1) classroom_cb =========>
-        classroom_cb.setBounds(1000, 455, 190, 30);
-        classroom_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        this.add(classroom_cb);
+        // <========= 1) block_cb =========>
+        String[] blocks = {"A", "B", "C", "D", "E", "x"};
+        block_cb = new JComboBox<>(blocks);
+        block_cb.setBounds(790, 455, 50, 30);
+        block_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        block_cb.setSelectedIndex(5);
+        block_cb.setEnabled(false);
+        this.add(block_cb);
+
+        // <========= 2) level_cb =========>
+        String[] levels = {"1", "2", "3", "4", "5", "x"};
+        level_cb = new JComboBox<>(levels);
+        level_cb.setBounds(910, 455, 50, 30);
+        level_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        level_cb.setSelectedIndex(5);
+        level_cb.setEnabled(false);
+        this.add(level_cb);
+
+        // <========= 3) roomNumber_cb =========>
+        String[] roomNumber = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "x"};
+        roomNumber_cb = new JComboBox<>(roomNumber);
+        roomNumber_cb.setBounds(1050, 455, 160, 30);
+        roomNumber_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        roomNumber_cb.setSelectedIndex(10);
+        roomNumber_cb.setEnabled(false);
+        this.add(roomNumber_cb);
 
 
 
@@ -183,10 +358,15 @@ public class ManageClassesGUI_Admin extends JFrame {
         blockLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
         this.add(blockLabel);
 
-        // <========= 9) roomLabel =========>
-        roomLabel.setBounds(1000, 420, 300, 30);
-        roomLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        this.add(roomLabel);
+        // <========= 9) levelLabel =========>
+        levelLabel.setBounds(910, 420, 300, 30);
+        levelLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        this.add(levelLabel);
+
+        // <========= 10) roomNumberLabel =========>
+        roomNumberLabel.setBounds(1050, 420, 300, 30);
+        roomNumberLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        this.add(roomNumberLabel);
 
 
 
@@ -199,39 +379,6 @@ public class ManageClassesGUI_Admin extends JFrame {
 
 
 
-        // <================== JRadioButton ==================>
-        // <========= 1) A_rb =========>
-        A_rb.setBounds(790, 455, 50, 30);
-        A_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        A_rb.setFocusable(false);
-        this.add(A_rb);
-
-        // <========= 1) B_rb =========>
-        B_rb.setBounds(790, 480, 50, 30);
-        B_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        B_rb.setFocusable(false);
-        this.add(B_rb);
-
-        // <========= 1) C_rb =========>
-        C_rb.setBounds(790, 505, 50, 30);
-        C_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        C_rb.setFocusable(false);
-        this.add(C_rb);
-
-        // <========= 1) D_rb =========>
-        D_rb.setBounds(850, 455, 50, 30);
-        D_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        D_rb.setFocusable(false);
-        this.add(D_rb);
-
-        // <========= 1) E_rb =========>
-        E_rb.setBounds(850, 480, 50, 30);
-        E_rb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        E_rb.setFocusable(false);
-        this.add(E_rb);
-
-
-
         // <================== JTextField ==================>
         // <========= 1) modules_ID_NameField =========>
         modules_ID_NameField.setBounds(345, 162, 300, 30);
@@ -241,16 +388,19 @@ public class ManageClassesGUI_Admin extends JFrame {
         // <========= 2) moduleIDField =========>
         moduleIDField.setBounds(910, 245, 305, 30);
         moduleIDField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        moduleIDField.setEditable(false);
         this.add(moduleIDField);
 
         // <========= 3) moduleNameField =========>
         moduleNameField.setBounds(910, 280, 305, 30);
         moduleNameField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        moduleNameField.setEditable(false);
         this.add(moduleNameField);
 
         // <========= 2) lecturerField =========>
         lecturerField.setBounds(910, 315, 305, 30);
         lecturerField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        lecturerField.setEditable(false);
         this.add(lecturerField);
 
 
@@ -274,6 +424,9 @@ public class ManageClassesGUI_Admin extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int selectedRow = modulesTable.getSelectedRow();
+                block_cb.setEnabled(true);
+                level_cb.setEnabled(true);
+                roomNumber_cb.setEnabled(true);
 
                 String selectedModuleID = tableModel.getValueAt(selectedRow, 0).toString();
                 moduleIDField.setText(selectedModuleID);
@@ -284,7 +437,44 @@ public class ManageClassesGUI_Admin extends JFrame {
                 String selectedLecturer = tableModel.getValueAt(selectedRow, 3).toString();
                 lecturerField.setText(selectedLecturer);
 
-                String Room = tableModel.getValueAt(selectedRow, 2).toString();
+                String classroom = tableModel.getValueAt(selectedRow, 2).toString();
+                if (classroom.equals("x-x-x")) {
+                    block_cb.setSelectedIndex(5);
+                    level_cb.setSelectedIndex(5);
+                    roomNumber_cb.setSelectedIndex(10);
+                    return;
+                }
+                String[] classroomInfo = classroom.split("-");
+                String currentBlock = classroomInfo[0];
+                String currentLevel = classroomInfo[1];
+                String currentRoomNumber = classroomInfo[2];
+
+                switch (currentBlock) {
+                    case "A" -> block_cb.setSelectedIndex(0);
+                    case "B" -> block_cb.setSelectedIndex(1);
+                    case "C" -> block_cb.setSelectedIndex(2);
+                    case "D" -> block_cb.setSelectedIndex(3);
+                    case "E" -> block_cb.setSelectedIndex(4);
+                }
+                switch (currentLevel) {
+                    case "1" -> level_cb.setSelectedIndex(0);
+                    case "2" -> level_cb.setSelectedIndex(1);
+                    case "3" -> level_cb.setSelectedIndex(2);
+                    case "4" -> level_cb.setSelectedIndex(3);
+                    case "5" -> level_cb.setSelectedIndex(4);
+                }
+                switch (currentRoomNumber) {
+                    case "1" -> roomNumber_cb.setSelectedIndex(0);
+                    case "2" -> roomNumber_cb.setSelectedIndex(1);
+                    case "3" -> roomNumber_cb.setSelectedIndex(2);
+                    case "4" -> roomNumber_cb.setSelectedIndex(3);
+                    case "5" -> roomNumber_cb.setSelectedIndex(4);
+                    case "6" -> roomNumber_cb.setSelectedIndex(5);
+                    case "7" -> roomNumber_cb.setSelectedIndex(6);
+                    case "8" -> roomNumber_cb.setSelectedIndex(7);
+                    case "9" -> roomNumber_cb.setSelectedIndex(8);
+                    case "10" -> roomNumber_cb.setSelectedIndex(9);
+                }
             }
         });
 
