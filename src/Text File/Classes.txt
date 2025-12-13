@@ -1,3 +1,0 @@
-<Class ID> ; <classroom> ; <Module ID> ; <Module ID> ; <Lecturer> ; <Number of Students>
-
-CL0001 ; B-06-10 ; MD0001 ; Object Oriented Development of Java ; Lim Chun Cheak ; 0

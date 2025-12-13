@@ -19,7 +19,6 @@ public class ManageClassesGUI_Admin extends JFrame {
     JComboBox<String> level_cb;
     JComboBox<String> roomNumber_cb;
 
-
     // JLabel
     JLabel manageAccountLabel = new JLabel("Manage Classes", JLabel.CENTER);
     JLabel modules_ID_NameLabel = new JLabel("Please enter module ID / module Name:");
@@ -65,6 +64,11 @@ public class ManageClassesGUI_Admin extends JFrame {
             String searchModuleID = modules_ID_NameField.getText();
             String searchModuleName = modules_ID_NameField.getText();
             tableModel.setRowCount(0);
+
+            if (modules_ID_NameField.getText().isEmpty()) {
+                tableModel.setRowCount(0);
+                displayModules();
+            }
 
             try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
 
@@ -120,12 +124,6 @@ public class ManageClassesGUI_Admin extends JFrame {
                 JOptionPane.showMessageDialog(null,
                         "Please select any module info",
                         "Warning", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            int confirm = JOptionPane.showConfirmDialog(null,
-                    "Are you sure want to delete this class ?",
-                    "confirmation", JOptionPane.YES_NO_OPTION);
-            if (confirm != JOptionPane.YES_OPTION) {
                 return;
             }
 
@@ -206,10 +204,7 @@ public class ManageClassesGUI_Admin extends JFrame {
                 return;
             }
 
-            int confirm = JOptionPane.showConfirmDialog(null,
-                    "Are you sure want to update this class ?",
-                    "confirmation", JOptionPane.YES_NO_OPTION);
-            if (confirm != JOptionPane.YES_OPTION) return;
+
 
             try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
                 String line;

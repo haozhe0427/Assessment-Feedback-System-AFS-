@@ -83,37 +83,41 @@ public class AssignLecturerGUI_Admin extends JFrame{
         assignButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         assignButton.setFocusable(false);
         assignButton.addActionListener(_ -> {
-            if (lecturerField.getText().isEmpty() || academicLeaders_cb.getSelectedItem() == null) {
+            String selectedLecturer = lecturerField.getText();
+            String selectedAcademicLeader = (String) academicLeaders_cb.getSelectedItem();
+            StringBuilder updatedLecturers = new StringBuilder();
+
+            if (selectedLecturer.isEmpty() || selectedAcademicLeader.isEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "Please select lecturer and academic leader",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String selectedLecturer = lecturerField.getText();
-            String selectedAcademicLeader = academicLeaders_cb.getSelectedItem().toString();
-
-            StringBuilder updatedLecturers = new StringBuilder();
-            boolean isUpdated = false;
-            boolean isDuplicate = false;
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AssignLecturer))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    String[] LecturerInfo = line.split(" ; ");
-                    String lecturerName = LecturerInfo[1];
-                    String assignStatus = LecturerInfo[3];
+                    String[] lecturerInfo = line.split(" ; ");
+                    String lecturerName = lecturerInfo[3];
+                    String assignStatus = lecturerInfo[7];
 
-                    if (selectedLecturer.equals(lecturerName)) {
-                        if (selectedAcademicLeader.equals(assignStatus)) {
-                            isDuplicate = true;
+                    if (lecturerName.equals(selectedLecturer)) {
+                        if (!assignStatus.equals(selectedAcademicLeader)) {
+                            lecturerInfo[7] = selectedAcademicLeader;
+
+                            JOptionPane.showMessageDialog(null,
+                                    "Lecturer successfully assigned / updated to this academic leader",
+                                    "Success", JOptionPane.INFORMATION_MESSAGE);
                         } else {
-                            LecturerInfo[3] = selectedAcademicLeader;
-                            isUpdated = true;
+                            JOptionPane.showMessageDialog(null,
+                                    "Lecturer has already assigned to this academic leader",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
+
+                            return;
                         }
                     }
-                    updatedLecturers.append(String.join(" ; ", LecturerInfo)).append("\n");
+                    updatedLecturers.append(String.join(" ; ", lecturerInfo)).append("\n");
                 }
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null,
@@ -125,31 +129,15 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            // REWRITE THE FILE
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.AssignLecturer)) {
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Error writing to file",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            if (isDuplicate) {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer is already assigned to this Academic Leader",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
-            } else if (isUpdated) {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer successfully assigned/updated",
-                        "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                tableModel.setRowCount(0);
-                displayLecturers();
-            } else {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer not found",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            tableModel.setRowCount(0);
+            displayLecturers();
         });
         this.add(assignButton);
 
@@ -158,36 +146,41 @@ public class AssignLecturerGUI_Admin extends JFrame{
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         deleteButton.setFocusable(false);
         deleteButton.addActionListener(_ -> {
-            if (lecturerField.getText().isEmpty() || academicLeaders_cb.getSelectedItem() == null) {
+            String selectedLecturer = lecturerField.getText();
+            String selectedAcademicLeader = (String) academicLeaders_cb.getSelectedItem();
+            StringBuilder updatedLecturers = new StringBuilder();
+
+            if (selectedLecturer.isEmpty() || selectedAcademicLeader.isEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "Please select lecturer and academic leader",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String selectedLecturer = lecturerField.getText();
-
-            StringBuilder updatedLecturers = new StringBuilder();
-            boolean isUpdated = false;
-            boolean isDuplicate = false;
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AssignLecturer))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    String[] LecturerInfo = line.split(" ; ");
-                    String lecturerName = LecturerInfo[1];
-                    String assignStatus = LecturerInfo[3];
+                    String[] lecturerInfo = line.split(" ; ");
+                    String lecturerName = lecturerInfo[3];
+                    String assignStatus = lecturerInfo[7];
 
-                    if (selectedLecturer.equals(lecturerName)) {
-                        if (assignStatus.equals("NULL")) {
-                            isDuplicate = true;
+                    if (lecturerName.equals(selectedLecturer)) {
+                        if (!assignStatus.equals("NULL")) {
+                            lecturerInfo[7] = "NULL";
+
+                            JOptionPane.showMessageDialog(null,
+                                    "Academic leader successfully removed",
+                                    "Success", JOptionPane.INFORMATION_MESSAGE);
                         } else {
-                            LecturerInfo[3] = "NULL";
-                            isUpdated = true;
+                            JOptionPane.showMessageDialog(null,
+                                    "Lecturer haven't assigned to any academic leaders yet",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
+
+                            return;
                         }
                     }
-                    updatedLecturers.append(String.join(" ; ", LecturerInfo)).append("\n");
+                    updatedLecturers.append(String.join(" ; ", lecturerInfo)).append("\n");
                 }
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null,
@@ -199,31 +192,15 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            // REWRITE THE FILE
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.AssignLecturer)) {
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Error writing to file",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            if (isDuplicate) {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer haven't assign to any academic leader yet",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
-            } else if (isUpdated) {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer successfully removed",
-                        "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                tableModel.setRowCount(0);
-                displayLecturers();
-            } else {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer not found",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            tableModel.setRowCount(0);
+            displayLecturers();
         });
         this.add(deleteButton);
 
@@ -278,12 +255,17 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
     public void displayLecturers () { // display every lecturer's info
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AssignLecturer))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                String[] lecturersInfo = line.split(" ; ");
-                tableModel.addRow(lecturersInfo);
+                String[] accountInfo = line.split(" ; ");
+                String userID = accountInfo[0];
+
+                if (userID.startsWith("LC")) {
+                    String[] lecturerInfo = {accountInfo[0], accountInfo[3], accountInfo[6], accountInfo[7]};
+                    tableModel.addRow(lecturerInfo);
+                }
             }
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,
@@ -299,7 +281,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
     public void displayAcademicLeadersName () { // display every academic leader's name ONLY
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.AcademicLeadersAccount))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
             String line;
             int i = 0;
 

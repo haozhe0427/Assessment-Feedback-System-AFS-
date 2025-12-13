@@ -18,7 +18,7 @@ public class Name {
                 String storedID = loginInfo[0];
 
                 if (storedID.equalsIgnoreCase(userID)) {
-                    userName = loginInfo[2];
+                    userName = loginInfo[3];
                 }
                 while ((line2 = reader2.readLine()) != null) {
                     String[] adminInfo = line2.split(" ; ");

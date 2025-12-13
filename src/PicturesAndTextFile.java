@@ -12,9 +12,9 @@ public class PicturesAndTextFile {
     //         - ManageAccountGUI_Admin.java (To display inside JTable)
     //         - Name.java (Get User's Name then print beside "Welcome Back, ..." after login is successful)
     //
-    // Format : UserID ; Password ; Name ; Gender ; UserRole ; Areas
     //
-    // *** UserID contains Academic Leaders, Lecturer, And Student ONLY
+    //
+    //
     // ------------------------------------------------------------------------------------------------------
 
 
@@ -28,35 +28,7 @@ public class PicturesAndTextFile {
     // ------------------------------------------------------------------------------------------------------
 
 
-    // 3) AcademicLeadersAccount.txt
-    public static String AcademicLeadersAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AcademicLeadersAccount.txt";
-    // ------------------------------------------------------------------------------------------------------
-    // Use in: - AssignLecturerGUI_Admin.java (To get academic leader's name ONLY then put inside JComboBox)
-    //         - ManageAccountGUI_Admin.java (To display inside JTable)
-    //
-    // Format: UserID(Academic Leaders) ; Password ; Email ; Name ; Gender ; UserRole ; Areas
-    // ------------------------------------------------------------------------------------------------------
-
-
-    // 4) LecturerAccount.txt
-     public static String LecturerAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\LecturerAccount.txt";
-    // -----------------------------------------------------------------------------------
-    // Use in: - ManageAccountGUI_Admin.java (To display inside JTable)
-    //
-    // Format: UserID(Lecturer) ; Password ; Email ; Name ; Gender ; UserRole ; Areas
-    // -----------------------------------------------------------------------------------
-
-
-    // 5) StudentAccount.txt
-    public static String StudentAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\StudentAccount.txt";
-    // ---------------------------------------------------------------------------------
-    // Use in: - ManageAccountGUI_Admin.java (To display inside JTable)
-    //
-    // Format: UserID(Student) ; Password ; Email ; Name ; Gender ; UserRole ; Areas
-    // ---------------------------------------------------------------------------------
-
-
-    // 6) GradingSystem.txt
+    // 3) GradingSystem.txt
     public static String GradingSystem = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\GradingSystem.txt";
     // ------------------------------------------------------------------------------------
     // Use in: - GradingSystemGUI_Admin.java (To display inside JTable / Update the info)
@@ -65,18 +37,13 @@ public class PicturesAndTextFile {
     // ------------------------------------------------------------------------------------
 
 
-    // 7) AssignLecturer.txt
-    public static String AssignLecturer = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AssignLecturer.txt";
-    // ------------------------------------------------------------------------------------------------------------------
-    // Use in: - AssignLecturerGUI_Admin.java (To assign / update / delete one of the lecturers to any academic leader)
-    //
-    // Format: UserID(Lecturer) ; Name ; Areas ; AssignedTo
-    // ------------------------------------------------------------------------------------------------------------------
-
-
-    // 8) Modules.txt
+    // 3) Modules.txt
     public static String Modules = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Modules.txt";
-
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Use in: - ManageClassesGUI_Admin.java (To display inside JTable / update & delete the class)
+    //
+    // Format: ModuleID ; ModuleName ; Assessment_1 ; Assessment_2 ; Assessment_3 ; Classroom ; Lecturer ; No.of students
+    // ---------------------------------------------------------------------------------------------------------------------
 
 
 

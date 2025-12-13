@@ -1,3 +1,3 @@
-AL000001 ; 12345 ; Lwin Phone Thit ; M ; Academic Leaders ; School of Computing
-LC000001 ; 12345 ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing
-ST000001 ; 12345 ; Nyan Lin Thet ; M ; Student ; School of Computing
+AL000001 ; 12345 ; AL000001@mail.apu.edu.my ; Lwin Phone Thit ; M ; Academic Leaders ; School of Computing ; NULL
+LC000001 ; 12345 ; LC000001@mail.apu.edu.my ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing ; NULL
+ST000001 ; 12345 ; ST000001@mail.apu.edu.my ; Nyan Lin Thet ; M ; Student ; School of Computing ; SE

@@ -7,8 +7,21 @@ import java.io.*;
 
 public class ManageAccountGUI_Admin extends JFrame {
 
-    // JPanel
-    JPanel topPanel = new JPanel();
+    // JButton
+    JButton exitButton = new JButton("Exit");
+    JButton clearButton1 = new JButton("Clear");
+    JButton searchButton = new JButton("Search");
+    JButton updateButton = new JButton("Update");
+    JButton deleteButton = new JButton("Delete");
+    JButton createButton = new JButton("Create");
+    JButton createAccountButton = new JButton("Create Account");
+    JButton clearButton2 = new JButton("Clear");
+
+    // JComboBox
+    JComboBox<String> selectUserRole_cb;
+    JComboBox<String> UserRole_cb;
+    JComboBox<String> selectAreas_cb;
+    JComboBox<String> selectCourse_cb;
 
     // JLabel
     JLabel manageAccountLabel = new JLabel("Manage Account", JLabel.CENTER);
@@ -25,6 +38,17 @@ public class ManageAccountGUI_Admin extends JFrame {
     JLabel emailLabel = new JLabel("Email:");
     JLabel courseLabel = new JLabel("Course (student only):");
 
+    // JPanel
+    JPanel topPanel = new JPanel();
+
+    // JRadioButton
+    JRadioButton male_rb = new JRadioButton("M");
+    JRadioButton female_rb = new JRadioButton("F");
+
+    // DefaultTableModel & JTable
+    DefaultTableModel tableModel;
+    JTable accountTable;
+
     // JTextField
     JTextField id_OR_NameField = new JTextField();
     JTextField userIDField = new JTextField();
@@ -32,45 +56,274 @@ public class ManageAccountGUI_Admin extends JFrame {
     JTextField nameField = new JTextField();
     JTextField emailField = new JTextField();
 
-    // JRadioButton
-    JRadioButton male_rb = new JRadioButton("M");
-    JRadioButton female_rb = new JRadioButton("F");
-
-    // JComboBox
-    String[] selectUserRole = {"Academic Leaders", "Lecturer", "Student"};
-    JComboBox<String> selectUserRole_cb = new JComboBox<>(selectUserRole);
-    String[] createUserRole = {"Academic Leaders", "Lecturer", "Student", ""};
-    JComboBox<String> createUserRole_cb = new JComboBox<>(createUserRole);
-    String[] selectAreas = {"School of Computing", "School of Technology", "School of Game Development", "School of Digital Marketing", ""};
-    JComboBox<String> selectAreas_cb = new JComboBox<>(selectAreas);
-    String[] selectCourse = {"SE", "CS", "IT", "CYS", "CC", "AI", ""};
-    JComboBox<String> selectCourse_cb = new JComboBox<>(selectCourse);
-
-    // DefaultTableModel & JTable
-    DefaultTableModel tableModel;
-    JTable accountTable;
-
-    // JButton
-    JButton exitButton = new JButton("Exit");
-    JButton clearButton1 = new JButton("Clear");
-    JButton searchButton = new JButton("Search");
-    JButton updateButton = new JButton("Update");
-    JButton deleteButton = new JButton("Delete");
-    JButton createButton = new JButton("Create");
-    JButton createAccountButton = new JButton("Create Account");
-    JButton clearButton2 = new JButton("Clear");
-
-    String selectedUserID = userIDField.getText();
-    String userRole = (String) createUserRole_cb.getSelectedItem();
-    String selectedUserAreas = (String) selectAreas_cb.getSelectedItem();
-
     ManageAccountGUI_Admin () {
-        // <================== JPanel ==================>
-        // <========= topPanel =========>
-        topPanel.setBackground(new Color(153, 255, 153));
-        topPanel.setLayout(null);
-        topPanel.setBounds(0, 0, 1200, 150);
-        this.add(topPanel);
+        // <================== JButton ==================>
+        // <========= 1) exitButton =========>
+        exitButton.setBounds(25,15,125,40);
+        exitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        exitButton.setFocusable(false);
+        exitButton.addActionListener(_ -> {
+            dispose();
+            new DashboardGUI_Admin();
+        });
+        topPanel.add(exitButton);
+
+        // <========= 2) clearButton1 =========>
+        clearButton1.setBounds(30, 290, 100, 40);
+        clearButton1.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        clearButton1.setFocusable(false);
+        clearButton1.addActionListener(_ -> {
+            tableModel.setRowCount(0);
+            displayAllAccount();
+        });
+        this.add(clearButton1);
+
+        // <========= 3) searchButton =========>
+        searchButton.setBounds(510, 290, 100, 40);
+        searchButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        searchButton.setFocusable(false);
+        searchButton.addActionListener(_ -> {
+            String selectedID_Name = id_OR_NameField.getText();
+            String selectedRole = selectUserRole_cb.getSelectedItem().toString();
+            tableModel.setRowCount(0);
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] accountInfo = line.split(" ; ");
+                    String userID = accountInfo[0];
+                    String password = accountInfo[1];
+                    String name = accountInfo[2];
+                    String gender = accountInfo[3];
+                    String userRole = accountInfo[4];
+                    String areas = accountInfo[6];
+
+                    if (selectedID_Name.isEmpty()) {
+                        if (selectedRole.equals(userRole)) {
+                            tableModel.addRow(new Object[]{
+                                    userID, password, name, gender, userRole, areas
+                            });
+                            return;
+                        }
+                    } else {
+                        if (selectedRole.equals(userRole) &&
+                                (((selectedID_Name.equals(userID))||(selectedID_Name.equals(name))))) {
+                            tableModel.addRow(new Object[]{
+                                    userID, password, name, gender, userRole, areas
+                            });
+                            return;
+                        }
+                    }
+                }
+                JOptionPane.showMessageDialog(null,
+                        "Account doesn't exist",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+
+                id_OR_NameField.setText("");
+                displayAllAccount();
+
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Account list is not found",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error", JOptionPane.WARNING_MESSAGE);
+            }
+
+        });
+        this.add(searchButton);
+
+        // <========= 4) updateButton =========>
+        updateButton.setBounds(800, 709, 100, 40);
+        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        updateButton.setFocusable(false);
+        updateButton.addActionListener(_ -> {
+            String selectedUserID = userIDField.getText();
+            String selectedUserRole = (String) UserRole_cb.getSelectedItem();
+            String selectedAreas = (String) selectAreas_cb.getSelectedItem();
+            String selectedCourses = (String) selectCourse_cb.getSelectedItem();
+            StringBuilder updatedAccount = new StringBuilder();
+
+            if (selectedUserID.isEmpty() || selectedUserRole.isEmpty() || selectedAreas.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Please select any account",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+                return;
+            }
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] userInfo = line.split(" ; ");
+                    String userID = userInfo[0];
+                    String userRole = userInfo[5];
+                    String userArea = userInfo[6];
+                    String studentCourse = userInfo[7];
+
+                    if (userID.equals(selectedUserID) && userRole.equals("Student")) {
+                        if (!userRole.equals(selectedUserRole) ||
+                                !userArea.equals(selectedAreas) ||
+                                !studentCourse.equals(selectedCourses)) {
+                            userInfo[5] = selectedUserRole;
+                            userInfo[6] = selectedAreas;
+                            userInfo[7] = selectedCourses;
+
+                            JOptionPane.showMessageDialog(null,
+                                    "Account successfully updated",
+                                    "Success", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Account update unsuccessful",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
+
+                            return;
+                        }
+                    }
+                    if (userID.equals(selectedUserID) &&
+                            ((userRole.equals("Academic Leaders")) || userRole.equals("Lecturer"))) {
+                        if (!userRole.equals(selectedUserRole) ||
+                                !userArea.equals(selectedAreas)) {
+                            userInfo[5] = selectedUserRole;
+                            userInfo[6] = selectedAreas;
+
+                            JOptionPane.showMessageDialog(null,
+                                    "Account successfully updated",
+                                    "Success", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Account update unsuccessful",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
+
+                            return;
+                        }
+                    }
+                    updatedAccount.append(String.join(" ; ", userInfo)).append("\n");
+                }
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Lecturer Account list is not found",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error", JOptionPane.WARNING_MESSAGE);
+            }
+
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+                writer.write(updatedAccount.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing to file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            tableModel.setRowCount(0);
+            displayAllAccount();
+        });
+        this.add(updateButton);
+
+        // <========= 5) deleteButton =========>
+        deleteButton.setBounds(925, 709, 100, 40);
+        deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        deleteButton.setFocusable(false);
+        this.add(deleteButton);
+
+        // <========= 6) createButton =========>
+        createButton.setBounds(1050, 709, 100, 40);
+        createButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        createButton.setFocusable(false);
+        this.add(createButton);
+
+        // <========= 7) createAccountButton =========>
+        createAccountButton.setBounds(627, 290, 150, 40);
+        createAccountButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        createAccountButton.setFocusable(false);
+        this.add(createAccountButton);
+
+        // <========= 8) clearButton2 =========>
+        clearButton2.setBounds(800, 655, 350, 40);
+        clearButton2.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        clearButton2.setFocusable(false);
+        clearButton2.addActionListener(_ -> {
+            userIDField.setText("");
+            userIDField.setEditable(false);
+
+            passwordField.setText("");
+            passwordField.setEditable(false);
+
+            nameField.setText("");
+            nameField.setEditable(false);
+
+            male_rb.setSelected(false);
+            male_rb.setEnabled(false);
+
+            female_rb.setSelected(false);
+            female_rb.setEnabled(false);
+
+            UserRole_cb.setSelectedIndex(3);
+            UserRole_cb.setEnabled(false);
+
+            selectAreas_cb.setSelectedIndex(4);
+            selectAreas_cb.setEnabled(false);
+
+            emailField.setText("");
+            emailField.setEditable(false);
+
+            selectCourse_cb.setSelectedIndex(6);
+            selectCourse_cb.setEnabled(false);
+        });
+        this.add(clearButton2);
+
+
+
+        // <================== JComboBox ==================>
+        // <========= 1) selectUserRole_cb =========>
+        String[] selectUserRole = {"Academic Leaders", "Lecturer", "Student"};
+        selectUserRole_cb = new JComboBox<>(selectUserRole);
+        selectUserRole_cb.setBounds(210, 220, 250, 30);
+        selectUserRole_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        this.add(selectUserRole_cb);
+
+        // <========= 2) UserRole_cb =========>
+        String[] UserRole = {"Academic Leaders", "Lecturer", "Student", ""};
+        UserRole_cb = new JComboBox<>(UserRole);
+        UserRole_cb.setBounds(900, 360, 250, 30);
+        UserRole_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        UserRole_cb.setEnabled(false);
+        UserRole_cb.setSelectedIndex(3);
+        UserRole_cb.addActionListener(_ -> {
+            String userRole = (String) UserRole_cb.getSelectedItem();
+
+            switch (userRole) {
+                case "Academic Leaders", "Lecturer" -> {
+                    selectCourse_cb.setSelectedIndex(6);
+                    selectCourse_cb.setEnabled(false);
+                }
+                case "Student" -> selectCourse_cb.setEnabled(true);
+            }
+        });
+        this.add(UserRole_cb);
+
+        // <========= 3) selectAreas_cb =========>
+        String[] selectAreas = {"School of Computing", "School of Technology", "School of Game Development", "School of Digital Marketing", ""};
+        selectAreas_cb = new JComboBox<>(selectAreas);
+        selectAreas_cb.setBounds(900, 395, 250, 30);
+        selectAreas_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        selectAreas_cb.setEnabled(false);
+        selectAreas_cb.setSelectedIndex(4);
+        this.add(selectAreas_cb);
+
+        // <========= 4) selectCourse_cb =========>
+        String[] selectCourse = {"SE", "CS", "IT", "CYS", "CC", "AI", ""};
+        selectCourse_cb  = new JComboBox<>(selectCourse);
+        selectCourse_cb.setBounds(1000, 535, 150, 30);
+        selectCourse_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        selectCourse_cb.setEnabled(false);
+        selectCourse_cb.setSelectedIndex(6);
+        this.add(selectCourse_cb);
 
 
 
@@ -142,35 +395,12 @@ public class ManageAccountGUI_Admin extends JFrame {
 
 
 
-        // <================== JTextField ==================>
-        // <========= 1) id_OR_NameField =========>
-        id_OR_NameField.setBounds(210, 185, 400, 30);
-        id_OR_NameField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        this.add(id_OR_NameField);
-
-        // <========= 2) userIDField =========>
-        userIDField.setBounds(900, 220, 250, 30);
-        userIDField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        userIDField.setEditable(false);
-        this.add(userIDField);
-
-        // <========= 3) passwordField =========>
-        passwordField.setBounds(900, 255, 250, 30);
-        passwordField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        passwordField.setEditable(false);
-        this.add(passwordField);
-
-        // <========= 4) nameField =========>
-        nameField.setBounds(900, 290, 250, 30);
-        nameField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        nameField.setEditable(false);
-        this.add(nameField);
-
-        // <========= 2) emailField =========>
-        emailField.setBounds(900, 500, 250, 30);
-        emailField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        emailField.setEditable(false);
-        this.add(emailField);
+        // <================== JPanel ==================>
+        // <========= topPanel =========>
+        topPanel.setBackground(new Color(153, 255, 153));
+        topPanel.setLayout(null);
+        topPanel.setBounds(0, 0, 1200, 150);
+        this.add(topPanel);
 
 
 
@@ -188,32 +418,6 @@ public class ManageAccountGUI_Admin extends JFrame {
         female_rb.setEnabled(false);
         female_rb.setFocusable(false);
         this.add(female_rb);
-
-
-
-        // <================== JComboBox ==================>
-        // <========= 1) selectUserRole_cb =========>
-        selectUserRole_cb.setBounds(210, 220, 250, 30);
-        selectUserRole_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        this.add(selectUserRole_cb);
-
-        // <========= 2) createUserRole_cb =========>
-        createUserRole_cb.setBounds(900, 360, 250, 30);
-        createUserRole_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        createUserRole_cb.setEnabled(false);
-        this.add(createUserRole_cb);
-
-        // <========= 3) selectAreas_cb =========>
-        selectAreas_cb.setBounds(900, 395, 250, 30);
-        selectAreas_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        selectAreas_cb.setEnabled(false);
-        this.add(selectAreas_cb);
-
-        // <========= 4) selectCourse_cb =========>
-        selectCourse_cb.setBounds(1000, 535, 150, 30);
-        selectCourse_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-        selectCourse_cb.setEnabled(false);
-        this.add(selectCourse_cb);
 
 
 
@@ -256,29 +460,29 @@ public class ManageAccountGUI_Admin extends JFrame {
                 String userRole = tableModel.getValueAt(selectedRow, 4).toString();
                 switch (userRole) {
                     case "Academic Leaders" -> {
-                        createUserRole_cb.setSelectedIndex(0);
+                        UserRole_cb.setSelectedIndex(0);
                         selectCourse_cb.setEnabled(false);
                         selectCourse_cb.setSelectedIndex(6);
                     }
                     case "Lecturer" -> {
-                        createUserRole_cb.setSelectedIndex(1);
+                        UserRole_cb.setSelectedIndex(1);
                         selectCourse_cb.setEnabled(false);
                         selectCourse_cb.setSelectedIndex(6);
                     }
                     case "Student" -> {
-                        createUserRole_cb.setSelectedIndex(2);
+                        UserRole_cb.setSelectedIndex(2);
                         selectCourse_cb.setEnabled(true);
-                        selectCourse_cb.setSelectedIndex(0);
+                        getStudentCourse();
                     }
                 }
-                createUserRole_cb.setEnabled(true);
+                UserRole_cb.setEnabled(true);
 
                 String areas = tableModel.getValueAt(selectedRow, 5).toString();
                 switch (areas) {
                     case "School of Computing" -> selectAreas_cb.setSelectedIndex(0);
                     case "School of Technology" -> selectAreas_cb.setSelectedIndex(1);
                     case "School of Game Development" -> selectAreas_cb.setSelectedIndex(2);
-                    default -> selectAreas_cb.setSelectedIndex(3);
+                    case "School of Digital Marketing" -> selectAreas_cb.setSelectedIndex(3);
                 }
                 selectAreas_cb.setEnabled(true);
 
@@ -288,113 +492,35 @@ public class ManageAccountGUI_Admin extends JFrame {
 
 
 
-        // <================== JButton ==================>
-        // <========= 1) exitButton =========>
-        exitButton.setBounds(25,15,125,40);
-        exitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-        exitButton.setFocusable(false);
-        exitButton.addActionListener(_ -> {
-            dispose();
-            new DashboardGUI_Admin();
-        });
-        topPanel.add(exitButton);
+        // <================== JTextField ==================>
+        // <========= 1) id_OR_NameField =========>
+        id_OR_NameField.setBounds(210, 185, 400, 30);
+        id_OR_NameField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        this.add(id_OR_NameField);
 
-        // <========= 2) clearButton1 =========>
-        clearButton1.setBounds(30, 290, 100, 40);
-        clearButton1.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        clearButton1.setFocusable(false);
-        clearButton1.addActionListener(_ -> {
-            tableModel.setRowCount(0);
-            displayAllAccount();
-        });
-        this.add(clearButton1);
+        // <========= 2) userIDField =========>
+        userIDField.setBounds(900, 220, 250, 30);
+        userIDField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        userIDField.setEditable(false);
+        this.add(userIDField);
 
-        // <========= 3) searchButton =========>
-        searchButton.setBounds(510, 290, 100, 40);
-        searchButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        searchButton.setFocusable(false);
-        searchButton.addActionListener(_ -> {
-            String selectedID_Name = id_OR_NameField.getText();
-            String selectedRole = selectUserRole_cb.getSelectedItem().toString();
-            tableModel.setRowCount(0);
+        // <========= 3) passwordField =========>
+        passwordField.setBounds(900, 255, 250, 30);
+        passwordField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        passwordField.setEditable(false);
+        this.add(passwordField);
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] accountInfo = line.split(" ; ");
-                    String userID = accountInfo[0];
-                    String password = accountInfo[1];
-                    String name = accountInfo[2];
-                    String gender = accountInfo[3];
-                    String userRole = accountInfo[4];
-                    String areas = accountInfo[5];
-                    
-                    if (selectedID_Name.isEmpty()) {
-                        if (selectedRole.equals(userRole)) {
-                            tableModel.addRow(new Object[]{
-                                    userID, password, name, gender, userRole, areas
-                            });
-                            return;
-                        }
-                    } else {
-                        if (selectedRole.equals(userRole) &&
-                                (((selectedID_Name.equals(userID))||(selectedID_Name.equals(name))))) {
-                            tableModel.addRow(new Object[]{
-                                    userID, password, name, gender, userRole, areas
-                            });
-                            return;
-                        }
-                    }
-                }
-                JOptionPane.showMessageDialog(null,
-                        "Account doesn't exist",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
+        // <========= 4) nameField =========>
+        nameField.setBounds(900, 290, 250, 30);
+        nameField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        nameField.setEditable(false);
+        this.add(nameField);
 
-                id_OR_NameField.setText("");
-                displayAllAccount();
-
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Account list is not found",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Something went wrong. Please contact technician team for support",
-                        "Error", JOptionPane.WARNING_MESSAGE);
-            }
-
-        });
-        this.add(searchButton);
-
-        // <========= 4) updateButton =========>
-        updateButton.setBounds(800, 709, 100, 40);
-        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        updateButton.setFocusable(false);
-        this.add(updateButton);
-
-        // <========= 5) deleteButton =========>
-        deleteButton.setBounds(925, 709, 100, 40);
-        deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        deleteButton.setFocusable(false);
-        this.add(deleteButton);
-
-        // <========= 6) createButton =========>
-        createButton.setBounds(1050, 709, 100, 40);
-        createButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        createButton.setFocusable(false);
-        this.add(createButton);
-
-        // <========= 7) createAccountButton =========>
-        createAccountButton.setBounds(627, 290, 150, 40);
-        createAccountButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        createAccountButton.setFocusable(false);
-        this.add(createAccountButton);
-
-        // <========= 8) clearButton2 =========>
-        clearButton2.setBounds(800, 655, 350, 40);
-        clearButton2.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-        clearButton2.setFocusable(false);
-        this.add(clearButton2);
+        // <========= 2) emailField =========>
+        emailField.setBounds(900, 500, 250, 30);
+        emailField.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+        emailField.setEditable(false);
+        this.add(emailField);
 
 
 
@@ -416,7 +542,10 @@ public class ManageAccountGUI_Admin extends JFrame {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] accountInfo = line.split(" ; ");
-                tableModel.addRow(accountInfo);
+                String[] categorizedAccount = {accountInfo[0], accountInfo[1],
+                                               accountInfo[3], accountInfo[4],
+                                               accountInfo[5], accountInfo[6]};
+                tableModel.addRow(categorizedAccount);
             }
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null,
@@ -434,40 +563,50 @@ public class ManageAccountGUI_Admin extends JFrame {
     public void getUserEmail () {
         String selectedUserID = userIDField.getText();
 
-        try (BufferedReader reader1 = new BufferedReader(new FileReader(PicturesAndTextFile.AcademicLeadersAccount));
-        BufferedReader reader2 = new BufferedReader(new FileReader(PicturesAndTextFile.LecturerAccount));
-        BufferedReader reader3 = new BufferedReader(new FileReader(PicturesAndTextFile.StudentAccount))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
 
-            String line1, line2, line3;
-            while ((line1 = reader1.readLine()) != null) {
-                String[] academicLeadersInfo = line1.split(" ; ");
-                String academicLeadersID = academicLeadersInfo[0];
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] accountInfo = line.split(" ; ");
+                String userID = accountInfo[0];
 
-                if (selectedUserID.equals(academicLeadersID)) {
-                    String academicLeadersEmail = academicLeadersInfo[2];
-                    emailField.setText(academicLeadersEmail);
-                    return;
+                if (userID.equals(selectedUserID)) {
+                    String userEmail = accountInfo[2];
+                    emailField.setText(userEmail);
                 }
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 
-                while ((line2 = reader2.readLine()) != null) {
-                    String[] lecturerInfo = line2.split(" ; ");
-                    String lecturerID = lecturerInfo[0];
 
-                    if (selectedUserID.equals(lecturerID)) {
-                        String lecturerEmail = lecturerInfo[2];
-                        emailField.setText(lecturerEmail);
-                        return;
-                    }
 
-                    while ((line3 = reader3.readLine()) != null) {
-                        String[] studentInfo = line3.split(" ; ");
-                        String studentId = studentInfo[0];
+    public void getStudentCourse () {
+        String selectedStudentID = userIDField.getText();
 
-                        if (selectedUserID.equals(studentId)) {
-                            String studentEmail = studentInfo[2];
-                            emailField.setText(studentEmail);
-                            return;
-                        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] studentInfo = line.split(" ; ");
+                String studentID = studentInfo[0];
+
+                if (studentID.equals(selectedStudentID)) {
+                    String course = studentInfo[7];
+                    switch (course) {
+                        case "SE" -> selectCourse_cb.setSelectedIndex(0);
+                        case "CS" -> selectCourse_cb.setSelectedIndex(1);
+                        case "IT" -> selectCourse_cb.setSelectedIndex(2);
+                        case "CYS" -> selectCourse_cb.setSelectedIndex(3);
+                        case "CC" -> selectCourse_cb.setSelectedIndex(4);
+                        case "AI" -> selectCourse_cb.setSelectedIndex(5);
                     }
                 }
             }
