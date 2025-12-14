@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.nio.Buffer;
 
 public class ManageAccountGUI_Admin extends JFrame {
 
@@ -93,9 +94,9 @@ public class ManageAccountGUI_Admin extends JFrame {
                     String[] accountInfo = line.split(" ; ");
                     String userID = accountInfo[0];
                     String password = accountInfo[1];
-                    String name = accountInfo[2];
-                    String gender = accountInfo[3];
-                    String userRole = accountInfo[4];
+                    String name = accountInfo[3];
+                    String gender = accountInfo[4];
+                    String userRole = accountInfo[5];
                     String areas = accountInfo[6];
 
                     if (selectedID_Name.isEmpty()) {
@@ -103,7 +104,6 @@ public class ManageAccountGUI_Admin extends JFrame {
                             tableModel.addRow(new Object[]{
                                     userID, password, name, gender, userRole, areas
                             });
-                            return;
                         }
                     } else {
                         if (selectedRole.equals(userRole) &&
@@ -111,17 +111,9 @@ public class ManageAccountGUI_Admin extends JFrame {
                             tableModel.addRow(new Object[]{
                                     userID, password, name, gender, userRole, areas
                             });
-                            return;
                         }
                     }
                 }
-                JOptionPane.showMessageDialog(null,
-                        "Account doesn't exist",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
-
-                id_OR_NameField.setText("");
-                displayAllAccount();
-
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null,
                         "Account list is not found",
@@ -220,6 +212,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                         "Error writing to file",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
+            createButton.setEnabled(true);
             tableModel.setRowCount(0);
             displayAllAccount();
         });
@@ -229,6 +222,90 @@ public class ManageAccountGUI_Admin extends JFrame {
         deleteButton.setBounds(925, 709, 100, 40);
         deleteButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         deleteButton.setFocusable(false);
+        deleteButton.addActionListener(_ -> {
+            String selectedUserID = userIDField.getText();
+            StringBuilder remainingAccounts = new StringBuilder();
+            StringBuilder deletedAccounts = new StringBuilder();
+
+            if (selectedUserID.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Please select an account to delete",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete this account?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] userInfo = line.split(" ; ");
+                    String userID = userInfo[0];
+
+                    if (!userID.equals(selectedUserID)) {
+                        remainingAccounts.append(line).append("\n");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Account deleted successfully",
+                                "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                        deletedAccounts.append(String.join(" ; ", userInfo)).append("\n");
+                    }
+                }
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error reading account file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+                writer.write(remainingAccounts.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing account file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.DeletedAccounts)) {
+                writer.write(deletedAccounts.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing account file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            userIDField.setText("");
+            passwordField.setText("");
+            nameField.setText("");
+            male_rb.setSelected(false);
+            female_rb.setSelected(false);
+
+            UserRole_cb.setSelectedIndex(3);
+            UserRole_cb.setEnabled(false);
+
+            selectAreas_cb.setSelectedIndex(4);
+            selectAreas_cb.setEnabled(false);
+
+            emailField.setText("");
+
+            selectCourse_cb.setSelectedIndex(6);
+            selectCourse_cb.setEnabled(false);
+
+            createButton.setEnabled(true);
+
+            tableModel.setRowCount(0);
+            displayAllAccount();
+        });
+
         this.add(deleteButton);
 
         // <========= 6) createButton =========>
@@ -241,6 +318,65 @@ public class ManageAccountGUI_Admin extends JFrame {
         createAccountButton.setBounds(627, 290, 150, 40);
         createAccountButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         createAccountButton.setFocusable(false);
+        createAccountButton.addActionListener(_ -> {
+            tableModel.setRowCount(0);
+
+            id_OR_NameField.setEditable(false);
+            selectUserRole_cb.setEnabled(false);
+
+            userIDField.setText("");
+            passwordField.setText("");
+            nameField.setText("");
+            emailField.setText("");
+            male_rb.setSelected(false);
+            female_rb.setSelected(false);
+
+            nameField.setEditable(true);
+            male_rb.setEnabled(true);
+            female_rb.setEnabled(true);
+            UserRole_cb.setEnabled(true);
+            selectAreas_cb.setEnabled(true);
+
+            selectAreas_cb.setSelectedIndex(0);
+            UserRole_cb.setSelectedIndex(0);
+
+            updateButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+
+            String userRole = (String) UserRole_cb.getSelectedItem();
+
+            switch (userRole) {
+
+                case "Academic Leaders" -> {
+                    String id = "AL" + idNumberGenerator("AL");
+                    userIDField.setText(id);
+                    passwordField.setText(id + "@password");
+                    emailField.setText(id + "@mail.apu.edu.my");
+
+                    selectCourse_cb.setSelectedIndex(6);
+                    selectCourse_cb.setEnabled(false);
+                }
+
+                case "Lecturer" -> {
+                    String id = "LC" + idNumberGenerator("LC");
+                    userIDField.setText(id);
+                    passwordField.setText(id + "@password");
+                    emailField.setText(id + "@mail.api.edu.my");
+
+                    selectCourse_cb.setSelectedIndex(6);
+                    selectCourse_cb.setEnabled(false);
+                }
+
+                case "Student" -> {
+                    String id = "ST" + idNumberGenerator("ST");
+                    userIDField.setText(id);
+                    passwordField.setText(id + "@password");
+                    emailField.setText(id + "@mail.apu.edu.my");
+
+                    selectCourse_cb.setEnabled(true);
+                }
+            }
+        });
         this.add(createAccountButton);
 
         // <========= 8) clearButton2 =========>
@@ -248,6 +384,9 @@ public class ManageAccountGUI_Admin extends JFrame {
         clearButton2.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         clearButton2.setFocusable(false);
         clearButton2.addActionListener(_ -> {
+            id_OR_NameField.setEditable(true);
+            selectUserRole_cb.setEnabled(true);
+
             userIDField.setText("");
             userIDField.setEditable(false);
 
@@ -274,6 +413,13 @@ public class ManageAccountGUI_Admin extends JFrame {
 
             selectCourse_cb.setSelectedIndex(6);
             selectCourse_cb.setEnabled(false);
+
+            updateButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+            createButton.setEnabled(true);
+
+            tableModel.setRowCount(0);
+            displayAllAccount();
         });
         this.add(clearButton2);
 
@@ -297,12 +443,11 @@ public class ManageAccountGUI_Admin extends JFrame {
         UserRole_cb.addActionListener(_ -> {
             String userRole = (String) UserRole_cb.getSelectedItem();
 
-            switch (userRole) {
-                case "Academic Leaders", "Lecturer" -> {
-                    selectCourse_cb.setSelectedIndex(6);
-                    selectCourse_cb.setEnabled(false);
-                }
-                case "Student" -> selectCourse_cb.setEnabled(true);
+            if (userRole.equals("Student")) {
+                selectCourse_cb.setEnabled(true);
+            } else {
+                selectCourse_cb.setSelectedIndex(6);
+                selectCourse_cb.setEnabled(false);
             }
         });
         this.add(UserRole_cb);
@@ -475,7 +620,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                         getStudentCourse();
                     }
                 }
-                UserRole_cb.setEnabled(true);
+                UserRole_cb.setEnabled(false);
 
                 String areas = tableModel.getValueAt(selectedRow, 5).toString();
                 switch (areas) {
@@ -485,6 +630,8 @@ public class ManageAccountGUI_Admin extends JFrame {
                     case "School of Digital Marketing" -> selectAreas_cb.setSelectedIndex(3);
                 }
                 selectAreas_cb.setEnabled(true);
+
+                createButton.setEnabled(false);
 
                 getUserEmail();
             }
@@ -620,5 +767,52 @@ public class ManageAccountGUI_Admin extends JFrame {
                     "Something went wrong. Please contact technician team for support",
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+
+
+    public String idNumberGenerator (String prefix) {
+        int maxNumber = 0;
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(PicturesAndTextFile.Login));
+        BufferedReader reader2 = new BufferedReader(new FileReader(PicturesAndTextFile.DeletedAccounts))) {
+
+            String line1, line2;
+            while ((line1 = reader1.readLine()) != null) {
+                String[] userInfo = line1.split(" ; ");
+                String userID = userInfo[0];
+
+                if (userID.startsWith(prefix)) {
+                    String[] ID_split_Number = userID.split(prefix);
+                    int userNumber = Integer.parseInt(ID_split_Number[1]);
+                    if (userNumber > maxNumber) {
+                        maxNumber = userNumber;
+                    }
+                }
+
+                while ((line2 = reader1.readLine()) != null) {
+                    String[] deletedInfo = line1.split(" ; ");
+                    String deletedID = userInfo[0];
+
+                    if (userID.startsWith(prefix)) {
+                        String[] ID_split_Number = deletedID.split(prefix);
+                        int userNumber = Integer.parseInt(ID_split_Number[1]);
+                        if (userNumber > maxNumber) {
+                            maxNumber = userNumber;
+                        }
+                    }
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Account list is not found",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+
+        return String.format("%06d", maxNumber + 1);
     }
 }

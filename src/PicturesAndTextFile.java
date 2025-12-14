@@ -46,6 +46,9 @@ public class PicturesAndTextFile {
     // ---------------------------------------------------------------------------------------------------------------------
 
 
+    public static String DeletedAccounts = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\DelectedAccount.txt";
+
+
 
     // Icon.png
     public static ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\Icon.png");
