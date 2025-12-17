@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
-import java.nio.Buffer;
 
 public class ManageAccountGUI_Admin extends JFrame {
 
@@ -283,25 +282,21 @@ public class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
+            id_OR_NameField.setEditable(true);
+            selectUserRole_cb.setEnabled(true);
             userIDField.setText("");
             passwordField.setText("");
             nameField.setText("");
             male_rb.setSelected(false);
             female_rb.setSelected(false);
-
             UserRole_cb.setSelectedIndex(3);
             UserRole_cb.setEnabled(false);
-
             selectAreas_cb.setSelectedIndex(4);
             selectAreas_cb.setEnabled(false);
-
             emailField.setText("");
-
             selectCourse_cb.setSelectedIndex(6);
             selectCourse_cb.setEnabled(false);
-
             createButton.setEnabled(true);
-
             tableModel.setRowCount(0);
             displayAllAccount();
         });
@@ -312,6 +307,138 @@ public class ManageAccountGUI_Admin extends JFrame {
         createButton.setBounds(1050, 709, 100, 40);
         createButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         createButton.setFocusable(false);
+        createButton.addActionListener(_ -> {
+            String userID = userIDField.getText();
+            String password = passwordField.getText();
+            String name = nameField.getText();
+            String gender = male_rb.isSelected() ? "M" : "F";
+            String userRole = (String) UserRole_cb.getSelectedItem();
+            String area = (String) selectAreas_cb.getSelectedItem();
+            String email = emailField.getText();
+            String course = (String) selectCourse_cb.getSelectedItem();
+            StringBuilder existedAccounts = new StringBuilder();
+            StringBuilder updatedAccount = new StringBuilder();
+            String newAccount = "";
+
+            switch (userRole) {
+                case "Academic Leaders" , "Lecturer" -> {
+                    if (userID.isEmpty() || userRole.isEmpty() ||
+                            !(male_rb.isSelected() || female_rb.isSelected()) || area.isEmpty()) {
+                        JOptionPane.showMessageDialog(null,
+                                "Please enter every information",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+
+                        return;
+                    }
+                }
+                case "Student" -> {
+                    if (userID.isEmpty() || userRole.isEmpty() ||
+                            !(male_rb.isSelected() || female_rb.isSelected()) ||
+                            area.isEmpty() || course.isEmpty()) {
+                        JOptionPane.showMessageDialog(null,
+                                "Please enter every information",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+
+                        return;
+                    }
+                }
+            }
+
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] userInfo = line.split(" ; ");
+                    String storedUserID = userInfo[0];
+                    String storedName = userInfo[3];
+                    String storedUserRole = userInfo[5];
+
+
+                    switch (storedUserRole) {
+                        case "Academic Leaders" , "Lecturer" -> {
+                            existedAccounts.append(line).append("\n");
+                            if (name.equals(storedName)) {
+                                JOptionPane.showMessageDialog(null,
+                                        "The user's name has existed",
+                                        "Warning", JOptionPane.WARNING_MESSAGE);
+
+                                return;
+                            } else {
+                                if (userRole.equals("Lecturer") || userRole.equals("Academic Leaders")) {
+                                    newAccount = userID + " ; " +
+                                            password + " ; " +
+                                            email + " ; " +
+                                            name + " ; " +
+                                            gender + " ; " +
+                                            userRole + " ; " +
+                                            area + " ; NULL";
+                                }
+                            }
+                        }
+                        case "Student" -> {
+                            existedAccounts.append(line).append("\n");
+                            if (name.equals(storedName)) {
+                                JOptionPane.showMessageDialog(null,
+                                        "The user's name has existed",
+                                        "Warning", JOptionPane.WARNING_MESSAGE);
+
+                                return;
+                            } else {
+                                if (userRole.equals("Student")) {
+                                    newAccount = userID + " ; " +
+                                            password + " ; " +
+                                            email + " ; " +
+                                            name + " ; " +
+                                            gender + " ; " +
+                                            userRole + " ; " +
+                                            area + " ; " +
+                                            course;
+                                }
+                            }
+                        }
+                    }
+                }
+                JOptionPane.showMessageDialog(null,
+                        "Account successfully added",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+                updatedAccount.append(newAccount).append("\n");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error reading account file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+                writer.write(existedAccounts.toString());
+                writer.write(updatedAccount.toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error writing account file",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            userIDField.setText("");
+            passwordField.setText("");
+            nameField.setText("");
+            nameField.setEnabled(false);
+            male_rb.setSelected(false);
+            male_rb.setEnabled(false);
+            female_rb.setSelected(false);
+            female_rb.setEnabled(false);
+            UserRole_cb.setSelectedIndex(3);
+            UserRole_cb.setEnabled(false);
+            selectAreas_cb.setSelectedIndex(4);
+            selectAreas_cb.setEnabled(false);
+            emailField.setText("");
+            selectCourse_cb.setSelectedIndex(6);
+            selectCourse_cb.setEnabled(false);
+            updateButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+            tableModel.setRowCount(0);
+            displayAllAccount();
+        });
         this.add(createButton);
 
         // <========= 7) createAccountButton =========>
@@ -342,40 +469,13 @@ public class ManageAccountGUI_Admin extends JFrame {
 
             updateButton.setEnabled(false);
             deleteButton.setEnabled(false);
+            createButton.setEnabled(true);
 
             String userRole = (String) UserRole_cb.getSelectedItem();
-
-            switch (userRole) {
-
-                case "Academic Leaders" -> {
-                    String id = "AL" + idNumberGenerator("AL");
-                    userIDField.setText(id);
-                    passwordField.setText(id + "@password");
-                    emailField.setText(id + "@mail.apu.edu.my");
-
-                    selectCourse_cb.setSelectedIndex(6);
-                    selectCourse_cb.setEnabled(false);
-                }
-
-                case "Lecturer" -> {
-                    String id = "LC" + idNumberGenerator("LC");
-                    userIDField.setText(id);
-                    passwordField.setText(id + "@password");
-                    emailField.setText(id + "@mail.api.edu.my");
-
-                    selectCourse_cb.setSelectedIndex(6);
-                    selectCourse_cb.setEnabled(false);
-                }
-
-                case "Student" -> {
-                    String id = "ST" + idNumberGenerator("ST");
-                    userIDField.setText(id);
-                    passwordField.setText(id + "@password");
-                    emailField.setText(id + "@mail.apu.edu.my");
-
-                    selectCourse_cb.setEnabled(true);
-                }
-            }
+            String id = "AFS" + idNumberGenerator("AFS");
+            userIDField.setText(id);
+            passwordField.setText(id + "@password");
+            emailField.setText(id + "@email.com");
         });
         this.add(createAccountButton);
 
@@ -443,11 +543,12 @@ public class ManageAccountGUI_Admin extends JFrame {
         UserRole_cb.addActionListener(_ -> {
             String userRole = (String) UserRole_cb.getSelectedItem();
 
-            if (userRole.equals("Student")) {
-                selectCourse_cb.setEnabled(true);
-            } else {
-                selectCourse_cb.setSelectedIndex(6);
-                selectCourse_cb.setEnabled(false);
+            switch (userRole) {
+                case "Academic Leaders", "Lecturer" -> {
+                    selectCourse_cb.setSelectedIndex(6);
+                    selectCourse_cb.setEnabled(false);
+                }
+                case "Student" -> selectCourse_cb.setEnabled(true);
             }
         });
         this.add(UserRole_cb);
@@ -597,9 +698,12 @@ public class ManageAccountGUI_Admin extends JFrame {
 
                 String gender = tableModel.getValueAt(selectedRow, 3).toString();
                 if (gender.equals("M")) {
+                    female_rb.setSelected(false);
                     male_rb.setSelected(true);
-                } else {
+                }
+                if (gender.equals("F")) {
                     female_rb.setSelected(true);
+                    male_rb.setSelected(false);
                 }
 
                 String userRole = tableModel.getValueAt(selectedRow, 4).toString();
@@ -789,9 +893,9 @@ public class ManageAccountGUI_Admin extends JFrame {
                     }
                 }
 
-                while ((line2 = reader1.readLine()) != null) {
-                    String[] deletedInfo = line1.split(" ; ");
-                    String deletedID = userInfo[0];
+                while ((line2 = reader2.readLine()) != null) {
+                    String[] deletedInfo = line2.split(" ; ");
+                    String deletedID = deletedInfo[0];
 
                     if (userID.startsWith(prefix)) {
                         String[] ID_split_Number = deletedID.split(prefix);
@@ -813,6 +917,6 @@ public class ManageAccountGUI_Admin extends JFrame {
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
 
-        return String.format("%06d", maxNumber + 1);
+        return String.format("%05d", maxNumber + 1);
     }
 }

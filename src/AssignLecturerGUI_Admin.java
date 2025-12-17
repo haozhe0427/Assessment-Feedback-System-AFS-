@@ -261,8 +261,9 @@ public class AssignLecturerGUI_Admin extends JFrame{
             while ((line = reader.readLine()) != null) {
                 String[] accountInfo = line.split(" ; ");
                 String userID = accountInfo[0];
+                String userRole = accountInfo[5];
 
-                if (userID.startsWith("LC")) {
+                if (userID.startsWith("AFS") && userRole.equals("Lecturer")) {
                     String[] lecturerInfo = {accountInfo[0], accountInfo[3], accountInfo[6], accountInfo[7]};
                     tableModel.addRow(lecturerInfo);
                 }
