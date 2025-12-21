@@ -70,7 +70,7 @@ public class ManageClassesGUI_Admin extends JFrame {
                 displayModules();
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Modules))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -127,7 +127,7 @@ public class ManageClassesGUI_Admin extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -164,7 +164,7 @@ public class ManageClassesGUI_Admin extends JFrame {
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Modules)) {
+            try (FileWriter writer = new FileWriter(Resources.Modules)) {
                 writer.write(updatedClass.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -206,7 +206,7 @@ public class ManageClassesGUI_Admin extends JFrame {
 
 
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -261,7 +261,7 @@ public class ManageClassesGUI_Admin extends JFrame {
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Modules)) {
+            try (FileWriter writer = new FileWriter(Resources.Modules)) {
                 writer.write(updatedClass.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -476,7 +476,7 @@ public class ManageClassesGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -489,7 +489,7 @@ public class ManageClassesGUI_Admin extends JFrame {
 
 
     public void displayModules () {
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Modules))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Modules))) {
 
             String line;
             while ((line = reader.readLine()) != null) {

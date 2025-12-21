@@ -51,7 +51,7 @@ public class DashboardGUI_Admin extends JFrame {
 
 
         // <========= 2) manageAccountButton =========>
-        PicturesAndTextFile.manageAccountIcon = new ImageIcon(PicturesAndTextFile.manageAccountIcon.getImage().
+        Resources.manageAccountIcon = new ImageIcon(Resources.manageAccountIcon.getImage().
                 getScaledInstance(40,40, Image.SCALE_SMOOTH));
 
         manageAccountButton.setBounds(130,240,250,100);
@@ -59,7 +59,7 @@ public class DashboardGUI_Admin extends JFrame {
         manageAccountButton.setHorizontalTextPosition(JButton.CENTER);
         manageAccountButton.setVerticalTextPosition(JButton.NORTH);
         manageAccountButton.setFocusable(false);
-        manageAccountButton.setIcon(PicturesAndTextFile.manageAccountIcon);
+        manageAccountButton.setIcon(Resources.manageAccountIcon);
         manageAccountButton.addActionListener(_ -> {
             dispose();
             new ManageAccountGUI_Admin();
@@ -68,7 +68,7 @@ public class DashboardGUI_Admin extends JFrame {
 
 
         // <========= 3) assignLecturersButton =========>
-        PicturesAndTextFile.lecturerIcon = new ImageIcon(PicturesAndTextFile.lecturerIcon.getImage().
+        Resources.lecturerIcon = new ImageIcon(Resources.lecturerIcon.getImage().
                 getScaledInstance(40,40, Image.SCALE_SMOOTH));
 
         assignLecturersButton.setBounds(420,240,250,100);
@@ -76,7 +76,7 @@ public class DashboardGUI_Admin extends JFrame {
         assignLecturersButton.setHorizontalTextPosition(JButton.CENTER);
         assignLecturersButton.setVerticalTextPosition(JButton.NORTH);
         assignLecturersButton.setFocusable(false);
-        assignLecturersButton.setIcon(PicturesAndTextFile.lecturerIcon);
+        assignLecturersButton.setIcon(Resources.lecturerIcon);
         assignLecturersButton.addActionListener(_ -> {
             dispose();
             new AssignLecturerGUI_Admin();
@@ -85,7 +85,7 @@ public class DashboardGUI_Admin extends JFrame {
 
 
         // <========= 4) gradingSystemButton =========>
-        PicturesAndTextFile.gradingSystemIcon = new ImageIcon(PicturesAndTextFile.gradingSystemIcon.getImage().
+        Resources.gradingSystemIcon = new ImageIcon(Resources.gradingSystemIcon.getImage().
                 getScaledInstance(40,40, Image.SCALE_SMOOTH));
 
         gradingSystemButton.setBounds(130,390,250,100);
@@ -93,7 +93,7 @@ public class DashboardGUI_Admin extends JFrame {
         gradingSystemButton.setHorizontalTextPosition(JButton.CENTER);
         gradingSystemButton.setVerticalTextPosition(JButton.NORTH);
         gradingSystemButton.setFocusable(false);
-        gradingSystemButton.setIcon(PicturesAndTextFile.gradingSystemIcon);
+        gradingSystemButton.setIcon(Resources.gradingSystemIcon);
         gradingSystemButton.addActionListener(_ -> {
             dispose();
             new GradingSystemGUI_Admin();
@@ -102,7 +102,7 @@ public class DashboardGUI_Admin extends JFrame {
 
 
         // <========= 5) manageClassesButton =========>
-        PicturesAndTextFile.classesIcon = new ImageIcon(PicturesAndTextFile.classesIcon.getImage().
+        Resources.classesIcon = new ImageIcon(Resources.classesIcon.getImage().
                 getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 
         manageClassesButton.setBounds(420,390,250,100);
@@ -110,7 +110,7 @@ public class DashboardGUI_Admin extends JFrame {
         manageClassesButton.setHorizontalTextPosition(JButton.CENTER);
         manageClassesButton.setVerticalTextPosition(JButton.NORTH);
         manageClassesButton.setFocusable(false);
-        manageClassesButton.setIcon(PicturesAndTextFile.classesIcon);
+        manageClassesButton.setIcon(Resources.classesIcon);
         manageClassesButton.addActionListener(_ -> {
             dispose();
             new ManageClassesGUI_Admin();
@@ -120,7 +120,7 @@ public class DashboardGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(new Color(255,250,250));

@@ -87,7 +87,7 @@ public class ManageAccountGUI_Admin extends JFrame {
             String selectedRole = selectUserRole_cb.getSelectedItem().toString();
             tableModel.setRowCount(0);
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] accountInfo = line.split(" ; ");
@@ -113,10 +113,6 @@ public class ManageAccountGUI_Admin extends JFrame {
                         }
                     }
                 }
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Account list is not found",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Something went wrong. Please contact technician team for support",
@@ -145,7 +141,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -194,17 +190,13 @@ public class ManageAccountGUI_Admin extends JFrame {
                     }
                     updatedAccount.append(String.join(" ; ", userInfo)).append("\n");
                 }
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Lecturer Account list is not found",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Something went wrong. Please contact technician team for support",
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Login)) {
                 writer.write(updatedAccount.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -239,7 +231,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                     JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) return;
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -264,7 +256,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Login)) {
                 writer.write(remainingAccounts.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -273,7 +265,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.DeletedAccounts)) {
+            try (FileWriter writer = new FileWriter(Resources.DeletedAccounts)) {
                 writer.write(deletedAccounts.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -345,7 +337,7 @@ public class ManageAccountGUI_Admin extends JFrame {
             }
 
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -410,7 +402,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Login)) {
                 writer.write(existedAccounts.toString());
                 writer.write(updatedAccount.toString());
             } catch (IOException e) {
@@ -422,7 +414,7 @@ public class ManageAccountGUI_Admin extends JFrame {
             userIDField.setText("");
             passwordField.setText("");
             nameField.setText("");
-            nameField.setEnabled(false);
+            nameField.setEditable(false);
             male_rb.setSelected(false);
             male_rb.setEnabled(false);
             female_rb.setSelected(false);
@@ -451,21 +443,20 @@ public class ManageAccountGUI_Admin extends JFrame {
             id_OR_NameField.setEditable(false);
             selectUserRole_cb.setEnabled(false);
 
-            userIDField.setText("");
-            passwordField.setText("");
             nameField.setText("");
-            emailField.setText("");
-            male_rb.setSelected(false);
-            female_rb.setSelected(false);
-
             nameField.setEditable(true);
+
+            male_rb.setSelected(false);
             male_rb.setEnabled(true);
+
+            female_rb.setSelected(false);
             female_rb.setEnabled(true);
+
+            UserRole_cb.setSelectedIndex(0);
             UserRole_cb.setEnabled(true);
-            selectAreas_cb.setEnabled(true);
 
             selectAreas_cb.setSelectedIndex(0);
-            UserRole_cb.setSelectedIndex(0);
+            selectAreas_cb.setEnabled(true);
 
             updateButton.setEnabled(false);
             deleteButton.setEnabled(false);
@@ -734,9 +725,7 @@ public class ManageAccountGUI_Admin extends JFrame {
                     case "School of Digital Marketing" -> selectAreas_cb.setSelectedIndex(3);
                 }
                 selectAreas_cb.setEnabled(true);
-
                 createButton.setEnabled(false);
-
                 getUserEmail();
             }
         });
@@ -776,7 +765,7 @@ public class ManageAccountGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Manage Account");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -789,7 +778,7 @@ public class ManageAccountGUI_Admin extends JFrame {
 
 
     public void displayAllAccount () {
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] accountInfo = line.split(" ; ");
@@ -798,10 +787,6 @@ public class ManageAccountGUI_Admin extends JFrame {
                                                accountInfo[5], accountInfo[6]};
                 tableModel.addRow(categorizedAccount);
             }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Account list is not found",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Something went wrong. Please contact technician team for support",
@@ -814,7 +799,7 @@ public class ManageAccountGUI_Admin extends JFrame {
     public void getUserEmail () {
         String selectedUserID = userIDField.getText();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -826,10 +811,6 @@ public class ManageAccountGUI_Admin extends JFrame {
                     emailField.setText(userEmail);
                 }
             }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Account list is not found",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Something went wrong. Please contact technician team for support",
@@ -842,7 +823,7 @@ public class ManageAccountGUI_Admin extends JFrame {
     public void getStudentCourse () {
         String selectedStudentID = userIDField.getText();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -862,10 +843,6 @@ public class ManageAccountGUI_Admin extends JFrame {
                 }
             }
 
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Account list is not found",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Something went wrong. Please contact technician team for support",
@@ -877,8 +854,8 @@ public class ManageAccountGUI_Admin extends JFrame {
 
     public String idNumberGenerator (String prefix) {
         int maxNumber = 0;
-        try (BufferedReader reader1 = new BufferedReader(new FileReader(PicturesAndTextFile.Login));
-        BufferedReader reader2 = new BufferedReader(new FileReader(PicturesAndTextFile.DeletedAccounts))) {
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Login));
+             BufferedReader reader2 = new BufferedReader(new FileReader(Resources.DeletedAccounts))) {
 
             String line1, line2;
             while ((line1 = reader1.readLine()) != null) {
@@ -907,16 +884,11 @@ public class ManageAccountGUI_Admin extends JFrame {
                 }
             }
 
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Account list is not found",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Something went wrong. Please contact technician team for support",
                     "Error", JOptionPane.WARNING_MESSAGE);
         }
-
         return String.format("%05d", maxNumber + 1);
     }
 }

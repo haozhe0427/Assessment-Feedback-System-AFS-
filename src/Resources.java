@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class PicturesAndTextFile {
+public class Resources {
 
     // STORE PICTURES AND TEXT FILES ONLY
 
@@ -13,16 +13,22 @@ public class PicturesAndTextFile {
     //         - Name.java (Get User's Name then print beside "Welcome Back, ..." after login is successful)
     //
     // FORMAT :
-    // a) Student [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; Course]
-    //    Example (AFS00003 ; 12345 ; AFS00003@mail.apu.edu.my ; Nyan Lin Thet ; M ; Student ; School of Computing ; SE)
+    // a) Student:
+    //    [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; Course]
+    //    Example:
+    //    (AFS00003 ; 12345 ; AFS00003@mail.apu.edu.my ; Nyan Lin Thet ; M ; Student ; School of Computing ; SE)
     //
     //
-    // b) Lecturer [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; AssignedTo]
-    //    Example (AFS00002 ; 12345 ; AFS00002@mail.apu.edu.my ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing ; NULL)
+    // b) Lecturer:
+    //    [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; AssignedTo]
+    //    Example:
+    //    (AFS00002 ; 12345 ; AFS00002@mail.apu.edu.my ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing ; NULL)
     //
     //
-    // c) Academic Leaders [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; <None>]
-    //    Example (AFS00001 ; 12345 ; AFS00001@mail.apu.edu.my ; Lwin Phone Thit ; M ; Academic Leaders ; School of Computing ; NULL)
+    // c) Academic Leaders:
+    //    [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; <None>]
+    //    Example:
+    //    (AFS00001 ; 12345 ; AFS00001@mail.apu.edu.my ; Lwin Phone Thit ; M ; Academic Leaders ; School of Computing ; NULL)
     // --------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -54,8 +60,13 @@ public class PicturesAndTextFile {
     // ---------------------------------------------------------------------------------------------------------------------
 
 
+    // 4) DeletedAccount.txt
     public static String DeletedAccounts = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\DeletedAccount.txt";
-
+    // ----------------------------------------------------------------------------------------------------
+    // Use in: - To store deleted account after delete button (in ManageAccountGUI_Admin) is clicked
+    //
+    // FORMAT: *** Same as Login.txt
+    // ----------------------------------------------------------------------------------------------------
 
 
     // Icon.png

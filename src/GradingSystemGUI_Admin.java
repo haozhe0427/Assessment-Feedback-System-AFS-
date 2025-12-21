@@ -110,7 +110,7 @@ public class GradingSystemGUI_Admin extends JFrame {
             StringBuilder updatedGrades = new StringBuilder();
             int selectedRow = gradeTable.getSelectedRow();
             int currentRow = 0;
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.GradingSystem))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.GradingSystem))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -147,7 +147,7 @@ public class GradingSystemGUI_Admin extends JFrame {
             }
 
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.GradingSystem)) {
+            try (FileWriter writer = new FileWriter(Resources.GradingSystem)) {
                 writer.write(updatedGrades.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -242,7 +242,7 @@ public class GradingSystemGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -255,7 +255,7 @@ public class GradingSystemGUI_Admin extends JFrame {
 
 
     public void displayGrade () { // display grade's info
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.GradingSystem))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.GradingSystem))) {
             String line;
 
             while ((line = reader.readLine()) != null) {

@@ -94,7 +94,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -129,7 +129,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Login)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -157,7 +157,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -192,7 +192,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(PicturesAndTextFile.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Login)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -242,7 +242,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assign Lecturer");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -255,7 +255,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
     public void displayLecturers () { // display every lecturer's info
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -282,7 +282,7 @@ public class AssignLecturerGUI_Admin extends JFrame{
 
 
     public void displayAcademicLeadersName () { // display every academic leader's name ONLY
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
             String line;
             int i = 0;
 

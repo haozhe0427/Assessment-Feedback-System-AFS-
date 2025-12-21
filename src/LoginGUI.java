@@ -9,6 +9,7 @@ public class LoginGUI extends JFrame {
     JLabel loginLabel = new JLabel("Login");
     JLabel userIDLabel = new JLabel("User ID:");
     JLabel passwordLabel = new JLabel("Password:");
+    JLabel forgotPasswordLabel = new JLabel("Forgot Password?", JLabel.CENTER);
 
     // JTextField
     public static JTextField userIDField = new JTextField();
@@ -24,6 +25,7 @@ public class LoginGUI extends JFrame {
 
     String userIDField_message = "Enter Your User ID Here";
     String passwordField_message = "Please Enter Password";
+    public static String userID_OR_name;
 
     LoginGUI() {
         // <================== JLabel ==================>
@@ -45,6 +47,56 @@ public class LoginGUI extends JFrame {
         passwordLabel.setBounds(20, 300, 150, 30);
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD,18));
         this.add(passwordLabel);
+
+        // <========= 4) forgotPasswordLabel =========>
+        forgotPasswordLabel.setForeground(Color.blue);
+        forgotPasswordLabel.setBounds(-10,480,420,30);
+        forgotPasswordLabel.setFont(new Font("Segoe UI", Font.BOLD,13));
+        forgotPasswordLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userID_OR_name = JOptionPane.showInputDialog(null,
+                                                                    "Please Enter Your User ID / Name here",
+                                                                    "User Verification",  JOptionPane.INFORMATION_MESSAGE);
+
+                if (userID_OR_name == null) {
+                    return;
+                }
+                if (userID_OR_name.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Please enter your User ID or Name",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] userInfo = line.split(" ; ");
+                        String userID = userInfo[0];
+                        String name = userInfo[3];
+
+                        if (userID.equals(userID_OR_name) || name.equals(userID_OR_name)) {
+                            dispose();
+                            new SetNewPasswordGUI();
+                            return;
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null,
+                            "Invalid account. Please try again",
+                            "Warning",JOptionPane.WARNING_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Something went wrong. Please contact technician team for support",
+                            "Error",JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        this.add(forgotPasswordLabel);
 
 
 
@@ -160,8 +212,8 @@ public class LoginGUI extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader1 = new BufferedReader(new FileReader(PicturesAndTextFile.Login));
-            BufferedReader reader2 = new BufferedReader(new FileReader(PicturesAndTextFile.AdminAccount))) {
+            try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Login));
+                 BufferedReader reader2 = new BufferedReader(new FileReader(Resources.AdminAccount))) {
 
                 String line1, line2;
                 while ((line1 = reader1.readLine()) != null) {
@@ -203,11 +255,6 @@ public class LoginGUI extends JFrame {
                 JOptionPane.showMessageDialog(null,
                         "Invalid userID / password. Please try again",
                         "Warning",JOptionPane.WARNING_MESSAGE);
-
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Account list is not found",
-                        "Warning",JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Something went wrong. Please contact technician team for support",
@@ -219,7 +266,7 @@ public class LoginGUI extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(PicturesAndTextFile.imageIcon.getImage());
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Login)");
         this.getContentPane().setBackground(new Color(255, 250, 250));
         this.setSize(420,600);
