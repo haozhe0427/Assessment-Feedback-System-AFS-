@@ -8,5 +8,4 @@
 40-49 ; D ; 1.70 ; Fail(Marginal)
 30-39 ; F+ ; 1.30 ; Fail
 20-29 ; F ; 1.00 ; Fail
-10-19 ; F- ; 0.00 ; Fail
-0-10 ; CT ; 2.00E ; Credit Transfer
+0-19 ; F- ; 0.00 ; Fail

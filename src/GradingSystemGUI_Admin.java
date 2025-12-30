@@ -7,6 +7,12 @@ import java.io.*;
 
 public class GradingSystemGUI_Admin extends JFrame {
 
+    // JComboBox
+    String[] Status = {"Distinction", "Credit", "Pass", "Fail(Marginal)", "Fail", ""};
+    JComboBox<String> status_cb = new JComboBox<>(Status);
+    String[] grade = {"A+", "A", "B+", "B", "C+", "C", "C-", "D", "F+", "F", "F-", ""};
+    JComboBox<String> grade_cb = new JComboBox<>(grade);
+
     // JPanel
     JPanel topPanel = new JPanel();
 
@@ -19,13 +25,12 @@ public class GradingSystemGUI_Admin extends JFrame {
 
     // JButton
     JButton exitButton = new JButton("Exit");
+    JButton clearButton = new JButton("Clear");
     JButton updateButton = new JButton("Update");
 
     // JTextField
     JTextField marksField = new JTextField();
-    JTextField gradeField = new JTextField();
     JTextField gpaField = new JTextField();
-    JTextField statusField = new JTextField();
 
     // DefaultTableModel & JTable
     DefaultTableModel tableModel;
@@ -38,6 +43,24 @@ public class GradingSystemGUI_Admin extends JFrame {
         topPanel.setLayout(null);
         topPanel.setBounds(0,0,985,150);
         this.add(topPanel);
+
+
+
+        // <================== JComboBox ==================>
+        // <========= 1) status_cb =========>
+        status_cb.setBounds(790, 377, 150, 26);
+        status_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        status_cb.setSelectedIndex(5);
+        status_cb.setEnabled(false);
+        this.add(status_cb);
+
+
+        // <========= 2) grade_cb =========>
+        grade_cb.setBounds(790, 277, 150, 26);
+        grade_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        grade_cb.setSelectedIndex(11);
+        grade_cb.setEnabled(false);
+        this.add(grade_cb);
 
 
 
@@ -80,23 +103,73 @@ public class GradingSystemGUI_Admin extends JFrame {
         });
         topPanel.add(exitButton);
 
-        // <========= 2) updateButton =========>
-        updateButton.setBounds(720, 511, 220, 50);
-        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+
+        // <========= 2) clearButton =========>
+        clearButton.setBounds(720, 501, 100, 30);
+        clearButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+        clearButton.setFocusable(false);
+        clearButton.addActionListener(_ -> {
+           marksField.setText("");
+           grade_cb.setSelectedIndex(11);
+           gpaField.setText("");
+           status_cb.setSelectedIndex(5);
+
+           marksField.setEditable(false);
+           grade_cb.setEnabled(false);
+           gpaField.setEditable(false);
+           status_cb.setEnabled(false);
+        });
+        this.add(clearButton);
+
+
+        // <========= 3) updateButton =========>
+        updateButton.setBounds(842, 501, 100, 30);
+        updateButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         updateButton.setFocusable(false);
         updateButton.addActionListener(_ -> {
             String selectedMarks = marksField.getText();
-            String selectedGrade = gradeField.getText();
+            String selectedGrade = (String) grade_cb.getSelectedItem();
             String selectedGPA = gpaField.getText();
-            String selectedStatus = statusField.getText();
+            String selectedStatus = (String) status_cb.getSelectedItem();
 
             if (selectedMarks.isEmpty() ||
                     selectedGrade.isEmpty() ||
                     selectedGPA.isEmpty() ||
                     selectedStatus.isEmpty()) {
                 JOptionPane.showMessageDialog(null,
-                        "Please select row to edit",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
+                        "Invalid Grade Information",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                double GPA = Double.parseDouble(selectedGPA);
+                if (selectedMarks.contains("-")) {
+                    String[] separatedMarks = marksField.getText().split("-"); // e.g (Split 80-100 into ["80", "100"])
+                    int num_1 = Integer.parseInt(separatedMarks[0]);
+                    int num_2 = Integer.parseInt(separatedMarks[1]);
+
+                    if ((num_1 < 0 || num_1 > 100) ||
+                            (num_2 < 0 || num_2 > 100) ||
+                            (GPA < 0 || GPA > 4) || selectedGPA.length() != 4) {
+                        JOptionPane.showMessageDialog(null,
+                                "Please enter a valid mark / GPA format (e.g mark: 80-100 / GPA: 4.00)",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+
+                        return;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Please enter a valid mark / GPA format (e.g mark: 80-100 / GPA: 4.00)",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Invalid format",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
                 return;
             }
 
@@ -136,10 +209,6 @@ public class GradingSystemGUI_Admin extends JFrame {
                     updatedGrades.append(String.join(" ; ", GradeInfo)).append("\n");
                     currentRow++;
                 }
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null,
-                        "Grading System is not found",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Something went wrong. Please contact technician team for support",
@@ -162,14 +231,14 @@ public class GradingSystemGUI_Admin extends JFrame {
             displayGrade();
 
             marksField.setText("");
-            gradeField.setText("");
+            grade_cb.setSelectedIndex(11);
             gpaField.setText("");
-            statusField.setText("");
+            status_cb.setSelectedIndex(5);
 
             marksField.setEditable(false);
-            gradeField.setEditable(false);
+            grade_cb.setEnabled(false);
             gpaField.setEditable(false);
-            statusField.setEditable(false);
+            status_cb.setEnabled(false);
         });
         this.add(updateButton);
 
@@ -182,23 +251,14 @@ public class GradingSystemGUI_Admin extends JFrame {
         marksField.setEditable(false);
         this.add(marksField);
 
-        // <========= 2) gradeField =========>
-        gradeField.setBounds(790, 277, 150, 26);
-        gradeField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        gradeField.setEditable(false);
-        this.add(gradeField);
 
-        // <========= 3) gpaField =========>
+        // <========= 2) gpaField =========>
         gpaField.setBounds(790, 327, 150, 26);
         gpaField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         gpaField.setEditable(false);
         this.add(gpaField);
 
-        // <=========4) statusField =========>
-        statusField.setBounds(790, 377, 150, 26);
-        statusField.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
-        statusField.setEditable(false);
-        this.add(statusField);
+
 
 
 
@@ -213,7 +273,7 @@ public class GradingSystemGUI_Admin extends JFrame {
         gradeTable.setDefaultEditor(Object.class, null);
 
         JScrollPane scrollPane = new JScrollPane(gradeTable);
-        scrollPane.setBounds(30,180,670,383);
+        scrollPane.setBounds(30,180,670,353);
         displayGrade();
         this.add(scrollPane);
 
@@ -228,14 +288,14 @@ public class GradingSystemGUI_Admin extends JFrame {
                 String status = tableModel.getValueAt(selectedRow, 3).toString();
 
                 marksField.setText(marks);
-                gradeField.setText(grade);
+                grade_cb.setSelectedItem(grade);
                 gpaField.setText(gpa);
-                statusField.setText(status);
+                status_cb.setSelectedItem(status);
 
                 marksField.setEditable(true);
-                gradeField.setEditable(true);
+                grade_cb.setEnabled(true);
                 gpaField.setEditable(true);
-                statusField.setEditable(true);
+                status_cb.setEnabled(true);
             }
         });
 
@@ -243,10 +303,10 @@ public class GradingSystemGUI_Admin extends JFrame {
 
         // <========= GUI FRAME =========>
         this.setIconImage(Resources.imageIcon.getImage());
-        this.setTitle("Assessment Feedback System (Admin)");
+        this.setTitle("Grading System");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
-        this.setSize(985,630);
+        this.setSize(985,600);
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
@@ -262,10 +322,6 @@ public class GradingSystemGUI_Admin extends JFrame {
                 String [] GradeInfo = line.split(" ; ");
                 tableModel.addRow(GradeInfo);
             }
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Grading System is not found",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Something went wrong. Please contact technician team for support",

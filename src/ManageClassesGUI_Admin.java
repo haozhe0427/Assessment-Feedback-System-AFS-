@@ -477,7 +477,7 @@ public class ManageClassesGUI_Admin extends JFrame {
 
         // <========= GUI FRAME =========>
         this.setIconImage(Resources.imageIcon.getImage());
-        this.setTitle("Assessment Feedback System (Admin)");
+        this.setTitle("Manage Classes");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(1250,700);
