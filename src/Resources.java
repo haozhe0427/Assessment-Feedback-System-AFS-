@@ -5,8 +5,8 @@ public class Resources {
     // STORE PICTURES AND TEXT FILES ONLY
 
 
-    // 1) Login.txt
-    public static String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Login.txt";
+    // 1) Account.txt
+    public static String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
     // Use in: - LoginGUI.java (Make credential validations)
     //         - ManageAccountGUI_Admin.java (To display inside JTable)
@@ -65,7 +65,7 @@ public class Resources {
     // ----------------------------------------------------------------------------------------------------
     // Use in: - To store deleted account after delete button (in ManageAccountGUI_Admin) is clicked
     //
-    // FORMAT: *** Same as Login.txt
+    // FORMAT: *** Same as Account.txt
     // ----------------------------------------------------------------------------------------------------
 
 

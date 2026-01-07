@@ -167,7 +167,7 @@ public class GradingSystemGUI_Admin extends JFrame {
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null,
-                        "Invalid format",
+                        "Invalid format. Please try again",
                         "Error", JOptionPane.ERROR_MESSAGE);
 
                 return;

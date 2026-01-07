@@ -236,6 +236,11 @@ public class AssignLecturerGUI_Admin extends JFrame{
                 int selectedRow = lecturersTable.getSelectedRow();
                 String name = tableModel.getValueAt(selectedRow, 1).toString();
                 lecturerField.setText(name);
+
+                String academicLeader = tableModel.getValueAt(selectedRow, 3).toString();
+                if (!academicLeader.equals("NULL")) {
+                    academicLeaders_cb.setSelectedItem(academicLeader);
+                }
             }
         });
 
@@ -287,10 +292,11 @@ public class AssignLecturerGUI_Admin extends JFrame{
             int i = 0;
 
             while ((line = reader.readLine()) != null) {
-                String[] academicLeadersInfo = line.split(" ; ");
+                String[] AccountInfo = line.split(" ; ");
+                String userRole = AccountInfo[5];
 
-                if (academicLeadersInfo.length >= 5) {
-                    academicLeaders[i] = academicLeadersInfo[3];
+                if (userRole.equals("Academic Leaders")) {
+                    academicLeaders[i] = AccountInfo[3];
                     i++;
                 }
             }

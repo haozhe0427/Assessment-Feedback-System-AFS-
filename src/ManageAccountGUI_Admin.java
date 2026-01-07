@@ -135,7 +135,7 @@ public class ManageAccountGUI_Admin extends JFrame {
 
             if (selectedUserID.isEmpty() || selectedUserRole.isEmpty() || selectedAreas.isEmpty()) {
                 JOptionPane.showMessageDialog(null,
-                        "Please select any account",
+                        "Please select any account to update",
                         "Error", JOptionPane.ERROR_MESSAGE);
 
                 return;
@@ -336,6 +336,13 @@ public class ManageAccountGUI_Admin extends JFrame {
                 }
             }
 
+            if (userID.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Please click the Create Account button",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+                return;
+            }
 
             try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
 
