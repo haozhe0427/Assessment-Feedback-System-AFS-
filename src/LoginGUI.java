@@ -65,7 +65,7 @@ public class LoginGUI extends JFrame {
                         if (adminID.equalsIgnoreCase(userID) && adminPassword.equals(password)) {
                             if (isAdmin.equals("Admin")) {
                                 dispose();
-                                new DashboardGUI_Admin();
+                                new AdminDashboard();
                             } else {
                                 JOptionPane.showMessageDialog(null,
                                         "Invalid account. Please try again",

@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.io.*;
 
 // ADMIN DASHBOARD (START)
-public class DashboardGUI_Admin extends JFrame {
+public class AdminDashboard extends JFrame {
     JButton logOutButton = new JButton("Log Out");
     JButton manageAccountButton = new JButton("Manage Account");
     JButton assignLecturersButton = new JButton("Assign Lecturer");
@@ -16,7 +16,7 @@ public class DashboardGUI_Admin extends JFrame {
     JLabel welcomeLabel = new JLabel();
     JPanel topPanel = new JPanel();
 
-    DashboardGUI_Admin() {
+    AdminDashboard() {
         // <================== JButton ==================>
         // <========= 1) logOutButton =========>
         logOutButton.setBounds(25,15,125,40);
@@ -162,7 +162,7 @@ class AssignLecturerGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new DashboardGUI_Admin();
+            new AdminDashboard();
         });
         topPanel.add(exitButton);
 
@@ -470,7 +470,7 @@ class GradingSystemGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new DashboardGUI_Admin();
+            new AdminDashboard();
         });
         topPanel.add(exitButton);
 
@@ -812,7 +812,7 @@ class ManageAccountGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new DashboardGUI_Admin();
+            new AdminDashboard();
         });
         topPanel.add(exitButton);
 
@@ -1713,7 +1713,7 @@ class ManageClassesGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new DashboardGUI_Admin();
+            new AdminDashboard();
         });
         topPanel.add(exitButton);
 
