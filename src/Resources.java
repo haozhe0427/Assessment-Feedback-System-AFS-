@@ -1,10 +1,7 @@
 import javax.swing.*;
 
 public class Resources {
-
     // STORE PICTURES AND TEXT FILES ONLY
-
-
     // 1) Account.txt
     public static String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
