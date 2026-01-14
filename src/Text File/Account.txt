@@ -1,3 +1,3 @@
-AFS00001 ; password123 ; AFS00001@mail.apu.edu.my ; Lwin Phone Thit ; M ; Academic Leaders ; School of Computing ; NULL
-AFS00002 ; 12345 ; AFS00002@mail.apu.edu.my ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing ; NULL
-AFS00003 ; 12345 ; AFS00003@mail.apu.edu.my ; Nyan Lin Thet ; M ; Student ; School of Computing ; SE
+AFS00001 ; password123 ; AFS00001@gmail.apu.edu.my ; Lwin Phone Thit ; M ; Academic Leaders ; School of Computing ; NULL
+AFS00002 ; 12345 ; AFS00002@gmail.apu.edu.my ; Joshua Koroh Pudin ; M ; Lecturer ; School of Computing ; NULL
+AFS00003 ; 12345 ; AFS00003@gmail.apu.edu.my ; Nyan Lin Thet ; M ; Student ; School of Computing ; SE

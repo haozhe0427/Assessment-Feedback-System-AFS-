@@ -822,6 +822,7 @@ class ManageAccountGUI_Admin extends JFrame {
         clearButton1.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         clearButton1.setFocusable(false);
         clearButton1.addActionListener(_ -> {
+            id_OR_NameField.setText("");
             tableModel.setRowCount(0);
             displayAllAccount();
         });
@@ -1067,8 +1068,7 @@ class ManageAccountGUI_Admin extends JFrame {
 
             switch (userRole) {
                 case "Academic Leaders" , "Lecturer" -> {
-                    if (userID.isEmpty() || userRole.isEmpty() ||
-                            !(male_rb.isSelected() || female_rb.isSelected()) || area.isEmpty()) {
+                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area.isEmpty()) {
                         JOptionPane.showMessageDialog(null,
                                 "Please enter every information",
                                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -1077,9 +1077,7 @@ class ManageAccountGUI_Admin extends JFrame {
                     }
                 }
                 case "Student" -> {
-                    if (userID.isEmpty() || userRole.isEmpty() ||
-                            !(male_rb.isSelected() || female_rb.isSelected()) ||
-                            area.isEmpty() || course.isEmpty()) {
+                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area.isEmpty() || course.isEmpty()) {
                         JOptionPane.showMessageDialog(null,
                                 "Please enter every information",
                                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -1092,6 +1090,15 @@ class ManageAccountGUI_Admin extends JFrame {
             if (userID.isEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "Please click the Create Account button",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+
+                return;
+            }
+
+            if (name.matches(".*\\d.*")) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Please enter user name without numbers",
                         "Error", JOptionPane.ERROR_MESSAGE);
 
                 return;
@@ -1225,7 +1232,7 @@ class ManageAccountGUI_Admin extends JFrame {
             String id = "AFS" + idNumberGenerator("AFS");
             userIDField.setText(id);
             passwordField.setText(id + "@password");
-            emailField.setText(id + "@email.com");
+            emailField.setText(id + "@gmail.apu.edu.my");
         });
         this.add(createAccountButton);
 
