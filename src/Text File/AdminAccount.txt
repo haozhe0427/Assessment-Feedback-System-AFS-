@@ -1,1 +1,1 @@
-AD000001 ; 12345 ; Ding Hao Zhe ; M ; 20 ; Admin
+AD000001 ; 12345 ; Ding Hao Zhe ; Admin

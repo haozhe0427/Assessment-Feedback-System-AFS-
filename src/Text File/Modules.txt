@@ -1,0 +1,2 @@
+MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; Lim Chun Cheak ; 0
+MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ; NULL ; x-x-x ; Tan Su Tung ; 0

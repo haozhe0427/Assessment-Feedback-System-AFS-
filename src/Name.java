@@ -9,17 +9,23 @@ public class Name {
         String userID = LoginGUI.userIDField.getText();
         String userName = null;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(PicturesAndTextFile.Login))) {
-            String line;
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Login));
+             BufferedReader reader2 = new BufferedReader(new FileReader(Resources.AdminAccount))) {
 
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(" ; ");
+            String line1, line2;
+            while ((line1 = reader1.readLine()) != null) {
+                String[] loginInfo = line1.split(" ; ");
+                String storedID = loginInfo[0];
 
-                if (data.length >= 4) {
-                    String storedID = data[0];
+                if (storedID.equalsIgnoreCase(userID)) {
+                    userName = loginInfo[3];
+                }
+                while ((line2 = reader2.readLine()) != null) {
+                    String[] adminInfo = line2.split(" ; ");
+                    String adminID = adminInfo[0];
 
-                    if (storedID.equalsIgnoreCase(userID)) {
-                        userName = data[2];
+                    if (adminID.equalsIgnoreCase(userID)) {
+                        userName = adminInfo[2];
                     }
                 }
             }
