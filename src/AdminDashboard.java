@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.Objects;
 
 // ADMIN DASHBOARD (START)
 public class AdminDashboard extends JFrame {
@@ -16,7 +17,7 @@ public class AdminDashboard extends JFrame {
     JLabel welcomeLabel = new JLabel();
     JPanel topPanel = new JPanel();
 
-    AdminDashboard() {
+    public AdminDashboard() {
         // <================== JButton ==================>
         // <========= 1) logOutButton =========>
         logOutButton.setBounds(25,15,125,40);
@@ -176,7 +177,7 @@ class AssignLecturerGUI_Admin extends JFrame {
             String selectedAcademicLeader = (String) academicLeaders_cb.getSelectedItem();
             StringBuilder updatedLecturers = new StringBuilder();
 
-            if (selectedLecturer.isEmpty() || selectedAcademicLeader.isEmpty()) {
+            if (selectedLecturer.isEmpty() || selectedAcademicLeader == null) {
                 JOptionPane.showMessageDialog(null,
                         "Please select lecturer and academic leader",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -240,7 +241,7 @@ class AssignLecturerGUI_Admin extends JFrame {
             String selectedAcademicLeader = (String) academicLeaders_cb.getSelectedItem();
             StringBuilder updatedLecturers = new StringBuilder();
 
-            if (selectedLecturer.isEmpty() || selectedAcademicLeader.isEmpty()) {
+            if (selectedLecturer.isEmpty() || selectedAcademicLeader == null) {
                 JOptionPane.showMessageDialog(null,
                         "Please select lecturer and academic leader",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -504,9 +505,9 @@ class GradingSystemGUI_Admin extends JFrame {
             String selectedStatus = (String) status_cb.getSelectedItem();
 
             if (selectedMarks.isEmpty() ||
-                    selectedGrade.isEmpty() ||
+                    selectedGrade == null ||
                     selectedGPA.isEmpty() ||
-                    selectedStatus.isEmpty()) {
+                    selectedStatus == null) {
                 JOptionPane.showMessageDialog(null,
                         "Invalid Grade Information",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -618,7 +619,7 @@ class GradingSystemGUI_Admin extends JFrame {
         // <================== JComboBox ==================>
         // <========= 1) status_cb =========>
         String[] Status = {"Distinction", "Credit", "Pass", "Fail(Marginal)", "Fail", ""};
-        status_cb = new JComboBox(Status);
+        status_cb = new JComboBox<>(Status);
         status_cb.setBounds(790, 377, 150, 26);
         status_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         status_cb.setSelectedIndex(5);
@@ -628,7 +629,7 @@ class GradingSystemGUI_Admin extends JFrame {
 
         // <========= 2) grade_cb =========>
         String[] grade = {"A+", "A", "B+", "B", "C+", "C", "C-", "D", "F+", "F", "F-", ""};
-        grade_cb = new JComboBox(grade);
+        grade_cb = new JComboBox<>(grade);
         grade_cb.setBounds(790, 277, 150, 26);
         grade_cb.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
         grade_cb.setSelectedIndex(11);
@@ -835,7 +836,7 @@ class ManageAccountGUI_Admin extends JFrame {
         searchButton.setFocusable(false);
         searchButton.addActionListener(_ -> {
             String selectedID_Name = id_OR_NameField.getText();
-            String selectedRole = selectUserRole_cb.getSelectedItem().toString();
+            String selectedRole = (String) selectUserRole_cb.getSelectedItem();
             tableModel.setRowCount(0);
 
             try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
@@ -850,13 +851,13 @@ class ManageAccountGUI_Admin extends JFrame {
                     String areas = accountInfo[6];
 
                     if (selectedID_Name.isEmpty()) {
-                        if (selectedRole.equals(userRole)) {
+                        if (Objects.equals(selectedRole, userRole)) {
                             tableModel.addRow(new Object[]{
                                     userID, password, name, gender, userRole, areas
                             });
                         }
                     } else {
-                        if (selectedRole.equals(userRole) &&
+                        if (Objects.equals(selectedRole, userRole) &&
                                 (((selectedID_Name.equals(userID))||(selectedID_Name.equals(name))))) {
                             tableModel.addRow(new Object[]{
                                     userID, password, name, gender, userRole, areas
@@ -885,7 +886,7 @@ class ManageAccountGUI_Admin extends JFrame {
             String selectedCourses = (String) selectCourse_cb.getSelectedItem();
             StringBuilder updatedAccount = new StringBuilder();
 
-            if (selectedUserID.isEmpty() || selectedUserRole.isEmpty() || selectedAreas.isEmpty()) {
+            if (selectedUserID.isEmpty() || selectedUserRole == null || selectedAreas == null) {
                 JOptionPane.showMessageDialog(null,
                         "Please select any account to update",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -1068,7 +1069,7 @@ class ManageAccountGUI_Admin extends JFrame {
 
             switch (userRole) {
                 case "Academic Leaders" , "Lecturer" -> {
-                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area.isEmpty()) {
+                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area == null) {
                         JOptionPane.showMessageDialog(null,
                                 "Please enter every information",
                                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -1077,7 +1078,7 @@ class ManageAccountGUI_Admin extends JFrame {
                     }
                 }
                 case "Student" -> {
-                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area.isEmpty() || course.isEmpty()) {
+                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area == null || course == null) {
                         JOptionPane.showMessageDialog(null,
                                 "Please enter every information",
                                 "Error", JOptionPane.ERROR_MESSAGE);
@@ -1085,6 +1086,7 @@ class ManageAccountGUI_Admin extends JFrame {
                         return;
                     }
                 }
+                case null, default -> {}
             }
 
             if (userID.isEmpty()) {
@@ -1123,7 +1125,7 @@ class ManageAccountGUI_Admin extends JFrame {
 
                                 return;
                             } else {
-                                if (userRole.equals("Lecturer") || userRole.equals("Academic Leaders")) {
+                                if (Objects.equals(userRole, "Lecturer") || Objects.equals(userRole, "Academic Leaders")) {
                                     newAccount = userID + " ; " +
                                             password + " ; " +
                                             email + " ; " +
@@ -1143,7 +1145,7 @@ class ManageAccountGUI_Admin extends JFrame {
 
                                 return;
                             } else {
-                                if (userRole.equals("Student")) {
+                                if (Objects.equals(userRole, "Student")) {
                                     newAccount = userID + " ; " +
                                             password + " ; " +
                                             email + " ; " +
@@ -1308,6 +1310,7 @@ class ManageAccountGUI_Admin extends JFrame {
                     selectCourse_cb.setEnabled(false);
                 }
                 case "Student" -> selectCourse_cb.setEnabled(true);
+                case null, default -> {}
             }
         });
         this.add(UserRole_cb);
@@ -1438,6 +1441,10 @@ class ManageAccountGUI_Admin extends JFrame {
         female_rb.setEnabled(false);
         female_rb.setFocusable(false);
         this.add(female_rb);
+
+        ButtonGroup male_female_rb = new ButtonGroup();
+        male_female_rb.add(male_rb);
+        male_female_rb.add(female_rb);
 
 
 
@@ -1900,9 +1907,9 @@ class ManageClassesGUI_Admin extends JFrame {
 
                         return;
                     }
-                    if (selectedBlock.equals("x") ||
-                            selectedLevel.equals("x") ||
-                            selectedRoomNumber.equals("x")) {
+                    if (Objects.equals(selectedBlock, "x") ||
+                            Objects.equals(selectedLevel, "x") ||
+                            Objects.equals(selectedRoomNumber, "x")) {
                         JOptionPane.showMessageDialog(null,
                                 "Please select the valid classroom",
                                 "Warning", JOptionPane.WARNING_MESSAGE);
