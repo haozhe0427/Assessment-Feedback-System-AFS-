@@ -53,7 +53,7 @@ public class Resources {
     // ---------------------------------------------------------------------------------------------------------------------
     // Use in: - ManageClassesGUI_Admin.java (To display inside JTable / update & delete the class)
     //
-    // Format: ModuleID ; ModuleName ; Assessment_1 ; Assessment_2 ; Assessment_3 ; Classroom ; Lecturer ; No.of students
+    // Format: ModuleID ; ModuleName ; Assessment_1 ; Assessment_2 ; Assessment_3 ; Classroom ; Lecturer's name ; Academic Leaders's name
     // ---------------------------------------------------------------------------------------------------------------------
 
 
