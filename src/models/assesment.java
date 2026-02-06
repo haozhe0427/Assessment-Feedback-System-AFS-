@@ -6,7 +6,7 @@ public class assesment {
     private String title;
     private int maxMarks;
 
-    // Constructor
+    
     public assesment(String id, String subject, String title, int maxMarks) {
         this.id = id;
         this.subject = subject;
