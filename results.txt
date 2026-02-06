@@ -1,0 +1,20 @@
+A001,TP012345,18,Good grasp of basic concepts.
+A001,TP067890,12,Needs to review binary conversions.
+A002,TP012345,45,Code compiled perfectly. Good job.
+A002,TP055555,38,Logic is correct but indentation is messy.
+A004,TP012345,85,Excellent implementation of inheritance.
+A004,TP099999,60,Missing the polymorphism requirement.
+A004,TP055555,92,Code is clean and efficient. Well done.
+A005,TP012345,40,Struggled with the abstract class section.
+A007,TP067890,14,Perfect score on joins.
+A007,TP077777,10,Review the syntax for GROUP BY.
+A009,TP012345,75,ERD looks solid but normalization has errors.
+A010,TP022222,28,Great use of Flexbox layout.
+A010,TP033333,15,CSS file was not linked correctly.
+A012,TP012345,95,Website is responsive and beautiful.
+A012,TP022222,88,Good functionality but design is plain.
+A015,TP044444,55,Calculation error in question 3.
+A015,TP012345,58,Almost perfect. Watch out for sign errors.
+A017,TP012345,42,Strong arguments and good citations.
+A018,TP012345,45,Proposal is clear and feasible.
+A019,TP012345,80,Prototype works but UI needs polish.
