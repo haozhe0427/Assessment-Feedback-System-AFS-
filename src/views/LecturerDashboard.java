@@ -11,29 +11,29 @@ public class LecturerDashboard extends JFrame {
     private JPanel mainContainer;
 
     public LecturerDashboard() {
-        // 1. Setup the main window
+
         setTitle("AFS - Lecturer Dashboard");
         setSize(700, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // 2. Setup the Card Layout (The "Stack" of screens)
+
         cardLayout = new CardLayout();
         mainContainer = new JPanel(cardLayout);
 
-        // 3. Create the screens and add them to the stack
+
         mainContainer.add(createMainMenu(), "MENU");
         mainContainer.add(createProfilePanel(), "PROFILE");
         mainContainer.add(createDesignAssesmentPanel(), "DESIGN");
         mainContainer.add(createGradingPanel(), "GRADING");
         mainContainer.add(createReportPanel(), "REPORT");
 
-        // 4. Show the Menu first
+
         add(mainContainer);
         cardLayout.show(mainContainer, "MENU");
     }
 
-    // --- SCREEN 1: THE MAIN MENU ---
+
     private JPanel createMainMenu() {
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10)); // Changed from 5 to 6 rows
         panel.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
@@ -46,22 +46,22 @@ public class LecturerDashboard extends JFrame {
         JButton btnGrade = new JButton("Key-in Marks");
         JButton btnReport = new JButton("View Reports");
 
-        // --- NEW LOGOUT BUTTON ---
+
         JButton btnLogout = new JButton("Logout");
         btnLogout.setBackground(Color.PINK); // Optional: Make it look different
 
-        // Navigation Actions
+
         btnProfile.addActionListener(e -> cardLayout.show(mainContainer, "PROFILE"));
         btnDesign.addActionListener(e -> cardLayout.show(mainContainer, "DESIGN"));
         btnGrade.addActionListener(e -> refreshAndShowGrading());
         btnReport.addActionListener(e -> refreshAndShowReport());
 
-        // Logout Action: Closes this window
+
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                dispose(); // Destroys the window.
-                // Later, when you merge, you can add: new LoginScreen().setVisible(true);
+                dispose();
+
             }
         });
 
@@ -70,35 +70,35 @@ public class LecturerDashboard extends JFrame {
         panel.add(btnDesign);
         panel.add(btnGrade);
         panel.add(btnReport);
-        panel.add(btnLogout); // Add the button to the screen
+        panel.add(btnLogout);
 
         return panel;
     }
 
-    // --- SCREEN 2: PROFILE ---
+
     private JPanel createProfilePanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // Form Panel
+
         JPanel form = new JPanel(new GridLayout(5, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
         JTextField txtId = new JTextField();
         JTextField txtName = new JTextField();
-        JTextField txtEmail = new JTextField(); // Disabled (not in your file)
+        JTextField txtEmail = new JTextField();
         txtEmail.setEditable(false);
         JTextField txtDept = new JTextField();
         JButton btnUpdate = new JButton("Update Profile");
 
-        // Hardcoded ID for now until login is connected
+
         String myID = "LC000001";
         String[] data = FileHandler.loadProfile(myID);
         txtId.setText(data[0]);
         txtName.setText(data[1]);
-        txtEmail.setText("N/A"); // Your file doesn't have email
+        txtEmail.setText("N/A");
         txtDept.setText(data[3]);
 
-        // Make ID read-only so they can't break the link
+
         txtId.setEditable(false);
 
         form.add(new JLabel("Lecturer ID:")); form.add(txtId);
@@ -123,7 +123,7 @@ public class LecturerDashboard extends JFrame {
         return panel;
     }
 
-    // --- SCREEN 3: DESIGN ASSESSMENT ---
+
     private JPanel createDesignAssesmentPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -165,8 +165,8 @@ public class LecturerDashboard extends JFrame {
         return panel;
     }
 
-    // --- SCREEN 4: GRADING (Dynamic Dropdown) ---
-    // We create this as a field so we can refresh it later
+
+
     private JComboBox<assesment> gradingDropdown;
 
     private JPanel createGradingPanel() {
@@ -204,7 +204,7 @@ public class LecturerDashboard extends JFrame {
         return panel;
     }
 
-    // --- SCREEN 5: REPORTS (Dynamic Dropdown) ---
+
     private JComboBox<assesment> reportDropdown;
     private JTextArea txtDisplay;
 
@@ -238,15 +238,14 @@ public class LecturerDashboard extends JFrame {
         return panel;
     }
 
-    // --- HELPER: The "Back" Button ---
+
     private JButton createBackButton() {
         JButton btnBack = new JButton("<< Back to Menu");
         btnBack.addActionListener(e -> cardLayout.show(mainContainer, "MENU"));
         return btnBack;
     }
 
-    // --- HELPER: Refresh Dropdowns ---
-    // This ensures that if you add a new Assessment, it appears in the list immediately
+
     private void refreshAndShowGrading() {
         gradingDropdown.removeAllItems();
         for (assesment a : FileHandler.loadAssesments()) gradingDropdown.addItem(a);
