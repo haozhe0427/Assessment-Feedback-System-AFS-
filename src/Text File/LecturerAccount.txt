@@ -1,1 +1,1 @@
-LC000001 ; Joshua Koroh Pudin ; M ; 20 ; School of Computing ; NULL
+LC000001 ; JOSHUA KOROH PUDIN ; M ; 20 ; School of Business ; NULL
