@@ -1,0 +1,20 @@
+A001,CS101,Intro to Computing Quiz,20
+A002,CS101,Computing Lab Test 1,50
+A003,CS101,Computing Final Exam,100
+A004,JP001,Java OOP Assignment,100
+A005,JP001,Java Mid-term Exam,60
+A006,JP001,Java Final Project,100
+A007,DB001,SQL Query Quiz,15
+A008,DB001,Database Normalization Test,40
+A009,DB001,Database Design Project,80
+A010,WEB01,HTML/CSS Workshop,30
+A011,WEB01,JavaScript Interactive Lab,40
+A012,WEB01,Web Development Final,100
+A013,NET01,Networking Basics Quiz,25
+A014,NET01,Cisco Packet Tracer Lab,50
+A015,MATH1,Calculus Integration Test,60
+A016,MATH1,Linear Algebra Quiz,30
+A017,ETH01,Ethics in IT Essay,50
+A018,PRJ01,Final Year Proposal,50
+A019,PRJ01,Prototype Demonstration,100
+A020,PRJ01,Final Report Submission,100
