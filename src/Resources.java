@@ -3,7 +3,7 @@ import javax.swing.*;
 public class Resources {
     // STORE PICTURES AND TEXT FILES ONLY
     // 1) Account.txt
-    public static final String Login = "C:\\Users\\Neki\\programming\\java\\Assessment-Feedback-System-AFS-\\src\\Text File\\Account.txt";
+    public static final String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
     // Use in: - LoginGUI.java (Make credential validations)
     //         - ManageAccountGUI_Admin.java (To display inside JTable)
@@ -49,7 +49,7 @@ public class Resources {
 
 
     // 3) Modules.txt
-    public static final String Modules = "C:\\Users\\Neki\\programming\\java\\Assessment-Feedback-System-AFS-\\src\\Text File\\Modules.txt";
+    public static final String Modules = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Modules.txt";
     // ---------------------------------------------------------------------------------------------------------------------
     // Use in: - ManageClassesGUI_Admin.java (To display inside JTable / update & delete the class)
     //
@@ -66,7 +66,7 @@ public class Resources {
     // ----------------------------------------------------------------------------------------------------
 
     // 4) ClassStudentList.txt
-    public static final String ClassStudentList = "C:\\Users\\Neki\\programming\\java\\Assessment-Feedback-System-AFS-\\src\\Text File\\ClassStudentList.txt";
+    public static final String ClassStudentList = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\ClassStudentList.txt";
 
 
     // Icon.png
