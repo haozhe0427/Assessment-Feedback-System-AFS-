@@ -1,5 +1,3 @@
-package models;
-
 public class assessment {
     private String id;
     private String subject;
