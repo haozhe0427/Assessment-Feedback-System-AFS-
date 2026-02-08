@@ -1,9 +1,2 @@
-MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; Joshua Koroh Pudin ; Lwin Phone Thit ;
-MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ; NULL ; B-9-2 ; Joshua Koroh Pudin ; Lwin Phone Thit, Nyan Lin Htet ;
-MD0003 ; Data Analysis ; Assignment (65%) ; Final Exam (35%) ; NULL ; A-6-5 ; Joshua Koroh Pudin ; Nyan Lin Htet ;
-MD0004 ; Pythom Programming ; Assignment (50%) ; Final Exam (50%) ; NULL ; C-5-3 ; C.Ronaldo ; Messi,Neymar ; ;
-MD005 ; Innovation Process ; Assignment (60%) ; Final Exam (40%) ; NULL ; E-9-7 ; C.Ronaldo ; Myat , Salai ;
-MD006 ; Database ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-9-9 ; C.Ronaldo ; Lwin Phone Thit, Nyan Lin Htet ; ;
-MD007 ; Requirement Engineering ; Assignment (70%) ; Final Exam (30%) ; NULL ; B-4-3 ; Donald ; Messi, Neymar ;
-MD008 ; System Development ; Assignment (45%) ; Final Exam (55%) ; NULL ; C-2-3 ; Donald ; Myat, Salai ; ;
-MD009 ; Law ; Assignment (55%) ; Final Exam (45%) ; NULL ; B-9-6 ; Donald ; Myat, Salai ;
+MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; Joshua Koroh Pudin ; Lwin Phone Thit
+MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ; NULL ; x-x-x ; Joshua Koroh Pudin ; Lwin Phone Thit

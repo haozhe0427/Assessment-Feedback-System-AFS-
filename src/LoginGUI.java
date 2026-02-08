@@ -40,22 +40,34 @@ public class LoginGUI extends JFrame {
 
                 String line1, line2;
                 while ((line1 = reader1.readLine()) != null) {
-//                    String[] loginInfo = line1.split(" ; ");
-//                    String storedUserID = loginInfo[0];
-//                    String storedPassword = loginInfo[1];
-//                    String userRole = loginInfo[4];
-//
-//                    if (storedUserID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
-//                        if (userRole.equals("Student")) {
-//                            dispose();
-//                            new AssignLecturerGUI_Admin();
-//                        } else {
-//                            JOptionPane.showMessageDialog(null,
-//                                    "Invalid account. Please try again",
-//                                    "Error",JOptionPane.ERROR_MESSAGE);
-//                        }
-//                        return;
-//                    }
+                    String[] loginInfo = line1.split(" ; ");
+                    String storedUserID = loginInfo[0];
+                    String storedPassword = loginInfo[1];
+                    String userRole = loginInfo[5];
+
+                    if (storedUserID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
+                        switch (userRole) {
+                            case "Academic Leaders" -> {
+                                dispose();
+                                AcademicLeaderDashboard dashboardFrame = new AcademicLeaderDashboard();
+                                dashboardFrame.setVisible(true);
+                                dashboardFrame.setLocationRelativeTo(null);
+                            }
+                            case "Lecturer" -> {
+                                dispose();
+                                LecturerDashboard lecturerDashboard = new LecturerDashboard();
+                                lecturerDashboard.setVisible(true);
+                                lecturerDashboard.setLocationRelativeTo(null);
+                            }
+                            case "Student" -> {
+                                dispose();
+                                StudentDashboard  studentDashboard = new StudentDashboard();
+                                studentDashboard.setVisible(true);
+                                studentDashboard.setLocationRelativeTo(null);
+                            }
+                        }
+                        return;
+                    }
                     while ((line2 = reader2.readLine()) != null) {
                         String[] adminInfo = line2.split(" ; ");
                         String adminID = adminInfo[0];

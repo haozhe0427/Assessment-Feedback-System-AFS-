@@ -1,5 +1,10 @@
-MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; << Student name A >> ; << GPA >> ; << Grade >> ; << Lecturer feedback >> ; << Asses 1 feedback >> ; << Asses 2 feedback >>; << Asses 3 feedback >>
-MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; << Student name B >> ; << GPA >> ; << Grade >> ; << Lecturer feedback >> ; << Asses 1 feedback >> ; << Asses 2 feedback >>; << Asses 3 feedback >>
-MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; << Student name C >> ; << GPA >> ; << Grade >> ; << Lecturer feedback >> ; << Asses 1 feedback >> ; << Asses 2 feedback >>; << Asses 3 feedback >>
-MD0001 ; Object-Oriented Development of Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; << Student name D >> ; << GPA >> ; << Grade >> ; << Lecturer feedback >> ; << Asses 1 feedback >> ; << Asses 2 feedback >>; << Asses 3 feedback >>
-MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ; NULL ; x-x-x ; << Student name A >> ; << GPA >> ; << Grade >> ; << Lecturer feedback >> ; << Asses 1 feedback >> ; << Asses 2 feedback >>; << Asses 3 feedback >>
+MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; AFS00003 ; 3.3 ; B+ ; Dear Lecturer, thank you for the guidance on PFDA this semester. ; Good ; Very good ; You did not complete essay but you did great in other parts
+MD0001 ; Object-Oriented Development with Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; AFS00003 ; 3.85 ; A ; Dear Lecturer, thank you for the guidance on OOP principles this semester. ; Great use of encapsulation in the first lab. ; Excellent implementation of Polymorphism, though logic in the main class could be cleaner. ; Final project documentation is very detailed and follows UML standards.
+MD0001 ; Object-Oriented Development with Java ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; AFS00010 ; 3.85 ; A ; testing ; Great use of encapsulation in the first lab. ; Excellent implementation of Polymorphism, though logic in the main class could be cleaner. ; Final project documentation is very detailed and follows UML standards.
+MD0004 ; Intro to OOP ; Assignment (55%) ; Final Exam (45%) ;null; A-1-4 ;AFS00003;null;null;null;null;null;null
+MD0006 ; RENG ; Assignment (55%) ; Final Exam (45%) ;null; B-6-6 ;AFS00003;null;null; Lecturer is really good at teaching ;null;null;null
+MD0005 ; SDM ; Assignment (55%) ; Final Exam (45%) ;null; E-9-10 ;AFS00003;null;null;null;null;null;null
+MD0003 ; Intro to Database ; Assignment (55%) ; Final Exam (45%) ;null; B-6-6 ;AFS00003;null;null;null;null;null;null
+MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ;null; D-8-1 ;AFS00010;null;null;null;null;null;null
+MD0003 ; Intro to Database ; Assignment (55%) ; Final Exam (45%) ;null; B-6-6 ;AFS00010;null;null; so goood ;null;null;null
+MD0006 ; RENG ; Assignment (55%) ; Final Exam (45%) ;null; B-6-6 ;AFS00010;null;null; She is a really good lecturer. ;null;null;null

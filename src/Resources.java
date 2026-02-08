@@ -65,6 +65,9 @@ public class Resources {
     // FORMAT: *** Same as Account.txt
     // ----------------------------------------------------------------------------------------------------
 
+    // 4) ClassStudentList.txt
+    public static final String ClassStudentList = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\ClassStudentList.txt";
+
 
     // Icon.png
     public static final ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\Icon.png");

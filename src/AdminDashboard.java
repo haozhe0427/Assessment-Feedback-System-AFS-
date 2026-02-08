@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.Objects;
 
-// ADMIN DASHBOARD (START)
+// ADMIN DASHBOARD
 public class AdminDashboard extends JFrame {
     JButton logOutButton = new JButton("Log Out");
     JButton manageAccountButton = new JButton("Manage Account");
