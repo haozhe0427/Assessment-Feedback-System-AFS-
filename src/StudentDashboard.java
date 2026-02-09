@@ -37,7 +37,7 @@ public class StudentDashboard extends JFrame {
         jLabel1.setText("Assessment Feedback System");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 18));
-        jLabel2.setText("Hi, " + Name.getName() + "! Welcome to your dashboard.");
+        jLabel2.setText("Hi, " + StudentSession.getStudentName() + "! Welcome to your dashboard.");
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jButton1.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 18));

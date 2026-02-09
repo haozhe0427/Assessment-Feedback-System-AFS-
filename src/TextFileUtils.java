@@ -4,42 +4,7 @@ import java.util.List;
 
 public class TextFileUtils {
     // --- METHOD 1: LOGIN VALIDATION ---
-    public static User validateLogin(String inputId, String inputPassword) {
-        try (BufferedReader br = new BufferedReader(new FileReader(Resources.Login))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // Skip empty lines or malformed lines
-                if (line.trim().isEmpty()) continue;
 
-                // Split by " ; " as seen in your file format
-                String[] data = line.split(" ; ");
-
-                // Safety check for array length (minimum required fields)
-                if (data.length < 7) continue;
-
-                String id = data[0].trim();
-                String password = data[1].trim();
-
-                if (id.equals(inputId) && password.equals(inputPassword)) {
-                    // Found match, create User object
-                    String email = data[2].trim();
-                    String name = data[3].trim();
-                    String gender = data[4].trim();
-                    String role = data[5].trim();
-                    String dept = data[6].trim();
-
-                    // Handle potential optional last column (Specialization/Extra)
-                    String special = (data.length > 7) ? data[7].trim() : "NULL";
-
-                    return new User(id, password, email, name, gender, role, dept, special);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // File error
-        }
-        return null; // User not found
-    }
 
     // --- METHOD 2: UPDATE USER (For Edit Profile) ---
     public static boolean updateUserInFile(User updatedUser) {

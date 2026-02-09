@@ -10,14 +10,15 @@ public class AcademicLeaderDashboard extends JFrame {
 
     public AcademicLeaderDashboard() {
 
-        setTitle("Dashboard - " + Name.getName());
+        User user = Session.getCurrentUser();
+        setTitle("Dashboard - " + user.getName());
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         // Header
-        JLabel lblWelcome = new JLabel("Welcome, " + Name.getName(), SwingConstants.CENTER);
+        JLabel lblWelcome = new JLabel("Welcome, " + user.getName(), SwingConstants.CENTER);
         lblWelcome.setFont(new Font("Arial", Font.BOLD, 16));
         lblWelcome.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         add(lblWelcome, BorderLayout.NORTH);
@@ -158,7 +159,7 @@ class EditProfileGUI_AcademicLeader extends JFrame {
 
             if (success) {
                 // 5. Update Session and UI
-                Session.setCurrentUser(currentUser);
+                Session.login(currentUser);
                 JOptionPane.showMessageDialog(null, "Profile Updated Successfully!");
                 dispose(); // Close the edit window
             } else {
