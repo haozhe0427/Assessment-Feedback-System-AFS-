@@ -4,68 +4,59 @@ import java.util.List;
 
 public class FileHandler {
 
-    private static final String LECTURER_FILE = "src/Text File/LecturerAccount.txt";
+    private static final String LECTURER_FILE = "D:\\intelij save\\src\\Text File\\Account.txt";
     private static final String ASSESMENT_FILE = "assesments.txt";
     private static final String RESULTS_FILE = "results.txt";
 
 
     public static String[] loadProfile(String targetID) {
         File file = new File(LECTURER_FILE);
-        if (!file.exists()) return new String[]{"", "", "", ""};
+        if (!file.exists()) return new String[]{"", "", "", "", ""};
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-
                 String[] parts = line.split(";");
-
-
-                if (parts.length >= 5 && parts[0].trim().equals(targetID)) {
-
-                    String id = parts[0].trim();
-                    String name = parts[1].trim();
-                    String dept = parts[4].trim(); // School maps to Dept
-
-
-                    return new String[]{id, name, "", dept};
+                if (parts.length >= 7 && parts[0].trim().equals(targetID)) {
+                    return new String[]{
+                            parts[0].trim(), // ID (Index 0)
+                            parts[3].trim(), // Name (Index 3)
+                            parts[2].trim(), // Email (Index 2)
+                            parts[6].trim(), // School (Index 6)
+                            (parts.length > 7 ? parts[7].trim() : "None") // Leader (Index 7)
+                    };
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new String[]{"", "", "", ""};
+        } catch (IOException e) { e.printStackTrace(); }
+        return new String[]{"", "", "", "", ""};
     }
 
-
-    public static void saveProfile(String id, String newName, String newEmail, String newDept) throws IOException {
+    public static void saveProfile(String id, String newName, String newEmail, String newDept, String newLeader) throws IOException {
         File file = new File(LECTURER_FILE);
         List<String> lines = new ArrayList<>();
-        boolean found = false;
-
 
         if (file.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(";");
-                    if (parts.length >= 5 && parts[0].trim().equals(id)) {
-
+                    if (parts.length >= 7 && parts[0].trim().equals(id)) {
+                        // We reconstruct the line preserving Password (1), Gender (4), and Role (5)
                         String updatedLine = id + " ; " +
-                                newName + " ; " +
-                                parts[2].trim() + " ; " + // Keep Gender
-                                parts[3].trim() + " ; " + // Keep Age
-                                newDept + " ; " +
-                                (parts.length > 5 ? parts[5].trim() : "NULL");
+                                parts[1].trim() + " ; " + // Keep Password
+                                newEmail + " ; " +        // Update Email
+                                newName + " ; " +         // Update Name
+                                parts[4].trim() + " ; " + // Keep Gender
+                                parts[5].trim() + " ; " + // Keep Role
+                                newDept + " ; " +         // Update School
+                                newLeader;                // Add/Update Leader
                         lines.add(updatedLine);
-                        found = true;
                     } else {
-
                         lines.add(line);
                     }
                 }
             }
         }
-
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String l : lines) {
@@ -74,7 +65,6 @@ public class FileHandler {
             }
         }
     }
-
 
 
     public static void saveAssesment(assessment assesment) throws IOException {
