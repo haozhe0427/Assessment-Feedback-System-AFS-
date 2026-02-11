@@ -8,15 +8,13 @@ public class User {
     private String department;
     private String specialization; // For the last column (e.g., 'SE' or 'CS')
 
-    public User(String id, String password, String email, String name, String gender, String role, String department, String specialization) {
+    public User(String id, String password, String email, String name, String gender, String role) {
         this.id = id;
         this.password = password;
         this.email = email;
         this.name = name;
         this.gender = gender;
         this.role = role;
-        this.department = department;
-        this.specialization = specialization;
     }
 
     // Getters
@@ -26,8 +24,7 @@ public class User {
     public String getName() { return name; }
     public String getGender() { return gender; }
     public String getRole() { return role; }
-    public String getDepartment() { return department; }
-    public String getSpecialization() { return specialization; }
+
 
 
     // Setters (useful for Edit Profile later)
@@ -35,4 +32,12 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public void setName(String name) { this.name = name; }
     public void setGender(String gender) { this.gender = gender; }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
 }

@@ -75,55 +75,62 @@ public class LecturerDashboard extends JFrame {
 
     private JPanel createProfilePanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-
-        JPanel form = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel form = new JPanel(new GridLayout(6, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
         JTextField txtId = new JTextField();
         JTextField txtName = new JTextField();
         JTextField txtEmail = new JTextField();
-        txtEmail.setEditable(false);
         JTextField txtDept = new JTextField();
+        JTextField txtLeader = new JTextField();
         JButton btnUpdate = new JButton("Update Profile");
 
-
-        String myID = "LC000001";
+        String myID = "AFS00002";
         String[] data = FileHandler.loadProfile(myID);
-        txtId.setText(data[0]);
-        txtName.setText(data[1]);
-        txtEmail.setText("N/A");
-        txtDept.setText(data[3]);
 
+        if (data != null && data.length >= 5) {
+            txtId.setText(data[0]);
+            txtName.setText(data[1]);
+            txtEmail.setText(data[2]);
+            txtDept.setText(data[3]);
+            txtLeader.setText(data[4]);
+        }
 
         txtId.setEditable(false);
+        txtEmail.setEditable(false);
+        txtLeader.setEditable(false);
 
-        form.add(new JLabel("Lecturer ID:")); form.add(txtId);
-        form.add(new JLabel("Name:"));        form.add(txtName);
-        form.add(new JLabel("Email:"));       form.add(txtEmail);
-        form.add(new JLabel("School:"));      form.add(txtDept);
-        form.add(new JLabel(""));             form.add(btnUpdate);
+        form.add(new JLabel("Lecturer ID:"));    form.add(txtId);
+        form.add(new JLabel("Name:"));           form.add(txtName);
+        form.add(new JLabel("Email:"));          form.add(txtEmail);
+        form.add(new JLabel("School:"));         form.add(txtDept);
+        form.add(new JLabel("Academic Leader:")); form.add(txtLeader);
+        form.add(new JLabel(""));                form.add(btnUpdate);
 
         btnUpdate.addActionListener(e -> {
             try {
-                FileHandler.saveProfile(txtId.getText(), txtName.getText(), "", txtDept.getText());
-                JOptionPane.showMessageDialog(this, "Profile Updated!");
+                FileHandler.saveProfile(
+                        txtId.getText(),
+                        txtName.getText(),
+                        txtEmail.getText(),
+                        txtDept.getText(),
+                        txtLeader.getText()
+                );
+                JOptionPane.showMessageDialog(this, "Profile Updated Successfully!");
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error saving profile.");
+                JOptionPane.showMessageDialog(this, "Error saving profile: " + ex.getMessage());
             }
         });
 
         panel.add(new JLabel("Update Profile", SwingConstants.CENTER), BorderLayout.NORTH);
         panel.add(form, BorderLayout.CENTER);
-        panel.add(createBackButton(), BorderLayout.SOUTH); // Add Back Button
+        panel.add(createBackButton(), BorderLayout.SOUTH);
 
         return panel;
     }
 
-
     private JPanel createDesignAssessmentPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
         JPanel form = new JPanel(new GridLayout(5, 2, 10, 10));
         form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
@@ -161,8 +168,6 @@ public class LecturerDashboard extends JFrame {
 
         return panel;
     }
-
-
 
     private JComboBox<assessment> gradingDropdown;
 

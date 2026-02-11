@@ -1,7 +1,7 @@
 public class Session {
     private static User currentUser;
 
-    public static void setCurrentUser(User user) {
+    public static void login(User user) {
         currentUser = user;
     }
 
@@ -11,9 +11,5 @@ public class Session {
 
     public static void logout() {
         currentUser = null;
-    }
-
-    public static boolean isLoggedIn() {
-        return currentUser != null;
     }
 }
