@@ -179,8 +179,8 @@ public class LoginGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 userID_OR_name = JOptionPane.showInputDialog(null,
-                                                                    "Please Enter Your User ID / Name here",
-                                                                    "User Verification",  JOptionPane.INFORMATION_MESSAGE);
+                        "Please Enter Your User ID / Name here",
+                        "User Verification",  JOptionPane.INFORMATION_MESSAGE);
 
                 if (userID_OR_name == null) {
                     return;

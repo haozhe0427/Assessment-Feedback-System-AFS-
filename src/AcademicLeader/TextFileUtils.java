@@ -1,17 +1,57 @@
+package AcademicLeader;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TextFileUtils {
-    // --- METHOD 1: LOGIN VALIDATION ---
+    private static final String ACCOUNT_FILE = "src/Text File/Account.txt";
+    private static final String MODULE_FILE = "src/Text File/Modules.txt";
 
+    // --- METHOD 1: LOGIN VALIDATION ---
+    public static User validateLogin(String inputId, String inputPassword) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ACCOUNT_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Skip empty lines or malformed lines
+                if (line.trim().isEmpty()) continue;
+
+                // Split by " ; " as seen in your file format
+                String[] data = line.split(" ; ");
+
+                // Safety check for array length (minimum required fields)
+                if (data.length < 7) continue;
+
+                String id = data[0].trim();
+                String password = data[1].trim();
+
+                if (id.equals(inputId) && password.equals(inputPassword)) {
+                    // Found match, create User object
+                    String email = data[2].trim();
+                    String name = data[3].trim();
+                    String gender = data[4].trim();
+                    String role = data[5].trim();
+                    String dept = data[6].trim();
+
+                    // Handle potential optional last column (Specialization/Extra)
+                    String special = (data.length > 7) ? data[7].trim() : "NULL";
+
+                    return new User(id, password, email, name, gender, role, dept, special);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // File error
+        }
+        return null; // User not found
+    }
 
     // --- METHOD 2: UPDATE USER (For Edit Profile) ---
     public static boolean updateUserInFile(User updatedUser) {
         List<String> lines = new ArrayList<>();
         boolean found = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(Resources.Account))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(ACCOUNT_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) {
@@ -44,7 +84,7 @@ public class TextFileUtils {
         }
 
         // Write everything back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Account))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ACCOUNT_FILE))) {
             for (String s : lines) {
                 bw.write(s);
                 bw.newLine();
@@ -58,24 +98,17 @@ public class TextFileUtils {
     }
     // --- INNER CLASS: MODULE (No need for separate file) ---
     public static class Module {
-        String code, name, a1, a2, a3, loc, lec, day, time;
+        String code, name, a1, a2, a3, loc, lec, stu;
 
-        public Module(String code, String name, String a1, String a2, String a3, String loc, String lec, String day, String time) {
-            this.code = code;
-            this.name = name;
-            this.a1 = a1;
-            this.a2 = a2;
-            this.a3 = a3;
-            this.loc = loc;
-            this.lec = lec;
-            this.day = day;
-            this.time = time;
+        public Module(String code, String name, String a1, String a2, String a3, String loc, String lec, String stu) {
+            this.code = code; this.name = name; this.a1 = a1; this.a2 = a2;
+            this.a3 = a3; this.loc = loc; this.lec = lec; this.stu = stu;
         }
 
         // Helper to format for file
         public String toFileString() {
             return code + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " +
-                    a3 + " ; " + loc + " ; " + lec + " ; " + day + " ; " + time + " ; ";
+                    a3 + " ; " + loc + " ; " + lec + " ; " + stu + " ;";
         }
     }
 
@@ -83,7 +116,7 @@ public class TextFileUtils {
 
     public static List<Module> getAllModules() {
         List<Module> modules = new ArrayList<>();
-        File file = new File(Resources.Modules);
+        File file = new File(MODULE_FILE);
         if (!file.exists()) return modules;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -99,8 +132,7 @@ public class TextFileUtils {
                             (data.length > 4) ? data[4].trim() : "NULL",
                             (data.length > 5) ? data[5].trim() : "NULL",
                             (data.length > 6) ? data[6].trim() : "NULL",
-                            (data.length > 7 ) ? data[7].trim() : "NULL",
-                            (data.length > 8) ? data[8].trim() :  "NULL"
+                            (data.length > 7) ? data[7].trim() : "NULL"
                     ));
                 }
             }
@@ -109,7 +141,7 @@ public class TextFileUtils {
     }
 
     public static boolean saveModules(List<Module> modules) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Modules))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(MODULE_FILE))) {
             for (Module m : modules) {
                 bw.write(m.toFileString());
                 bw.newLine();
