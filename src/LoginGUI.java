@@ -94,13 +94,17 @@ public class LoginGUI extends JFrame {
                     while ((line2 = reader2.readLine()) != null) {
                         String[] adminInfo = line2.split(" ; ");
                         String adminID = adminInfo[0];
+                        String adminName = adminInfo[2];
                         String adminPassword = adminInfo[1];
                         String isAdmin = adminInfo[3];
 
                         if (adminID.equalsIgnoreCase(userID) && adminPassword.equals(password)) {
                             if (isAdmin.equals("Admin")) {
+                                Admin admin = new Admin(adminName);
+                                admin.getAdminName();
+
                                 dispose();
-                                new AdminDashboard();
+                                new AdminDashboard(admin);
                             } else {
                                 JOptionPane.showMessageDialog(null,
                                         "Invalid account. Please try again",

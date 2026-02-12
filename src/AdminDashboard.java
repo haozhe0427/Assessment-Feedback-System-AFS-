@@ -17,7 +17,7 @@ public class AdminDashboard extends JFrame {
     JLabel welcomeLabel = new JLabel();
     JPanel topPanel = new JPanel();
 
-    public AdminDashboard() {
+    public AdminDashboard(Admin admin) {
         // <================== JButton ==================>
         // <========= 1) logOutButton =========>
         logOutButton.setBounds(25,15,125,40);
@@ -42,7 +42,7 @@ public class AdminDashboard extends JFrame {
         manageAccountButton.setIcon(Resources.manageAccountIcon);
         manageAccountButton.addActionListener(_ -> {
             dispose();
-            new ManageAccountGUI_Admin();
+            new ManageAccountGUI_Admin(admin);
         });
         this.add(manageAccountButton);
 
@@ -59,7 +59,7 @@ public class AdminDashboard extends JFrame {
         assignLecturersButton.setIcon(Resources.lecturerIcon);
         assignLecturersButton.addActionListener(_ -> {
             dispose();
-            new AssignLecturerGUI_Admin();
+            new AssignLecturerGUI_Admin(admin);
         });
         this.add(assignLecturersButton);
 
@@ -76,7 +76,7 @@ public class AdminDashboard extends JFrame {
         gradingSystemButton.setIcon(Resources.gradingSystemIcon);
         gradingSystemButton.addActionListener(_ -> {
             dispose();
-            new GradingSystemGUI_Admin();
+            new GradingSystemGUI_Admin(admin);
         });
         this.add(gradingSystemButton);
 
@@ -93,7 +93,7 @@ public class AdminDashboard extends JFrame {
         manageClassesButton.setIcon(Resources.classesIcon);
         manageClassesButton.addActionListener(_ -> {
             dispose();
-            new ManageClassesGUI_Admin();
+            new ManageClassesGUI_Admin(admin);
         });
         this.add(manageClassesButton);
 
@@ -107,7 +107,7 @@ public class AdminDashboard extends JFrame {
 
 
         // <========= 2) welcomeLabel =========>
-        welcomeLabel.setText("Welcome back, " + Name.getName());
+        welcomeLabel.setText("Welcome back, " + admin.getAdminName());
         welcomeLabel.setBounds(0,140,820,35);
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
         welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
@@ -154,7 +154,7 @@ class AssignLecturerGUI_Admin extends JFrame {
     JTable lecturersTable;
     JTextField lecturerField = new JTextField();
 
-    AssignLecturerGUI_Admin () {
+    AssignLecturerGUI_Admin (Admin admin) {
         // <================== JButton ==================>
         // <========= 1) exitButton =========>
         exitButton.setBounds(25, 15, 125, 40);
@@ -162,7 +162,7 @@ class AssignLecturerGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new AdminDashboard();
+            new AdminDashboard(admin);
         });
         topPanel.add(exitButton);
 
@@ -461,7 +461,7 @@ class GradingSystemGUI_Admin extends JFrame {
     JTextField marksField = new JTextField();
     JTextField gpaField = new JTextField();
 
-    GradingSystemGUI_Admin () {
+    GradingSystemGUI_Admin (Admin admin) {
         // <================== JButton ==================>
         // <========= 1) exitButton =========>
         exitButton.setBounds(25,15,125,40);
@@ -469,7 +469,7 @@ class GradingSystemGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new AdminDashboard();
+            new AdminDashboard(admin);
         });
         topPanel.add(exitButton);
 
@@ -802,7 +802,7 @@ class ManageAccountGUI_Admin extends JFrame {
     JTextField nameField = new JTextField();
     JTextField emailField = new JTextField();
 
-    ManageAccountGUI_Admin () {
+    ManageAccountGUI_Admin (Admin admin) {
         // <================== JButton ==================>
         // <========= 1) exitButton =========>
         exitButton.setBounds(25,15,125,40);
@@ -810,7 +810,7 @@ class ManageAccountGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new AdminDashboard();
+            new AdminDashboard(admin);
         });
         topPanel.add(exitButton);
 
@@ -1715,7 +1715,7 @@ class ManageClassesGUI_Admin extends JFrame {
     JTextField moduleNameField = new JTextField();
     JTextField lecturerField = new JTextField();
 
-    ManageClassesGUI_Admin () {
+    ManageClassesGUI_Admin (Admin admin) {
         // <================== JButton ==================>
         // <========= 1) exitButton =========>
         exitButton.setBounds(25,15,125,40);
@@ -1723,7 +1723,7 @@ class ManageClassesGUI_Admin extends JFrame {
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> {
             dispose();
-            new AdminDashboard();
+            new AdminDashboard(admin);
         });
         topPanel.add(exitButton);
 
