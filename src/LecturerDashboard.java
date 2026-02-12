@@ -126,9 +126,12 @@ public class LecturerDashboard extends JFrame {
     }
 
     // ------------------- 2. Design Assessment Window -------------------
+    // ------------------- 2. Design Assessment Window -------------------
     public class DesignAssessmentWindow extends JFrame {
         private List<String[]> modulesList = new ArrayList<>();
         private DefaultTableModel tableModel;
+        // Moved text fields to class level so both the listener and save button can see them
+        private JTextField txtID, txtName, txtA1, txtA2, txtA3;
 
         public DesignAssessmentWindow() {
             setTitle("Design Assessment");
@@ -141,16 +144,22 @@ public class LecturerDashboard extends JFrame {
             lblTitle.setBounds(0, 10, 900, 50);
             add(lblTitle);
 
-            JTextField txtID = new JTextField(); JTextField txtName = new JTextField();
-            JTextField txtA1 = new JTextField(); JTextField txtA2 = new JTextField(); JTextField txtA3 = new JTextField();
+            txtID = new JTextField(); txtName = new JTextField();
+            txtA1 = new JTextField(); txtA2 = new JTextField(); txtA3 = new JTextField();
 
-            addComp("Module ID:", txtID, 80); addComp("Module Name:", txtName, 120);
-            addComp("Assmt 1:", txtA1, 160); addComp("Assmt 2:", txtA2, 200); addComp("Assmt 3:", txtA3, 240);
+            // Row mapping
+            addComp("Module ID:", txtID, 80);
+            addComp("Module Name:", txtName, 120);
+            addComp("Assmt 1:", txtA1, 160);
+            addComp("Assmt 2:", txtA2, 200);
+            addComp("Assmt 3:", txtA3, 240);
 
             JButton btnBack = new JButton("Back"); btnBack.setBounds(20, 300, 120, 30); add(btnBack);
             JButton btnSave = new JButton("Save Assessment"); btnSave.setBounds(150, 300, 200, 30); add(btnSave);
 
-            tableModel = new DefaultTableModel(new String[]{"ID", "Name", "A1", "A2", "A3"}, 0);
+            tableModel = new DefaultTableModel(new String[]{"ID", "Name", "A1", "A2", "A3"}, 0) {
+                @Override public boolean isCellEditable(int r, int c) { return false; }
+            };
             JTable table = new JTable(tableModel);
             JScrollPane scroll = new JScrollPane(table);
             scroll.setBounds(380, 80, 500, 350);
@@ -158,10 +167,32 @@ public class LecturerDashboard extends JFrame {
 
             loadModulesData();
 
+            // --- CLICK TABLE TO DISPLAY IN TEXT BOXES ---
+            table.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int row = table.getSelectedRow();
+                    if (row != -1) {
+                        // Pull data from the table model and put into text fields
+                        txtID.setText(tableModel.getValueAt(row, 0).toString());
+                        txtName.setText(tableModel.getValueAt(row, 1).toString());
+                        txtA1.setText(tableModel.getValueAt(row, 2).toString());
+                        txtA2.setText(tableModel.getValueAt(row, 3).toString());
+                        txtA3.setText(tableModel.getValueAt(row, 4).toString());
+
+                        // Optional: Disable ID editing so they don't change the primary key
+                        txtID.setEditable(false);
+                        txtID.setBackground(new Color(240, 240, 240));
+                    }
+                }
+            });
+
             btnBack.addActionListener(e -> dispose());
+
             btnSave.addActionListener(e -> {
-                // Simplified Save logic for integration
-                JOptionPane.showMessageDialog(this, "Module data processed successfully.");
+                saveModuleData();
+                loadModulesData(); // Refresh table after saving
+                clearFields();
             });
 
             setVisible(true);
@@ -172,15 +203,76 @@ public class LecturerDashboard extends JFrame {
             f.setBounds(150, y, 200, 25); add(f);
         }
 
+        private void clearFields() {
+            txtID.setText(""); txtName.setText(""); txtA1.setText("");
+            txtA2.setText(""); txtA3.setText("");
+            txtID.setEditable(true);
+            txtID.setBackground(Color.WHITE);
+        }
+
         private void loadModulesData() {
             tableModel.setRowCount(0);
+            modulesList.clear();
             try (BufferedReader reader = new BufferedReader(new FileReader(MODULES_FILE))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    if (line.trim().isEmpty()) continue;
                     String[] parts = line.split("\\s*;\\s*");
-                    if (parts.length >= 5) tableModel.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
+                    if (parts.length >= 5) {
+                        modulesList.add(parts);
+                        tableModel.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
+                    }
                 }
             } catch (Exception e) { e.printStackTrace(); }
+        }
+
+        private void saveModuleData() {
+            String id = txtID.getText().trim();
+            String name = txtName.getText().trim();
+            String a1 = txtA1.getText().trim();
+            String a2 = txtA2.getText().trim();
+            String a3 = txtA3.getText().trim();
+
+            if (id.isEmpty() || name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ID and Name are required!");
+                return;
+            }
+
+            boolean updated = false;
+            List<String> lines = new ArrayList<>();
+
+            try {
+                // If the file exists, check for existing ID to update
+                File file = new File(MODULES_FILE);
+                if (file.exists()) {
+                    BufferedReader br = new BufferedReader(new FileReader(file));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        String[] p = line.split("\\s*;\\s*");
+                        if (p[0].equalsIgnoreCase(id)) {
+                            // Replace with new data
+                            line = id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + LECTURER_NAME;
+                            updated = true;
+                        }
+                        lines.add(line);
+                    }
+                    br.close();
+                }
+
+                if (!updated) {
+                    // It's a new module, add it to the end
+                    lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + LECTURER_NAME);
+                }
+
+                BufferedWriter bw = new BufferedWriter(new FileWriter(MODULES_FILE));
+                for (String l : lines) { bw.write(l); bw.newLine(); }
+                bw.close();
+
+                JOptionPane.showMessageDialog(this, updated ? "Module Updated!" : "New Module Added!");
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 MD0001 ; Object-Oriented Development ; Quiz 1 20% ; Assignment 40% ; Final Exam 40% ; Joshua Koroh Pudin
-MD0002 ; Programming For Data Analysis ; NULL ; NULL ; NULL ; C-9-8 ; Joshua Koroh Pudin ; Tuesday ; 12:00 - 13:00
+MD0002 ; Programming For Data Analysis ; Quiz 50% ; Final Exam 50% ; NULL ; Joshua Koroh Pudin
 MD0003 ; Python ; NULL ; NULL ; NULL ; B-2-5 ; Joshua Koroh Pudin ; Tuesday ; 14:30 - 16:30
 MD0004 ; ENTS ; NULL ; NULL ; NULL ; C-9-2 ; Tial Tang ; Wednesday ; 8:30 - 10:30
 MD0005 ; SAAD ; NULL ; NULL ; NULL ; E-8-5 ; Tial Tang ; Thursday ; 15:30 - 17:30
