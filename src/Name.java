@@ -9,7 +9,7 @@ public class Name {
         String userID = LoginGUI.userIDField.getText();
         String userName = null;
 
-        try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Login));
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Account));
              BufferedReader reader2 = new BufferedReader(new FileReader(Resources.AdminAccount))) {
 
             String line1, line2;

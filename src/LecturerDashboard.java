@@ -1,60 +1,58 @@
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class LecturerDashboard extends JFrame {
-    private CardLayout cardLayout;
-    private JPanel mainContainer;
 
     public LecturerDashboard() {
-
         setTitle("AFS - Lecturer Dashboard");
-        setSize(700, 500);
+        setSize(800, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(null);
 
+        // Title
+        JLabel title = new JLabel("Welcome, " + Name.getName(), SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 40));
+        title.setBounds(0, 30, 800, 60);
+        add(title);
 
-        cardLayout = new CardLayout();
-        mainContainer = new JPanel(cardLayout);
-
-
-        mainContainer.add(createMainMenu(), "MENU");
-        mainContainer.add(createProfilePanel(), "PROFILE");
-        mainContainer.add(createDesignAssessmentPanel(), "DESIGN");
-        mainContainer.add(createGradingPanel(), "GRADING");
-        mainContainer.add(createReportPanel(), "REPORT");
-
-
-        add(mainContainer);
-        cardLayout.show(mainContainer, "MENU");
-    }
-
-
-    private JPanel createMainMenu() {
-        JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10)); // Changed from 5 to 6 rows
-        panel.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
-
-        JLabel title = new JLabel("Welcome, Lecturer", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-
+        // Buttons
         JButton btnProfile = new JButton("Update Profile");
         JButton btnDesign = new JButton("Design Assessment");
         JButton btnGrade = new JButton("Key-in Marks");
         JButton btnReport = new JButton("View Reports");
-
-
         JButton btnLogout = new JButton("Logout");
-        btnLogout.setBackground(Color.PINK); // Optional: Make it look different
+        btnLogout.setBackground(Color.PINK);
 
+        // Set bounds for buttons
+        btnProfile.setBounds(200, 160, 400, 50);
+        btnDesign.setBounds(200, 220, 400, 50);
+        btnGrade.setBounds(200, 280, 400, 50);
+        btnReport.setBounds(200, 340, 400, 50);
+        btnLogout.setBounds(200, 400, 400, 50);
 
-        btnProfile.addActionListener(e -> cardLayout.show(mainContainer, "PROFILE"));
-        btnDesign.addActionListener(e -> cardLayout.show(mainContainer, "DESIGN"));
-        btnGrade.addActionListener(e -> refreshAndShowGrading());
-        btnReport.addActionListener(e -> refreshAndShowReport());
-
-
-        btnLogout.addActionListener(e -> {
+        // Add action listeners
+        btnProfile.addActionListener(_ -> {
+            dispose();
+            new ProfileWindow();
+        });
+        btnDesign.addActionListener(_ -> {
+            dispose();
+            new DesignAssessmentWindow();
+        });
+        btnGrade.addActionListener(_ -> {
+            dispose();
+            new GradingWindow();
+        });
+        btnReport.addActionListener(_ -> {
+            dispose();
+            new ReceiveFeedbackWindow();
+        });
+        btnLogout.addActionListener(_ -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 dispose();
@@ -62,205 +60,375 @@ public class LecturerDashboard extends JFrame {
             }
         });
 
-        panel.add(title);
-        panel.add(btnProfile);
-        panel.add(btnDesign);
-        panel.add(btnGrade);
-        panel.add(btnReport);
-        panel.add(btnLogout);
+        // Add buttons to JFrame
+        add(btnProfile);
+        add(btnDesign);
+        add(btnGrade);
+        add(btnReport);
+        add(btnLogout);
 
-        return panel;
+        setVisible(true);
     }
 
+    // ------------------- Profile Window -------------------
+    private static class ProfileWindow extends JFrame {
+        public ProfileWindow() {
+            setTitle("Update Profile");
+            setSize(400, 400);
+            setLocationRelativeTo(null);
+            setLayout(null); // Remove layout manager
 
-    private JPanel createProfilePanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel form = new JPanel(new GridLayout(6, 2, 10, 10));
-        form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+            // Labels and text fields
+            JLabel lblId = new JLabel("Lecturer ID:");
+            lblId.setBounds(20, 40, 120, 25);
+            add(lblId);
+            JTextField txtId = new JTextField();
+            txtId.setBounds(150, 40, 200, 25);
+            add(txtId);
 
-        JTextField txtId = new JTextField();
-        JTextField txtName = new JTextField();
-        JTextField txtEmail = new JTextField();
-        JTextField txtDept = new JTextField();
-        JTextField txtLeader = new JTextField();
-        JButton btnUpdate = new JButton("Update Profile");
+            JLabel lblName = new JLabel("Name:");
+            lblName.setBounds(20, 80, 120, 25);
+            add(lblName);
+            JTextField txtName = new JTextField();
+            txtName.setBounds(150, 80, 200, 25);
+            add(txtName);
 
-        String myID = "AFS00002";
-        String[] data = FileHandler.loadProfile(myID);
+            JLabel lblEmail = new JLabel("Email:");
+            lblEmail.setBounds(20, 120, 120, 25);
+            add(lblEmail);
+            JTextField txtEmail = new JTextField();
+            txtEmail.setBounds(150, 120, 200, 25);
+            add(txtEmail);
 
-        if (data != null && data.length >= 5) {
-            txtId.setText(data[0]);
-            txtName.setText(data[1]);
-            txtEmail.setText(data[2]);
-            txtDept.setText(data[3]);
-            txtLeader.setText(data[4]);
-        }
+            JLabel lblPassword = new JLabel("Password:");
+            lblPassword.setBounds(20, 160, 120, 25);
+            add(lblPassword);
+            JTextField txtPassword = new JTextField();
+            txtPassword.setBounds(150, 160, 200, 25);
+            add(txtPassword);
 
-        txtId.setEditable(false);
-        txtEmail.setEditable(false);
-        txtLeader.setEditable(false);
+            JLabel lblDept = new JLabel("School:");
+            lblDept.setBounds(20, 200, 120, 25);
+            add(lblDept);
+            JTextField txtDept = new JTextField();
+            txtDept.setBounds(150, 200, 200, 25);
+            add(txtDept);
 
-        form.add(new JLabel("Lecturer ID:"));    form.add(txtId);
-        form.add(new JLabel("Name:"));           form.add(txtName);
-        form.add(new JLabel("Email:"));          form.add(txtEmail);
-        form.add(new JLabel("School:"));         form.add(txtDept);
-        form.add(new JLabel("Academic Leader:")); form.add(txtLeader);
-        form.add(new JLabel(""));                form.add(btnUpdate);
+            JLabel lblLeader = new JLabel("Academic Leader:");
+            lblLeader.setBounds(20, 240, 120, 25);
+            add(lblLeader);
+            JTextField txtLeader = new JTextField();
+            txtLeader.setBounds(150, 240, 200, 25);
+            add(txtLeader);
 
-        btnUpdate.addActionListener(e -> {
-            try {
-                FileHandler.saveProfile(
-                        txtId.getText(),
-                        txtName.getText(),
-                        txtEmail.getText(),
-                        txtDept.getText(),
-                        txtLeader.getText()
-                );
-                JOptionPane.showMessageDialog(this, "Profile Updated Successfully!");
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error saving profile: " + ex.getMessage());
-            }
-        });
+            JButton btnBack = new JButton("Back");
+            btnBack.setBounds(20, 10, 100, 25);
+            add(btnBack);
 
-        panel.add(new JLabel("Update Profile", SwingConstants.CENTER), BorderLayout.NORTH);
-        panel.add(form, BorderLayout.CENTER);
-        panel.add(createBackButton(), BorderLayout.SOUTH);
+            JButton btnUpdate = new JButton("Update Profile");
+            btnUpdate.setBounds(150, 300, 150, 30);
+            add(btnUpdate);
 
-        return panel;
-    }
+            // Load profile data
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] Account = line.split(" ; ");
+                    String name = Account[3];
 
-    private JPanel createDesignAssessmentPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel form = new JPanel(new GridLayout(5, 2, 10, 10));
-        form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
-
-        JTextField txtId = new JTextField();
-        JTextField txtSubject = new JTextField();
-        JTextField txtTitle = new JTextField();
-        JTextField txtMarks = new JTextField();
-        JButton btnSave = new JButton("Save Assessment");
-
-        form.add(new JLabel("Assessment ID:")); form.add(txtId);
-        form.add(new JLabel("Subject Code:"));  form.add(txtSubject);
-        form.add(new JLabel("Title:"));         form.add(txtTitle);
-        form.add(new JLabel("Max Marks:"));     form.add(txtMarks);
-        form.add(new JLabel(""));               form.add(btnSave);
-
-        btnSave.addActionListener(e -> {
-            try {
-                if(txtId.getText().isEmpty() || txtMarks.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Please fill all fields.");
-                    return;
+                    if (name.equals(Name.getName())) {
+                        txtId.setText(Account[0]);
+                        txtName.setText(Name.getName());
+                        txtEmail.setText(Account[2]);
+                        txtPassword.setText(Account[1]);
+                        txtDept.setText(Account[6]);
+                        txtLeader.setText(Account[7]);
+                    }
                 }
-                int marks = Integer.parseInt(txtMarks.getText());
-                assessment newAssmt = new assessment(txtId.getText(), txtSubject.getText(), txtTitle.getText(), marks);
-                FileHandler.saveAssesment(newAssmt);
-                JOptionPane.showMessageDialog(this, "Assessment Saved!");
-                txtId.setText(""); txtSubject.setText(""); txtTitle.setText(""); txtMarks.setText("");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error saving.");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Something went wrong. Please contact technician team for support",
+                        "Error",JOptionPane.WARNING_MESSAGE);
             }
-        });
 
-        panel.add(new JLabel("Design Assessment", SwingConstants.CENTER), BorderLayout.NORTH);
-        panel.add(form, BorderLayout.CENTER);
-        panel.add(createBackButton(), BorderLayout.SOUTH);
 
-        return panel;
+            // Make certain fields read-only
+            txtId.setEditable(false);
+            txtEmail.setEditable(false);
+            txtDept.setEditable(false);
+            txtLeader.setEditable(false);
+
+            btnBack.addActionListener(_ -> {
+                dispose();
+                new LecturerDashboard();
+            });
+
+            // Update button action
+            btnUpdate.addActionListener(_ -> {
+                try {
+                    FileHandler.saveProfile(
+                            txtId.getText(),
+                            txtName.getText(),
+                            txtEmail.getText(),
+                            txtPassword.getText(),
+                            txtDept.getText(),
+                            txtLeader.getText()
+                    );
+                    JOptionPane.showMessageDialog(this, "Profile Updated Successfully!");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error saving profile: " + ex.getMessage());
+                }
+            });
+
+            setVisible(true);
+        }
     }
 
-    private JComboBox<assessment> gradingDropdown;
+    // ------------------- Design Assessment Window -------------------
+    private static class DesignAssessmentWindow extends JFrame {
+        public DesignAssessmentWindow() {
+            setTitle("Design Assessment");
+            setSize(900, 500);
+            setLocationRelativeTo(null);
+            setLayout(null); // Remove layout manager
 
-    private JPanel createGradingPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel form = new JPanel(new GridLayout(5, 2, 10, 10));
-        form.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+            JLabel lblTitle = new JLabel("Design Assessment", SwingConstants.CENTER);
+            lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+            lblTitle.setBounds(0, 10, 900, 50);
+            add(lblTitle);
 
-        gradingDropdown = new JComboBox<>(); // Empty at first
-        JTextField txtStudentId = new JTextField();
-        JTextField txtMarks = new JTextField();
-        JTextField txtFeedback = new JTextField();
-        JButton btnSubmit = new JButton("Submit Grade");
+            // Form fields
+            JLabel lblId = new JLabel("Module ID:");
+            lblId.setBounds(20, 100, 100, 25);
+            add(lblId);
+            JTextField txtId = new JTextField();
+            txtId.setBounds(120, 100, 200, 25);
+            add(txtId);
 
-        form.add(new JLabel("Select Assessment:")); form.add(gradingDropdown);
-        form.add(new JLabel("Student ID:"));        form.add(txtStudentId);
-        form.add(new JLabel("Marks:"));             form.add(txtMarks);
-        form.add(new JLabel("Feedback:"));          form.add(txtFeedback);
-        form.add(new JLabel(""));                   form.add(btnSubmit);
+            JLabel lblSubject = new JLabel("Subject Code:");
+            lblSubject.setBounds(20, 150, 100, 25);
+            add(lblSubject);
+            JTextField txtSubject = new JTextField();
+            txtSubject.setBounds(120, 150, 200, 25);
+            add(txtSubject);
 
-        btnSubmit.addActionListener(e -> {
-            try {
-                assessment selected = (assessment) gradingDropdown.getSelectedItem();
-                if (selected == null) return;
-                FileHandler.saveResult(selected.getId(), txtStudentId.getText(), Integer.parseInt(txtMarks.getText()), txtFeedback.getText());
-                JOptionPane.showMessageDialog(this, "Grade Saved!");
-                txtStudentId.setText(""); txtMarks.setText(""); txtFeedback.setText("");
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error saving grade.");
+            JLabel lblTitleField = new JLabel("Title:");
+            lblTitleField.setBounds(20, 200, 100, 25);
+            add(lblTitleField);
+            JTextField txtTitle = new JTextField();
+            txtTitle.setBounds(120, 200, 200, 25);
+            add(txtTitle);
+
+            JLabel lblGPA = new JLabel("Max Marks:");
+            lblGPA.setBounds(20, 250, 100, 25);
+            add(lblGPA);
+            JTextField txtMarks = new JTextField();
+            txtMarks.setBounds(120, 250, 200, 25);
+            add(txtMarks);
+
+            JButton btnBack = new JButton("Back");
+            btnBack.setBounds(20, 50, 100, 25);
+            btnBack.addActionListener(_ -> {
+                dispose();
+                new LecturerDashboard();
+            });
+            add(btnBack);
+
+            JButton btnSave = new JButton("Save Assessment");
+            btnSave.setBounds(20, 360, 300, 40);
+            add(btnSave);
+
+            // Table
+            String[] columns = {"Module ID", "Subject Code", "Title", "Max Marks"};
+            DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+            JTable table = new JTable(tableModel);
+            JScrollPane tableScroll = new JScrollPane(table);
+            tableScroll.setBounds(350, 100, 500, 300);
+            add(tableScroll);
+
+            // Load existing assessments
+            for (assessment a : FileHandler.loadAssessments()) {
+                tableModel.addRow(new Object[]{a.getId(), a.getSubject(), a.getTitle(), a.getMaxMarks()});
             }
-        });
 
-        panel.add(new JLabel("Key-in Marks", SwingConstants.CENTER), BorderLayout.NORTH);
-        panel.add(form, BorderLayout.CENTER);
-        panel.add(createBackButton(), BorderLayout.SOUTH);
-        return panel;
+            // Save button action
+            btnSave.addActionListener(e -> {
+                try {
+                    if (txtId.getText().isEmpty() || txtMarks.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Please fill all fields.");
+                        return;
+                    }
+                    int marks = Integer.parseInt(txtMarks.getText());
+                    assessment newAssmt = new assessment(txtId.getText(), txtSubject.getText(), txtTitle.getText(), marks);
+                    FileHandler.saveAssessment(newAssmt);
+                    tableModel.addRow(new Object[]{newAssmt.getId(), newAssmt.getSubject(), newAssmt.getTitle(), newAssmt.getMaxMarks()});
+                    txtId.setText(""); txtSubject.setText(""); txtTitle.setText(""); txtMarks.setText("");
+                    JOptionPane.showMessageDialog(this, "Assessment Saved!");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error saving.");
+                }
+            });
+
+            setVisible(true);
+        }
     }
 
+    // ------------------- Grading Window -------------------
+    private static class GradingWindow extends JFrame {
+        private JComboBox<assessment> gradingDropdown;
 
-    private JComboBox<assessment> reportDropdown;
-    private JTextArea txtDisplay;
+        public GradingWindow() {
+            setTitle("Key-in Marks");
+            setSize(900, 500);
+            setLocationRelativeTo(null);
+            setLayout(null);
 
-    private JPanel createReportPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel topPanel = new JPanel();
+            JLabel lblTitle = new JLabel("Grading Assessment");
+            lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+            lblTitle.setBounds(0, 10, 900, 50);
+            lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            add(lblTitle);
 
-        reportDropdown = new JComboBox<>();
-        JButton btnGenerate = new JButton("Generate Report");
+            JLabel lblSelect = new JLabel("Select Assessment:");
+            lblSelect.setBounds(20, 75, 150, 25);
+            add(lblSelect);
 
-        topPanel.add(new JLabel("Assessment:"));
-        topPanel.add(reportDropdown);
-        topPanel.add(btnGenerate);
+            gradingDropdown = new JComboBox<>();
+            gradingDropdown.setBounds(150, 75, 300, 25);
+            add(gradingDropdown);
 
-        txtDisplay = new JTextArea();
-        txtDisplay.setEditable(false);
+            for (assessment a : FileHandler.loadAssessments()) gradingDropdown.addItem(a);
 
-        btnGenerate.addActionListener(e -> {
-            txtDisplay.setText("");
-            assessment selected = (assessment) reportDropdown.getSelectedItem();
-            if (selected != null) {
-                java.util.List<String> results = FileHandler.getReport(selected.getId());
-                txtDisplay.append("REPORT FOR: " + selected.getTitle() + "\n\n");
-                for (String line : results) txtDisplay.append(line + "\n----------------\n");
-            }
-        });
+            // Table
+            String[] columns = {"Module ID", "Subject Code", "Title", "Max Marks"};
+            DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+            JTable table = new JTable(tableModel);
+            JScrollPane tableScroll = new JScrollPane(table);
+            tableScroll.setBounds(20, 125, 500, 317);
+            add(tableScroll);
 
-        panel.add(topPanel, BorderLayout.NORTH);
-        panel.add(new JScrollPane(txtDisplay), BorderLayout.CENTER);
-        panel.add(createBackButton(), BorderLayout.SOUTH);
-        return panel;
+            JLabel lblStudentId = new JLabel("Student ID:");
+            lblStudentId.setBounds(550, 75, 100, 25);
+            add(lblStudentId);
+            JTextField txtStudentId = new JTextField();
+            txtStudentId.setBounds(630, 75, 200, 25);
+            add(txtStudentId);
+
+            JLabel lblGPA = new JLabel("GPA:");
+            lblGPA.setBounds(550, 120, 100, 25);
+            add(lblGPA);
+            JTextField txtGPA = new JTextField();
+            txtGPA.setBounds(630, 120, 200, 25);
+            add(txtGPA);
+
+            JLabel lblFeedback_Assessment1 = new JLabel("Feedback (Assessment 1):");
+            lblFeedback_Assessment1.setBounds(550, 170, 250, 25);
+            add(lblFeedback_Assessment1);
+            JTextField txtFeedback_Assessment1 = new JTextField();
+            txtFeedback_Assessment1.setBounds(550, 200, 280, 25);
+            add(txtFeedback_Assessment1);
+
+            JLabel lblFeedback_Assessment2 = new JLabel("Feedback (Assessment 2):");
+            lblFeedback_Assessment2.setBounds(550, 245, 250, 25);
+            add(lblFeedback_Assessment2);
+            JTextField txtFeedback_Assessment2 = new JTextField();
+            txtFeedback_Assessment2.setBounds(550, 275, 280, 25);
+            add(txtFeedback_Assessment2);
+
+            JLabel lblFeedback_Assessment3 = new JLabel("Feedback (Assessment 3):");
+            lblFeedback_Assessment3.setBounds(550, 320, 250, 25);
+            add(lblFeedback_Assessment3);
+            JTextField txtFeedback_Assessment3 = new JTextField();
+            txtFeedback_Assessment3.setBounds(550, 350, 280, 25);
+            add(txtFeedback_Assessment3);
+
+            JButton btnSubmit = new JButton("Submit Grade");
+            btnSubmit.setBounds(550, 400, 280, 40);
+            add(btnSubmit);
+
+            JButton btnBack = new JButton("Back");
+            btnBack.setBounds(20, 25, 100, 30);
+            btnBack.addActionListener(e -> {
+                dispose();
+                new LecturerDashboard();
+            });
+            add(btnBack);
+
+//            btnSubmit.addActionListener(_ -> {
+//                try {
+//                    assessment selected = (assessment) gradingDropdown.getSelectedItem();
+//                    if (selected == null) return;
+//                    FileHandler.saveResult(selected.getId(), txtStudentId.getText(), Integer.parseInt(txtGPA.getText()), txtFeedback.getText());
+//                    JOptionPane.showMessageDialog(this, "Grade Saved!");
+//                    txtStudentId.setText(""); txtGPA.setText(""); txtFeedback.setText("");
+//                } catch (Exception ex) {
+//                    JOptionPane.showMessageDialog(this, "Error saving grade.");
+//                }
+//            });
+
+            setVisible(true);
+        }
     }
 
+    // ------------------- Receive Feedback Window -------------------
+    private static class ReceiveFeedbackWindow extends JFrame {
+        private JComboBox<assessment> reportDropdown;
+        private JTextArea txtDisplay;
 
-    private JButton createBackButton() {
-        JButton btnBack = new JButton("<< Back to Menu");
-        btnBack.addActionListener(e -> cardLayout.show(mainContainer, "MENU"));
-        return btnBack;
-    }
+        public ReceiveFeedbackWindow() {
+            setTitle("View Reports");
+            setSize(700, 600);
+            setLocationRelativeTo(null);
+            setLayout(null);
 
+            JLabel lblModules = new JLabel("Modules:");
+            lblModules.setBounds(20, 80, 100, 25);
+            add(lblModules);
 
-    private void refreshAndShowGrading() {
-        gradingDropdown.removeAllItems();
-        for (assessment a : FileHandler.loadAssesments()) gradingDropdown.addItem(a);
-        cardLayout.show(mainContainer, "GRADING");
-    }
+            reportDropdown = new JComboBox<>();
+            reportDropdown.setBounds(100, 80, 250, 25);
+            add(reportDropdown);
 
-    private void refreshAndShowReport() {
-        reportDropdown.removeAllItems();
-        for (assessment a : FileHandler.loadAssesments()) reportDropdown.addItem(a);
-        cardLayout.show(mainContainer, "REPORT");
+            for (assessment a : FileHandler.loadAssessments()) reportDropdown.addItem(a);
+
+            JButton btnBack = new JButton("Back");
+            btnBack.setBounds(20, 25, 100, 30);
+            btnBack.addActionListener(_ -> {
+               dispose();
+               new LecturerDashboard();
+            });
+            add(btnBack);
+
+            JButton btnSearch = new JButton("Search");
+            btnSearch.setBounds(568, 80, 100, 30);
+            add(btnSearch);
+
+            // ** REMOVE btn_Generate
+            JButton btnGenerate = new JButton("Generate Report");
+            btnGenerate.setBounds(330, 20, 140, 25);
+            add(btnGenerate);
+
+            txtDisplay = new JTextArea();
+            txtDisplay.setEditable(false);
+            JScrollPane scroll = new JScrollPane(txtDisplay);
+            scroll.setBounds(20, 120, 650, 280);
+            add(scroll);
+
+            btnGenerate.addActionListener(e -> {
+                txtDisplay.setText("");
+                assessment selected = (assessment) reportDropdown.getSelectedItem();
+                if (selected != null) {
+                    for (String line : FileHandler.getReport(selected.getId())) {
+                        txtDisplay.append(line + "\n----------------\n");
+                    }
+                }
+            });
+
+            setVisible(true);
+        }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LecturerDashboard().setVisible(true));
+        SwingUtilities.invokeLater(LecturerDashboard::new);
     }
 }

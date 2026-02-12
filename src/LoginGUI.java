@@ -35,7 +35,7 @@ public class LoginGUI extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Login));
+            try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Account));
                  BufferedReader reader2 = new BufferedReader(new FileReader(Resources.AdminAccount))) {
 
                 String line1, line2;
@@ -195,7 +195,7 @@ public class LoginGUI extends JFrame {
                     return;
                 }
 
-                try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -346,7 +346,7 @@ class SetNewPasswordGUI extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -381,7 +381,7 @@ class SetNewPasswordGUI extends JFrame {
                         "Error",JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(Resources.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Account)) {
                 writer.write(updatedPassword.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,

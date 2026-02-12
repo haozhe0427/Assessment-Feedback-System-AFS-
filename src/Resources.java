@@ -3,7 +3,7 @@ import javax.swing.*;
 public class Resources {
     // STORE PICTURES AND TEXT FILES ONLY
     // 1) Account.txt
-    public static final String Login = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
+    public static final String Account = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
     // Use in: - LoginGUI.java (Make credential validations)
     //         - ManageAccountGUI_Admin.java (To display inside JTable)

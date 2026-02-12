@@ -11,7 +11,7 @@ public class TextFileUtils {
         List<String> lines = new ArrayList<>();
         boolean found = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(Resources.Login))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(Resources.Account))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) {
@@ -44,7 +44,7 @@ public class TextFileUtils {
         }
 
         // Write everything back to the file
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Login))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Account))) {
             for (String s : lines) {
                 bw.write(s);
                 bw.newLine();

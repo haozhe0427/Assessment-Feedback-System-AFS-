@@ -282,7 +282,7 @@ class EditProfileGUI_Student extends javax.swing.JFrame {
             return;
         }
         List<String> lines = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))){
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -309,7 +309,7 @@ class EditProfileGUI_Student extends javax.swing.JFrame {
                 break;
             }
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Resources.Login))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Resources.Account))) {
             for (String line : lines) {
                 writer.write(line);
                 writer.newLine();

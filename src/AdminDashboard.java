@@ -184,7 +184,7 @@ class AssignLecturerGUI_Admin extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -219,7 +219,7 @@ class AssignLecturerGUI_Admin extends JFrame {
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(Resources.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Account)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -248,7 +248,7 @@ class AssignLecturerGUI_Admin extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -283,7 +283,7 @@ class AssignLecturerGUI_Admin extends JFrame {
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(Resources.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Account)) {
                 writer.write(updatedLecturers.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -387,7 +387,7 @@ class AssignLecturerGUI_Admin extends JFrame {
 
 
     public void displayLecturers () { // display every lecturer's info
-        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -414,7 +414,7 @@ class AssignLecturerGUI_Admin extends JFrame {
 
 
     public void displayAcademicLeadersName () { // display every academic leader's name ONLY
-        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
             String line;
             int i = 0;
 
@@ -839,7 +839,7 @@ class ManageAccountGUI_Admin extends JFrame {
             String selectedRole = (String) selectUserRole_cb.getSelectedItem();
             tableModel.setRowCount(0);
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] accountInfo = line.split(" ; ");
@@ -894,7 +894,7 @@ class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -949,7 +949,7 @@ class ManageAccountGUI_Admin extends JFrame {
                         "Error", JOptionPane.WARNING_MESSAGE);
             }
 
-            try (FileWriter writer = new FileWriter(Resources.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Account)) {
                 writer.write(updatedAccount.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -985,7 +985,7 @@ class ManageAccountGUI_Admin extends JFrame {
                     JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) return;
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -1010,7 +1010,7 @@ class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter(Resources.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Account)) {
                 writer.write(remainingAccounts.toString());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
@@ -1106,7 +1106,7 @@ class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -1170,7 +1170,7 @@ class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter(Resources.Login)) {
+            try (FileWriter writer = new FileWriter(Resources.Account)) {
                 writer.write(existedAccounts.toString());
                 writer.write(updatedAccount.toString());
             } catch (IOException e) {
@@ -1572,7 +1572,7 @@ class ManageAccountGUI_Admin extends JFrame {
 
 
     public void displayAllAccount () {
-        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] accountInfo = line.split(" ; ");
@@ -1593,7 +1593,7 @@ class ManageAccountGUI_Admin extends JFrame {
     public void getUserEmail () {
         String selectedUserID = userIDField.getText();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -1617,7 +1617,7 @@ class ManageAccountGUI_Admin extends JFrame {
     public void getStudentCourse () {
         String selectedStudentID = userIDField.getText();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Login))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -1648,7 +1648,7 @@ class ManageAccountGUI_Admin extends JFrame {
 
     public String idNumberGenerator (String prefix) {
         int maxNumber = 0;
-        try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Login));
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Account));
              BufferedReader reader2 = new BufferedReader(new FileReader(Resources.DeletedAccounts))) {
 
             String line1, line2;

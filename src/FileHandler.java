@@ -1,55 +1,39 @@
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
 
-    private static final String LECTURER_FILE = "D:\\intelij save\\src\\Text File\\Account.txt";
+    private static final String LECTURER_FILE = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Modules.txt";
     private static final String ASSESMENT_FILE = "assesments.txt";
     private static final String RESULTS_FILE = "results.txt";
 
+    public static void saveProfile(String id, String newName, String newEmail,
+                                   String newPassword, String newDept, String newLeader) throws IOException {
 
-    public static String[] loadProfile(String targetID) {
-        File file = new File(LECTURER_FILE);
-        if (!file.exists()) return new String[]{"", "", "", "", ""};
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length >= 7 && parts[0].trim().equals(targetID)) {
-                    return new String[]{
-                            parts[0].trim(), // ID (Index 0)
-                            parts[3].trim(), // Name (Index 3)
-                            parts[2].trim(), // Email (Index 2)
-                            parts[6].trim(), // School (Index 6)
-                            (parts.length > 7 ? parts[7].trim() : "None") // Leader (Index 7)
-                    };
-                }
-            }
-        } catch (IOException e) { e.printStackTrace(); }
-        return new String[]{"", "", "", "", ""};
-    }
-
-    public static void saveProfile(String id, String newName, String newEmail, String newDept, String newLeader) throws IOException {
         File file = new File(LECTURER_FILE);
         List<String> lines = new ArrayList<>();
 
         if (file.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
+
                 while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(";");
-                    if (parts.length >= 7 && parts[0].trim().equals(id)) {
-                        // We reconstruct the line preserving Password (1), Gender (4), and Role (5)
-                        String updatedLine = id + " ; " +
-                                parts[1].trim() + " ; " + // Keep Password
-                                newEmail + " ; " +        // Update Email
-                                newName + " ; " +         // Update Name
-                                parts[4].trim() + " ; " + // Keep Gender
-                                parts[5].trim() + " ; " + // Keep Role
-                                newDept + " ; " +         // Update School
-                                newLeader;                // Add/Update Leader
+                    String[] parts = line.split(" ; ");
+
+                    if (parts.length >= 8 && parts[0].trim().equals(id.trim())) {
+
+                        String updatedLine =
+                                id.trim() + " ; " +
+                                        newPassword.trim() + " ; " +   // update password
+                                        newEmail.trim() + " ; " +
+                                        newName.trim() + " ; " +
+                                        parts[4].trim() + " ; " +
+                                        parts[5].trim() + " ; " +
+                                        newDept.trim() + " ; " +
+                                        newLeader.trim();
+
                         lines.add(updatedLine);
                     } else {
                         lines.add(line);
@@ -67,14 +51,14 @@ public class FileHandler {
     }
 
 
-    public static void saveAssesment(assessment assesment) throws IOException {
+    public static void saveAssessment(assessment assessment) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ASSESMENT_FILE, true))) {
-            writer.write(assesment.toFileString());
+            writer.write(assessment.toFileString());
             writer.newLine();
         }
     }
 
-    public static List<assessment> loadAssesments() {
+    public static List<assessment> loadAssessments() {
         List<assessment> list = new ArrayList<>();
         File file = new File(ASSESMENT_FILE);
         if (!file.exists()) return list;
@@ -88,7 +72,9 @@ public class FileHandler {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Something went wrong. Please contact technician team for support",
+                    "Error",JOptionPane.WARNING_MESSAGE);
         }
         return list;
     }
