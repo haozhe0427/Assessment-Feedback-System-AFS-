@@ -58,17 +58,24 @@ public class TextFileUtils {
     }
     // --- INNER CLASS: MODULE (No need for separate file) ---
     public static class Module {
-        String code, name, a1, a2, a3, loc, lec;
+        String code, name, a1, a2, a3, loc, lec, day, time;
 
-        public Module(String code, String name, String a1, String a2, String a3, String loc, String lec) {
-            this.code = code; this.name = name; this.a1 = a1; this.a2 = a2;
-            this.a3 = a3; this.loc = loc; this.lec = lec;
+        public Module(String code, String name, String a1, String a2, String a3, String loc, String lec, String day, String time) {
+            this.code = code;
+            this.name = name;
+            this.a1 = a1;
+            this.a2 = a2;
+            this.a3 = a3;
+            this.loc = loc;
+            this.lec = lec;
+            this.day = day;
+            this.time = time;
         }
 
         // Helper to format for file
         public String toFileString() {
             return code + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " +
-                    a3 + " ; " + loc + " ; " + lec + " ; ";
+                    a3 + " ; " + loc + " ; " + lec + " ; " + day + " ; " + time + " ; ";
         }
     }
 
@@ -91,7 +98,9 @@ public class TextFileUtils {
                             (data.length > 3) ? data[3].trim() : "NULL",
                             (data.length > 4) ? data[4].trim() : "NULL",
                             (data.length > 5) ? data[5].trim() : "NULL",
-                            (data.length > 6) ? data[6].trim() : "NULL"
+                            (data.length > 6) ? data[6].trim() : "NULL",
+                            (data.length > 7 ) ? data[7].trim() : "NULL",
+                            (data.length > 8) ? data[8].trim() :  "NULL"
                     ));
                 }
             }

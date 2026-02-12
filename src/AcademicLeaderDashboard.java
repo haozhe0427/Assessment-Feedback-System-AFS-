@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 // ACADEMIC LEADER DASHBOARD
 public class AcademicLeaderDashboard extends JFrame {
@@ -161,7 +163,6 @@ class EditProfileGUI_AcademicLeader extends JFrame {
                 // 5. Update Session and UI
                 Session.login(currentUser);
                 JOptionPane.showMessageDialog(null, "Profile Updated Successfully!");
-                dispose(); // Close the edit window
             } else {
                 JOptionPane.showMessageDialog(null, "Error updating file. Please check permissions.");
             }
@@ -187,7 +188,7 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
 
     public CreateModulesGUI_AcademicLeader() {
         setTitle("Manage Modules & Assign Lecturers");
-        setSize(900, 500);
+        setSize(1000, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -206,7 +207,7 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // --- Table Setup ---
-        String[] columns = {"Code", "Name", "Assmnt 1", "Assmnt 2", "Assmnt 3", "Location", "Lecturer"};
+        String[] columns = {"Code", "Name", "Assmnt 1", "Assmnt 2", "Assmnt 3", "Location", "Lecturer", "Date", "Time"};
         tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         refreshTable(); // Load initial data
@@ -222,7 +223,11 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
                 return;
             }
             String code = (String) tableModel.getValueAt(row, 0);
-            if (JOptionPane.showConfirmDialog(this, "Delete " + code + "?") == JOptionPane.YES_OPTION) {
+            if (JOptionPane.showConfirmDialog(this,
+                    "Delete " + code + "?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+            ) == JOptionPane.YES_OPTION) {
                 TextFileUtils.deleteModule(code);
                 refreshTable();
             }
@@ -246,7 +251,8 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
                         (String)table.getValueAt(row, 0), (String)table.getValueAt(row, 1),
                         (String)table.getValueAt(row, 2), (String)table.getValueAt(row, 3),
                         (String)table.getValueAt(row, 4), (String)table.getValueAt(row, 5),
-                        (String)table.getValueAt(row, 6)
+                        (String)table.getValueAt(row, 6), (String)table.getValueAt(row,7),
+                        (String)table.getValueAt(row, 8)
                 );
                 showModuleDialog(m);
             } else {
@@ -258,29 +264,29 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
     private void refreshTable() {
         tableModel.setRowCount(0);
         for (TextFileUtils.Module m : TextFileUtils.getAllModules()) {
-            tableModel.addRow(new Object[]{m.code, m.name, m.a1, m.a2, m.a3, m.loc, m.lec});
+            tableModel.addRow(new Object[]{m.code, m.name, m.a1, m.a2, m.a3, m.loc, m.lec, m.day, m.time});
         }
     }
 
     private void showModuleDialog(TextFileUtils.Module existing) {
         JDialog d = new JDialog(this, (existing == null ? "Add Module" : "Edit Module"), true);
-        d.setLayout(new GridLayout(9, 2, 5, 5)); // Added gaps for better look
-        d.setSize(400, 500);
+        d.setLayout(new GridLayout(10, 2, 10, 10));
+        d.setSize(400, 600);
         d.setLocationRelativeTo(this);
+        Color lockedColor = new Color(240, 240, 240);
 
         // Fields
         JTextField tCode = new JTextField(existing != null ? existing.code : "");
-        if(existing != null) tCode.setEditable(false); // Code is unique ID, cannot change
+        if(existing != null) tCode.setEditable(false);
 
         JTextField tName = new JTextField(existing != null ? existing.name : "");
-        JTextField tA1 = new JTextField(existing != null ? existing.a1 : "Assignment (55%)");
-        JTextField tA2 = new JTextField(existing != null ? existing.a2 : "Final Exam (45%)");
+        JTextField tA1 = new JTextField(existing != null ? existing.a1 : "NULL");
+        JTextField tA2 = new JTextField(existing != null ? existing.a2 : "NULL");
         JTextField tA3 = new JTextField(existing != null ? existing.a3 : "NULL");
-
-        // Location Field (Target for error handling)
         JTextField tLoc = new JTextField(existing != null ? existing.loc : "");
-
         JTextField tLec = new JTextField(existing != null ? existing.lec : "NULL");
+        JTextField tDay = new JTextField(existing != null ? existing.day : "NULL");
+        JTextField tTime = new JTextField(existing != null ? existing.time : "NULL");
         JButton btnSave = new JButton("Save");
 
         // Add to Dialog
@@ -291,6 +297,9 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
         d.add(new JLabel("Ass 3:")); d.add(tA3);
         d.add(new JLabel("Location (e.g. A-1-4):")); d.add(tLoc);
         d.add(new JLabel("Lecturer:")); d.add(tLec);
+        d.add(new JLabel("Day:")); d.add(tDay);
+        d.add(new JLabel("Time (HH:mm - HH:mm):")); d.add(tTime);
+
         d.add(btnSave);
 
         // SAVE ACTION WITH ERROR HANDLING
@@ -300,28 +309,55 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
                 JOptionPane.showMessageDialog(d, "Module Code and Name are required!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            String val1 = tA1.getText().trim();
-            String val2 = tA2.getText().trim();
-            String percentRegex = ".+\\(\\d+%\\)$";
 
-            if (!val1.equalsIgnoreCase("NULL") && !val1.matches(percentRegex)) {
-                JOptionPane.showMessageDialog(d,
-                        "Invalid Assessment 1 Format.\nMust look like: 'Assignment (50%)'",
-                        "Validation Error", JOptionPane.ERROR_MESSAGE);
+            JTextField ta1 = new JTextField("NULL");
+            ta1.setEditable(false);
+            ta1.setBackground(new Color(240, 240, 240));
+
+            JTextField ta2 = new JTextField("NULL");
+            ta2.setEditable(false);
+            ta2.setBackground(new Color(240, 240, 240));
+
+            JTextField ta3 = new JTextField("NULL");
+            ta3.setEditable(false);
+            ta3.setBackground(new Color(240, 240, 240));
+
+
+
+            String dayInput = tDay.getText().trim();
+            String timeInput = tTime.getText().trim();
+
+            if (!dayInput.matches("(?i)^(Monday|Tuesday|Wednesday|Thursday|Friday)$")) {
+                JOptionPane.showMessageDialog(d, "Invalid Day. Please enter Monday to Friday.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (!val2.equalsIgnoreCase("NULL") && !val2.matches(percentRegex)) {
-                JOptionPane.showMessageDialog(d,
-                        "Invalid Assessment 2 Format.\nMust look like: 'Final Exam (50%)'",
-                        "Validation Error", JOptionPane.ERROR_MESSAGE);
+            try {
+                String[] parts = timeInput.split(" - ");
+                if (parts.length != 2) throw new Exception();
+
+                // Using java.time.LocalTime for range checking
+                java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("H:mm");
+                java.time.LocalTime start = java.time.LocalTime.parse(parts[0], fmt);
+                java.time.LocalTime end = java.time.LocalTime.parse(parts[1], fmt);
+
+                java.time.LocalTime limitStart = java.time.LocalTime.of(6, 0);  // 6:00 AM
+                java.time.LocalTime limitEnd = java.time.LocalTime.of(18, 0);  // 6:00 PM (18:00)
+
+                if (start.isBefore(limitStart) || end.isAfter(limitEnd)) {
+                    JOptionPane.showMessageDialog(d, "Time must be between 6:00 AM and 6:00 PM.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!start.isBefore(end)) {
+                    JOptionPane.showMessageDialog(d, "Start time must be before end time.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(d, "Invalid Format. Use H:mm - H:mm (e.g., 8:00 - 10:00)", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
 
             // --- 2. LOCATION ERROR HANDLING (New Feature) ---
             String locInput = tLoc.getText().trim();
-
-            // Check A: Is it empty?
             if (locInput.isEmpty()) {
                 JOptionPane.showMessageDialog(d, "Location cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -351,7 +387,7 @@ class CreateModulesGUI_AcademicLeader extends JFrame {
             // --- 4. Save Logic ---
             TextFileUtils.Module newMod = new TextFileUtils.Module(
                     tCode.getText().trim(), tName.getText().trim(), tA1.getText().trim(), tA2.getText().trim(),
-                    tA3.getText().trim(), locInput, tLec.getText().trim()
+                    tA3.getText().trim(), locInput, tLec.getText().trim(), tDay.getText().trim(),tTime.getText().trim()
             );
 
             if (existing == null) { // Add
@@ -406,7 +442,11 @@ class GenerateReportGUI_AcademicLeader extends JFrame {
 
         // --- EXIT ACTION ---
         btnExit.addActionListener(e -> {
-            this.dispose(); // Close report, show Dashboard
+            this.dispose();
+            AcademicLeaderDashboard academicLeaderDashboard = new AcademicLeaderDashboard();
+            academicLeaderDashboard.setVisible(true);
+            academicLeaderDashboard.setLocationRelativeTo(null);
+
         });
     }
 
