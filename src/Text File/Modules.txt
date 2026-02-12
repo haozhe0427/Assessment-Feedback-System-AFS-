@@ -1,9 +1,9 @@
-MD0001 ; Object-Oriented Development ; NULL ; NULL ; NULL ; A-1-4 ; Joshua Koroh Pudin ; Monday ; 10:30 - 12:30 ; 
-MD0002 ; Programming For Data Analysis ; NULL ; NULL ; NULL ; C-9-8 ; Joshua Koroh Pudin ; Tuesday ; 12:00 - 13:00 ; 
-MD0003 ; Python ; NULL ; NULL ; NULL ; B-2-5 ; Joshua Koroh Pudin ; Tuesday ; 14:30 - 16:30 ; 
-MD0004 ; ENTS ; NULL ; NULL ; NULL ; C-9-2 ; Tial Tang ; Wednesday ; 8:30 - 10:30 ; 
-MD0005 ; SAAD ; NULL ; NULL ; NULL ; E-8-5 ; Tial Tang ; Thursday ; 15:30 - 17:30 ; 
-MD0006 ; RENG ; NULL ; NULL ; NULL ; C-3-2 ; Tial Tang ; Friday ; 10:30 - 12:30 ; 
-MD0007 ; Innovation ; NULL ; NULL ; NULL ; D-8-7 ; Odash ; Friday ; 12:00 - 14:00 ; 
-MD0008 ; Networking ; NULL ; NULL ; NULL ; S-8-8 ; Odash ; Wednesday ; 13:00 - 15:00 ; 
-MD0009 ; Bahasa Melayu ; NULL ; NULL ; NULL ; A-4-5 ; Odash ; Thursday ; 14:00 - 15:00 ; 
+MD0001 ; Object-Oriented Development ; NULL ; NULL ; NULL ; A-1-4 ; Joshua Koroh Pudin ; Monday ; 10:30 - 12:30
+MD0002 ; Programming For Data Analysis ; NULL ; NULL ; NULL ; C-9-8 ; Joshua Koroh Pudin ; Tuesday ; 12:00 - 13:00
+MD0003 ; Python ; NULL ; NULL ; NULL ; B-2-5 ; Joshua Koroh Pudin ; Tuesday ; 14:30 - 16:30
+MD0004 ; ENTS ; NULL ; NULL ; NULL ; C-9-2 ; Tial Tang ; Wednesday ; 8:30 - 10:30
+MD0005 ; SAAD ; NULL ; NULL ; NULL ; E-8-5 ; Tial Tang ; Thursday ; 15:30 - 17:30
+MD0006 ; RENG ; NULL ; NULL ; NULL ; C-3-2 ; Tial Tang ; Friday ; 10:30 - 12:30
+MD0007 ; Innovation ; NULL ; NULL ; NULL ; D-8-7 ; Odash ; Friday ; 12:00 - 14:00
+MD0008 ; Networking ; NULL ; NULL ; NULL ; S-8-8 ; Odash ; Wednesday ; 13:00 - 15:00
+MD0009 ; Bahasa Melayu ; NULL ; NULL ; NULL ; A-4-5 ; Odash ; Thursday ; 14:00 - 15:00

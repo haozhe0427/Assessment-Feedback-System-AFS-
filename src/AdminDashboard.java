@@ -125,7 +125,6 @@ public class AdminDashboard extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Admin)");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(new Color(255,250,250));
@@ -374,7 +373,6 @@ class AssignLecturerGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assign Lecturer");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -735,7 +733,6 @@ class GradingSystemGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Grading System");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -1559,7 +1556,6 @@ class ManageAccountGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Manage Account");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
@@ -2169,7 +2165,6 @@ class ManageClassesGUI_Admin extends JFrame {
 
 
         // <========= GUI FRAME =========>
-        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Manage Classes");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
