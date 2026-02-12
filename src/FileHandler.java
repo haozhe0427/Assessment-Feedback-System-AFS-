@@ -6,7 +6,7 @@ import java.util.List;
 public class FileHandler {
 
     // Lecturer account file
-    private static final String ACCOUNT_FILE = "src/Text File/Account.txt";
+    private static final String ACCOUNT_FILE = "D:\\intelij save\\src\\Text File\\Account.txt";
 
     // Assessment file
     private static final String ASSESSMENT_FILE = "src/Text File/Assessments.txt";
@@ -61,7 +61,22 @@ public class FileHandler {
             }
         }
     }
+    public static String[] getLecturerProfile(String lecturerId) throws IOException {
+        File file = new File("D:/intelij save/src/Text File/Account.txt");
 
+        if (!file.exists()) return null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" ; ");
+                if (parts.length >= 8 && parts[0].equals(lecturerId)) {
+                    return parts;
+                }
+            }
+        }
+        return null;
+    }
     // ------------------- Save assessment -------------------
     public static void saveAssessment(assessment assessment) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ASSESSMENT_FILE, true))) {
@@ -121,23 +136,30 @@ public class FileHandler {
     }
 
     // ------------------- Load Modules (for JTable) -------------------
-    public static List<String[]> loadModules() {
-        List<String[]> modules = new ArrayList<>();
-        File file = new File(MODULES_FILE);
-        if (!file.exists()) return modules;
+    public static List<String[]> loadStudentsByModule(String moduleName) {
+
+        List<String[]> list = new ArrayList<>();
+        File file = new File("src/Text File/ClassStudentList.txt");
+
+        if (!file.exists()) return list;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+
             while ((line = reader.readLine()) != null) {
+
                 String[] parts = line.split(" ; ");
-                if (parts.length >= 9) {
-                    modules.add(parts);
+
+                if (parts.length >= 13 && parts[1].equals(moduleName)) {
+                    list.add(parts);
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return modules;
+
+        return list;
     }
 }
 
