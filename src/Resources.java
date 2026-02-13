@@ -1,13 +1,11 @@
+
 import javax.swing.*;
 
-public class Resources extends JFrame {
+public class Resources {
+    // STORE PICTURES AND TEXT FILES ONLY
     // 1) Account.txt
     public static final String Account = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
-    // Use in: - LoginGUI.java (Make credential validations)
-    //         - ManageAccountGUI_Admin.java (To display inside JTable)
-    //         - Name.java (Get User's Name then print beside "Welcome Back, ..." after login is successful)
-    //
     // FORMAT :
     // a) Student:
     //    [UserID ; Password ; Email ; Name ; Gender ; UserRole ; Areas ; Course]
@@ -29,58 +27,54 @@ public class Resources extends JFrame {
 
 
     // 2) AdminAccount.txt
-//    public static final String AdminAccount = "Text File/AdminAccount.txt";
     public static final String AdminAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AdminAccount.txt";
     // ------------------------------------------------------------------------------------------------------
-    // Use in: - LoginGUI.java (Make Credential validations)
-    //         - Name.java (Get User's Name then print beside "Welcome Back, ..." after login is successful)
-    //
     // Format: UserID(Admin) ; Password ; Name ; UserRole
+    // example: AD000001 ; 12345 ; Ding Hao Zhe ; Admin
     // ------------------------------------------------------------------------------------------------------
 
 
     // 3) GradingSystem.txt
     public static final String GradingSystem = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\GradingSystem.txt";
     // ------------------------------------------------------------------------------------
-    // Use in: - GradingSystemGUI_Admin.java (To display inside JTable / Update the info)
-    //
     // Format: Marks ; Grade ; GPA ; Status
+    // example: 80-100 ; A+ ; 4.00 ; Distinction
     // ------------------------------------------------------------------------------------
 
 
     // 3) Modules.txt
     public static final String Modules = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Modules.txt";
-    // ---------------------------------------------------------------------------------------------------------------------
-    // Use in: - ManageClassesGUI_Admin.java (To display inside JTable / update & delete the class)
-    //
-    // Format: ModuleID ; ModuleName ; Assessment_1 ; Assessment_2 ; Assessment_3 ; Classroom ; Lecturer's name ; Academic Leaders's name
-    // ---------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------------------------
+    // Format: ModuleID ; ModuleName ; Assessment 1 ; Assessment 2 ; Assessment 3 ; Classroom ; Lecturer's name ; Day ; Time
+    // example : MD0001 ; Object-Oriented Development ; NULL ; NULL ; NULL ; A-1-4 ; Joshua Koroh Pudin ; Monday ; 10:30 - 12:30
+    // -----------------------------------------------------------------------------------------------------------------------------------
 
 
     // 4) DeletedAccount.txt
     public static final String DeletedAccounts = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\DeletedAccount.txt";
     // ----------------------------------------------------------------------------------------------------
-    // Use in: - To store deleted account after delete button (in ManageAccountGUI_Admin) is clicked
-    //
     // FORMAT: *** Same as Account.txt
     // ----------------------------------------------------------------------------------------------------
 
+
     // 4) ClassStudentList.txt
     public static final String ClassStudentList = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\ClassStudentList.txt";
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    // FORMAT : ModuleID ; ModuleName ; Assessment 1 ; Assessment 2 ; Assessment 3 ; Location ; Account ID (Student ID) ; GPA ; Grade ; Feedback ; Assessment 1 feedback ; Assessment 2 feedback ; Assessment 3 feedback
+    // example:
+    // MD0002 ; Programming For Data Analysis ; Assignment (55%) ; Final Exam (45%) ; NULL ; A-1-4 ; AFS00003 ; 3.3 ; B+ ; Dear Lecturer, thank you for the guidance on PFDA this semester. ; Good ; Very good ; You did not complete essay but you did great in other parts
+    //
+    // ** Feedback: Student -> Lecturer
+    // ** Assessment 1 feedback - Assessment 3 feedback: Lecturer -> Student
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    // Icon.png
-    public static final ImageIcon imageIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\Icon.png");
-    // -----------------------------------------------
-    // Use in: - For all GUI Frame
-    // -----------------------------------------------
 
-    // skills.png, video.lecture.png, market-research.png, classroom.png
+
+
+
     public static ImageIcon manageAccountIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\skills.png");
     public static ImageIcon lecturerIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\video-lecture.png");
     public static ImageIcon gradingSystemIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\market-research.png");
     public static ImageIcon classesIcon = new ImageIcon("C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Pictures\\classroom.png");
-    // -----------------------------------------------
-    // Use in: - DashboardGUI_Admin.java
-    // -----------------------------------------------
 }

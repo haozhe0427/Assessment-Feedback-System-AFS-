@@ -1,7 +1,4 @@
-
 MD0002;Programming For Data Analysis;Assignment 40%;Project 20%;Final Exam 40%;C-9-8;AFS00010;null;null; I give 10 out of 10 ;null;null;null
-
 MD0009;Bahasa Melayu;Oral Test 30%;Written Task 30%;Final Exam 40%;A-4-5;AFS00003;null;null;null;null;null;null
 MD0006;RENG;Assignment 1 30%;Assignment 2 30%;Final Exam 40%;C-3-2;AFS00003;null;null; I like her teaching method ;null;null;null
-
 MD0006;RENG;Assignment 1 30%;Assignment 2 30%;Final Exam 40%;C-3-2;AFS00010;null;null;null;null;null;null

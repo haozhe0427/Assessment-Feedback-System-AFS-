@@ -1,9 +1,9 @@
-MD0001 ; Object-Oriented Development ; Quiz 1 20% ; Assignment 40% ; Final Exam 40% ; Joshua Koroh Pudin; Wednesday ; 12:00 - 14:00
-MD0002 ; Programming For Data Analysis ; Assignment 40% ; Project 20% ; Final Exam 40% ; C-9-8 ; Joshua Koroh Pudin ; Tuesday ; 12:00 - 13:00
+MD0001 ; Object-Oriented Development ; Quiz 1 20% ; Assignment 40% ; Final Exam 40% ; B-4-8 ; Joshua Koroh Pudin ; Wednesday ; 12:00 - 14:00
+MD0002 ; Programming For Data Analysis ; Assignment 40% ; Project 20% ; Final Exam 40% ; C-4-8 ; Joshua Koroh Pudin ; Tuesday ; 12:00 - 13:00
 MD0003 ; Python ; Lab Test 1 20% ; Lab Test 2 30% ; Final Exam 50% ; B-2-5 ; Joshua Koroh Pudin ; Tuesday ; 14:30 - 16:30
-MD0004 ; ENTS ; Quiz 20% ; Midterm 30% ; Final Exam 50% ; C-9-2 ; Tial Tang ; Wednesday ; 8:30 - 10:30
-MD0005 ; SAAD ; Group Project 40% ; Presentation 20% ; Final Exam 40% ; E-8-5 ; Tial Tang ; Thursday ; 15:30 - 17:30
+MD0004 ; ENTS ; Quiz 20% ; Midterm 30% ; Final Exam 50% ; C-4-2 ; Tial Tang ; Wednesday ; 8:30 - 10:30
+MD0005 ; SAAD ; Group Project 40% ; Presentation 20% ; Final Exam 40% ; E-4-5 ; Tial Tang ; Thursday ; 15:30 - 17:30
 MD0006 ; RENG ; Assignment 1 30% ; Assignment 2 30% ; Final Exam 40% ; C-3-2 ; Tial Tang ; Friday ; 10:30 - 12:30
-MD0007 ; Innovation ; Pitch Deck 30% ; Prototype 30% ; Final Report 40% ; D-8-7 ; Odash ; Friday ; 12:00 - 14:00
-MD0008 ; Networking ; Practical Test 30% ; Midterm 20% ; Final Exam 50% ; S-8-8 ; Odash ; Wednesday ; 13:00 - 15:00
+MD0007 ; Innovation ; Pitch Deck 30% ; Prototype 30% ; Final Report 40% ; D-4-7 ; Odash ; Friday ; 12:00 - 14:00
+MD0008 ; Networking ; Practical Test 30% ; Midterm 20% ; Final Exam 50% ; S-4-8 ; Odash ; Wednesday ; 13:00 - 15:00
 MD0009 ; Bahasa Melayu ; Oral Test 30% ; Written Task 30% ; Final Exam 40% ; A-4-5 ; Odash ; Thursday ; 14:00 - 15:00
