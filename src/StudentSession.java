@@ -11,19 +11,15 @@ public class StudentSession {
         studentEmail = email;
         studentPassword = password;
     }
-
     public static String getStudentId(){
         return studentId;
     }
-
     public static String getStudentName(){
         return studentName;
     }
-
     public static String getStudentEmail(){
         return studentEmail;
     }
-
     public static String getStudentPassword(){
         return studentPassword;
     }

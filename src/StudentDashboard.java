@@ -2,11 +2,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Arrays;
 
 // STUDENT DASHBOARD
 public class StudentDashboard extends JFrame {
@@ -30,6 +31,14 @@ public class StudentDashboard extends JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+
+        // --- NEW: Initialize Logout Button ---
+        logoutBtn = new javax.swing.JButton();
+        logoutBtn.setText("Logout");
+        // Optional: Make it red or distinct
+        logoutBtn.setForeground(java.awt.Color.BLACK);
+        logoutBtn.addActionListener(this::logoutBtnActionPerformed);
+        // -------------------------------------
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -58,8 +67,11 @@ public class StudentDashboard extends JFrame {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+
+        // --- HORIZONTAL GROUP ---
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        // 1. Existing Group (Centers the buttons and text)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -68,7 +80,7 @@ public class StudentDashboard extends JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(145, 145, 145)
                                                 .addComponent(jLabel2)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(131, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(87, 87, 87)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -79,12 +91,24 @@ public class StudentDashboard extends JFrame {
                                         .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(100, 100, 100))
+
+                        // 2. NEW: Add Logout Button to the start (Left side)
+                        // We add it to the parallel group so it sits "on top" of the layout at the left
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(logoutBtn)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        // --- VERTICAL GROUP ---
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                // NEW: Use a Parallel Group for the first row so Button and Title are side-by-side
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(logoutBtn)) // Add button here next to title
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2)
                                 .addGap(36, 36, 36)
@@ -126,6 +150,18 @@ public class StudentDashboard extends JFrame {
         this.dispose();
         feedbackGUI.setLocationRelativeTo(null);
     }
+    private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        // Assuming your login screen class is named 'LoginGUI'
+        // If it's named something else (e.g. Login), change 'LoginGUI' to that name.
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+
+            LoginGUI login = new LoginGUI();
+            login.setVisible(true);
+            this.dispose(); // Close the dashboard
+        }
+    }
 
     public static void main(String[] args) {
         try {
@@ -146,10 +182,8 @@ public class StudentDashboard extends JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton logoutBtn;
 }
-
-
-
 
 // EDIT PROFILE (STUDENT)
 class EditProfileGUI_Student extends javax.swing.JFrame {
@@ -354,9 +388,7 @@ class EditProfileGUI_Student extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordPF;
 }
 
-
-
-
+// REGISTER CLASS
 class RegisterClassesGUI_Student extends JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegisterClassesGUI_Student.class.getName());
@@ -366,7 +398,7 @@ class RegisterClassesGUI_Student extends JFrame {
 
     public RegisterClassesGUI_Student() {
         initComponents();
-        loadDataIntoTable();
+        loadDataIntoTables();
     }
 
     private void initComponents() {
@@ -392,28 +424,30 @@ class RegisterClassesGUI_Student extends JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 14));
         jLabel2.setText("Classes you have enrolled");
 
-        // Setup Current Class Table
+        // 1. Setup Current Class Table - Added "Venue" column
         currentClassTable.setModel(new DefaultTableModel(
                 new Object [][] {},
-                new String [] { "Title 1", "Title 2", "Title 3", "Title 4" }
+                new String [] { "ID", "Name", "Assmt 1", "Assmt 2", "Assmt 3", "Venue", "Lecturer", "Day", "Time" }
         ));
         currentClassTable.setFillsViewportHeight(true);
+        currentClassTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(currentClassTable);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", Font.PLAIN, 14));
-        jLabel3.setText("New classes");
+        jLabel3.setText("New classes available");
 
-        // Setup New Class Table
+        // 2. Setup New Class Table - Added "Venue" column
         newClassTable.setModel(new DefaultTableModel(
                 new Object [][] {},
-                new String [] { "Title 1", "Title 2", "Title 3", "Title 4" }
+                new String [] { "ID", "Name", "Assmt 1", "Assmt 2", "Assmt 3", "Venue", "Lecturer", "Day", "Time" }
         ));
+        newClassTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         jScrollPane3.setViewportView(newClassTable);
 
         enrollBtn.setText("Enroll");
         enrollBtn.addActionListener(this::enrollBtnActionPerformed);
 
-        // Layout (Standard Swing GroupLayout)
+        // Layout
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -421,7 +455,7 @@ class RegisterClassesGUI_Student extends JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
                                         .addComponent(jScrollPane3)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -431,7 +465,7 @@ class RegisterClassesGUI_Student extends JFrame {
                                                                 .addComponent(exitBtn)
                                                                 .addGap(132, 132, 132)
                                                                 .addComponent(jLabel1))
-                                                        .addComponent(enrollBtn, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(enrollBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
@@ -445,18 +479,18 @@ class RegisterClassesGUI_Student extends JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(enrollBtn)
                                 .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
-        setLocationRelativeTo(null); // Center on screen
+        setLocationRelativeTo(null);
     }
 
     private void exitBtnActionPerformed(ActionEvent evt) {
@@ -474,18 +508,22 @@ class RegisterClassesGUI_Student extends JFrame {
         }
 
         DefaultTableModel model = (DefaultTableModel) newClassTable.getModel();
-        // Extract data from the selected row
+
+        // Extract data based on the table columns
+        // 0:ID, 1:Name, 2:Ass1, 3:Ass2, 4:Ass3, 5:Venue, 6:Lecturer, 7:Day, 8:Time
         String moduleID = model.getValueAt(selectedRow, 0).toString();
         String courseName = model.getValueAt(selectedRow, 1).toString();
-        String venue = model.getValueAt(selectedRow, 3).toString();
-        String assignment = model.getValueAt(selectedRow, 4).toString();
-        String finalExam = model.getValueAt(selectedRow, 5).toString();
+        String ass1 = model.getValueAt(selectedRow, 2).toString();
+        String ass2 = model.getValueAt(selectedRow, 3).toString();
+        String ass3 = model.getValueAt(selectedRow, 4).toString();
+        String venue = model.getValueAt(selectedRow, 5).toString(); // <--- NOW WE GET THE VENUE
 
         String currentStudentID = StudentSession.getStudentId();
 
-        // Construct string to save (Matching your file format)
-        String newRecord = moduleID + ";" + courseName + ";" + assignment + ";" +
-                finalExam + ";null;" + venue + ";" + currentStudentID + ";null;null;null;null;null;null";
+        // Construct string to save into ClassStudentList.txt
+        // Format: ID ; Name ; Ass1 ; Ass2 ; Ass3 ; Venue ; StudentID ; GPA ; Grade ; Feedback ; Ass1Fb ; Ass2Fb ; Ass3Fb
+        String newRecord = moduleID + ";" + courseName + ";" + ass1 + ";" +
+                ass2 + ";" + ass3 + ";" + venue + ";" + currentStudentID + ";null;null;null;null;null;null";
 
         boolean success = false;
         try (FileWriter fw = new FileWriter(Resources.ClassStudentList, true);
@@ -501,46 +539,25 @@ class RegisterClassesGUI_Student extends JFrame {
 
         if (success) {
             JOptionPane.showMessageDialog(this, "Enrollment Successful!");
-            loadDataIntoTable(); // Refresh UI
-            // Force UI update
-            currentClassTable.revalidate();
-            currentClassTable.repaint();
-            newClassTable.revalidate();
-            newClassTable.repaint();
+            loadDataIntoTables(); // Refresh both tables
         }
     }
 
-    private void loadDataIntoTable() {
-        List<String> enrolledClasses = new ArrayList<>();
-
-        // ---------------------------------------------------
-        // 1. SETUP FIRST TABLE (Current Enrolled Classes)
-        // ---------------------------------------------------
-        DefaultTableModel model = new DefaultTableModel(
-                new String[]{"Course Name", "Venue", "Assignment", "Final Exam"}, 0
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
+    private void loadDataIntoTables() {
+        // 1. Identify Enrolled Modules
+        Set<String> enrolledModuleIds = new HashSet<>();
         File studentFile = new File(Resources.ClassStudentList);
+
         if (studentFile.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(studentFile))) {
                 String line;
                 while ((line = br.readLine()) != null) {
-                    if (line.trim().isEmpty() || line.split(";").length < 7) {
-                        continue;
-                    }
+                    if (line.trim().isEmpty()) continue;
 
-                    String[] allRowData = line.split(";");
-                    String studentId = allRowData[6].trim();
-
-                    if (studentId.equals(StudentSession.getStudentId())) {
-                        enrolledClasses.add(allRowData[0].trim());
-                        String[] rowData = {allRowData[1], allRowData[5], allRowData[2], allRowData[3]};
-                        model.addRow(rowData);
+                    String[] parts = line.split(";");
+                    // Check if line has enough parts and matches current student
+                    if (parts.length > 6 && parts[6].trim().equals(StudentSession.getStudentId())) {
+                        enrolledModuleIds.add(parts[0].trim());
                     }
                 }
             } catch (IOException e) {
@@ -548,49 +565,50 @@ class RegisterClassesGUI_Student extends JFrame {
             }
         }
 
-        currentClassTable.setModel(model);
-        currentClassTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        currentClassTable.getColumnModel().getColumn(0).setPreferredWidth(300);
-        currentClassTable.getColumnModel().getColumn(1).setPreferredWidth(60);
-        currentClassTable.getColumnModel().getColumn(2).setPreferredWidth(150);
-        currentClassTable.getColumnModel().getColumn(3).setPreferredWidth(150);
+        // 2. Prepare Table Models
+        // Included "Venue" in the headers
+        String[] columnHeaders = {"ID", "Name", "Assmt 1", "Assmt 2", "Assmt 3", "Venue", "Lecturer", "Day", "Time"};
 
-
-        // ---------------------------------------------------
-        // 2. SETUP SECOND TABLE (New Classes Available)
-        // ---------------------------------------------------
-        DefaultTableModel model_2 = new DefaultTableModel(
-                new String[]{"ID", "Course Name", "Lecturer", "Venue", "Assignment", "Final Exam"}, 0
-        ) {
+        DefaultTableModel enrolledModel = new DefaultTableModel(columnHeaders, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
+            public boolean isCellEditable(int row, int column) { return false; }
         };
 
+        DefaultTableModel newClassModel = new DefaultTableModel(columnHeaders, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+
+        // 3. Read Modules.txt and Populate Tables
         File moduleFile = new File(Resources.Modules);
         if (moduleFile.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(moduleFile))) {
                 String line;
                 while ((line = br.readLine()) != null) {
-                    if (line.trim().isEmpty() || line.split(";").length < 7) {
-                        continue;
-                    }
+                    if (line.trim().isEmpty()) continue;
 
-                    String[] allRowData = line.split(";");
-                    String moduleId = allRowData[0].trim();
+                    String[] parts = line.split(";");
 
-                    // Only add if not already enrolled
-                    if (!enrolledClasses.contains(moduleId)) {
-                        String[] rowData = {
-                                allRowData[0], // ID
-                                allRowData[1], // Name
-                                allRowData[6], // Lecturer
-                                allRowData[5], // Venue
-                                allRowData[2], // Assignment
-                                allRowData[3]  // Exam
-                        };
-                        model_2.addRow(rowData);
+                    // We expect 9 columns based on your example:
+                    // 0:ID, 1:Name, 2:Ass1, 3:Ass2, 4:Ass3, 5:Venue, 6:Lecturer, 7:Day, 8:Time
+                    if (parts.length >= 9) {
+                        String modId = parts[0].trim();
+                        String modName = parts[1].trim();
+                        String ass1 = parts[2].trim();
+                        String ass2 = parts[3].trim();
+                        String ass3 = parts[4].trim();
+                        String venue = parts[5].trim(); // <--- CAPTURE VENUE HERE
+                        String lecturer = parts[6].trim();
+                        String day = parts[7].trim();
+                        String time = parts[8].trim();
+
+                        String[] rowData = {modId, modName, ass1, ass2, ass3, venue, lecturer, day, time};
+
+                        if (enrolledModuleIds.contains(modId)) {
+                            enrolledModel.addRow(rowData);
+                        } else {
+                            newClassModel.addRow(rowData);
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -598,14 +616,27 @@ class RegisterClassesGUI_Student extends JFrame {
             }
         }
 
-        newClassTable.setModel(model_2);
-        newClassTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        newClassTable.getColumnModel().getColumn(0).setPreferredWidth(60);
-        newClassTable.getColumnModel().getColumn(1).setPreferredWidth(300);
-        newClassTable.getColumnModel().getColumn(2).setPreferredWidth(200);
-        newClassTable.getColumnModel().getColumn(3).setPreferredWidth(60);
-        newClassTable.getColumnModel().getColumn(4).setPreferredWidth(150);
-        newClassTable.getColumnModel().getColumn(5).setPreferredWidth(150);
+        // 4. Apply Models and Format columns
+        currentClassTable.setModel(enrolledModel);
+        formatTable(currentClassTable);
+
+        newClassTable.setModel(newClassModel);
+        formatTable(newClassTable);
+    }
+
+    // Helper to set column widths nicely
+    private void formatTable(JTable table) {
+        if (table.getColumnCount() >= 9) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(60);  // ID
+            table.getColumnModel().getColumn(1).setPreferredWidth(200); // Name
+            table.getColumnModel().getColumn(2).setPreferredWidth(90);  // Ass1
+            table.getColumnModel().getColumn(3).setPreferredWidth(90);  // Ass2
+            table.getColumnModel().getColumn(4).setPreferredWidth(90);  // Ass3
+            table.getColumnModel().getColumn(5).setPreferredWidth(80);  // Venue
+            table.getColumnModel().getColumn(6).setPreferredWidth(130); // Lecturer
+            table.getColumnModel().getColumn(7).setPreferredWidth(80);  // Day
+            table.getColumnModel().getColumn(8).setPreferredWidth(90);  // Time
+        }
     }
 
     public static void main(String[] args) {
@@ -623,9 +654,6 @@ class RegisterClassesGUI_Student extends JFrame {
         java.awt.EventQueue.invokeLater(() -> new RegisterClassesGUI_Student().setVisible(true));
     }
 }
-
-
-
 
 // CHECK RESULT
 class CheckResultGUI_Student extends JFrame {
@@ -814,9 +842,6 @@ class CheckResultGUI_Student extends JFrame {
         java.awt.EventQueue.invokeLater(() -> new CheckResultGUI_Student().setVisible(true));
     }
 }
-
-
-
 
 // GIVE FEEDBACK
 class GiveFeedbackGUI_Student extends JFrame {
