@@ -70,7 +70,6 @@ public class LecturerDashboard extends JFrame {
             setLocationRelativeTo(null);
             setLayout(null);
 
-            // Labels and text fields
             String[] labels = {"Lecturer ID:", "Name:", "Email:", "Password:", "School:", "Academic Leader:"};
             JTextField[] fields = new JTextField[6];
             for (int i = 0; i < 6; i++) {
@@ -83,18 +82,18 @@ public class LecturerDashboard extends JFrame {
                 add(fields[i]);
             }
 
-            // Make some fields non-editable
-            fields[0].setEditable(false); // Lecturer ID
-            fields[2].setEditable(false); // Email
-            fields[4].setEditable(false); // School
-            fields[5].setEditable(false); // Academic Leader
+            fields[0].setEditable(false);
+            fields[2].setEditable(false);
+            fields[4].setEditable(false);
+            fields[5].setEditable(false);
 
-            // Load profile from Account.txt
             try {
+                if (lecturer == null) throw new Exception("Lecturer data is missing!");
+
                 String lecturerId = lecturer.getLecturerID();
                 String[] profile = getLecturerProfile(lecturerId);
 
-                if (profile != null) {
+                if (profile != null && profile.length >= 8) {
                     fields[0].setText(profile[0]); // ID
                     fields[3].setText(profile[1]); // Password
                     fields[2].setText(profile[2]); // Email
@@ -102,75 +101,67 @@ public class LecturerDashboard extends JFrame {
                     fields[4].setText(profile[6]); // School
                     fields[5].setText(profile[7]); // Academic Leader
                 }
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error loading profile data");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error loading profile: " + ex.getMessage());
             }
 
-            // Update button
             JButton btnUpdate = new JButton("Update Profile");
             btnUpdate.setBounds(150, 320, 150, 30);
             add(btnUpdate);
 
             btnUpdate.addActionListener(e -> {
                 try {
-                    saveProfile(
-                            fields[0].getText(), // ID
-                            fields[1].getText(), // Name
-                            fields[2].getText(), // Email
-                            fields[3].getText(), // Password
-                            fields[4].getText(), // School
-                            fields[5].getText()  // Academic Leader
-                    );
+                    String id = fields[0].getText();
+                    String name = fields[1].getText();
+                    String pass = fields[3].getText();
 
-                    lecturer.setName(fields[1].getText());
+                    if (name.isEmpty() || pass.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Name and Password cannot be empty!");
+                        return;
+                    }
+
+                    // NOW THIS CALL WILL WORK:
+                    saveProfile(id, name, fields[2].getText(), pass, fields[4].getText(), fields[5].getText());
+
+                    lecturer.setName(name);
                     title.setText("Welcome, " + lecturer.getName());
-                    title.setFont(new Font("Arial", Font.BOLD, 40));
-                    title.setBounds(0, 30, 800, 60);
-                    JOptionPane.showMessageDialog(this, "Profile Updated!");
+                    JOptionPane.showMessageDialog(this, "Profile Updated Successfully!");
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "Error saving profile: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "Save Error: " + ex.getMessage());
                 }
             });
 
             setVisible(true);
         }
 
-        public void saveProfile(String id, String newName, String newEmail,
-                                String newPassword, String newDept, String newLeader) throws IOException {
-
+        // --- ADDED THIS METHOD ---
+        public void saveProfile(String id, String newName, String newEmail, String newPassword, String newDept, String newLeader) throws IOException {
             File file = new File(Resources.Account);
             List<String> lines = new ArrayList<>();
+            boolean found = false;
 
-            if (file.exists()) {
-                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        String[] parts = line.split(" ; ");
-
-                        if (parts.length >= 8 && parts[0].trim().equals(id.trim())) {
-                            // Keep original gender and role
-                            String gender = parts[4].trim();
-                            String role = parts[5].trim();
-
-                            String updatedLine =
-                                    id.trim() + " ; " +
-                                            newPassword.trim() + " ; " +
-                                            newEmail.trim() + " ; " +
-                                            newName.trim() + " ; " +
-                                            gender + " ; " +
-                                            role + " ; " +
-                                            newDept.trim() + " ; " +
-                                            newLeader.trim();
-
-                            lines.add(updatedLine);
-                        } else {
-                            lines.add(line);
-                        }
+            // Read and modify in memory
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\s*;\\s*");
+                    if (parts.length >= 8 && parts[0].trim().equalsIgnoreCase(id.trim())) {
+                        // Re-format the line: ID;Pass;Email;Name;Gender;Role;Dept;Leader
+                        String updatedLine = id.trim() + " ; " + newPassword.trim() + " ; " +
+                                newEmail.trim() + " ; " + newName.trim() + " ; " +
+                                parts[4].trim() + " ; " + parts[5].trim() + " ; " +
+                                newDept.trim() + " ; " + newLeader.trim();
+                        lines.add(updatedLine);
+                        found = true;
+                    } else {
+                        lines.add(line);
                     }
                 }
             }
 
+            if (!found) throw new IOException("User ID not found in file.");
+
+            // Write memory back to file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 for (String l : lines) {
                     writer.write(l);
@@ -180,20 +171,18 @@ public class LecturerDashboard extends JFrame {
         }
 
         public String[] getLecturerProfile(String lecturerId) throws IOException {
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
+            File file = new File(Resources.Account);
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(" ; ");
-                    if (parts.length >= 8 && parts[0].equals(lecturerId)) {
-                        return parts;
-                    }
+                    String[] parts = line.split("\\s*;\\s*");
+                    if (parts.length >= 8 && parts[0].trim().equals(lecturerId.trim())) return parts;
                 }
             }
             return null;
         }
     }
 
-    // ------------------- 2. Design Assessment Window -------------------
     // ------------------- 2. Design Assessment Window -------------------
     public class DesignAssessmentWindow extends JFrame {
         private List<String[]> modulesList = new ArrayList<>();
@@ -301,50 +290,49 @@ public class LecturerDashboard extends JFrame {
             String a2 = txtA2.getText().trim();
             String a3 = txtA3.getText().trim();
 
+            // ERROR HANDLING: Field Validation
             if (id.isEmpty() || name.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "ID and Name are required!");
+                JOptionPane.showMessageDialog(this, "Module ID and Name are mandatory.");
                 return;
             }
 
-            boolean updated = false;
+            // Default to "null" if assessments are blank to keep file structure consistent
+            if (a1.isEmpty()) a1 = "null";
+            if (a2.isEmpty()) a2 = "null";
+            if (a3.isEmpty()) a3 = "null";
+
             List<String> lines = new ArrayList<>();
+            boolean updated = false;
 
             try {
-                // If the file exists, check for existing ID to update
                 File file = new File(Resources.Modules);
                 if (file.exists()) {
-                    BufferedReader br = new BufferedReader(new FileReader(file));
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        String[] p = line.split("\\s*;\\s*");
-                        if (p[0].equalsIgnoreCase(id)) {
-                            // Replace with new data
-                            line = id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName();
-                            updated = true;
+                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            String[] p = line.split("\\s*;\\s*");
+                            if (p.length > 0 && p[0].equalsIgnoreCase(id)) {
+                                line = id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName();
+                                updated = true;
+                            }
+                            lines.add(line);
                         }
-                        lines.add(line);
                     }
-                    br.close();
                 }
 
-                if (!updated) {
-                    // It's a new module, add it to the end
-                    lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName());
+                if (!updated) lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName());
+
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                    for (String l : lines) { bw.write(l); bw.newLine(); }
                 }
-
-                BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Modules));
-                for (String l : lines) { bw.write(l); bw.newLine(); }
-                bw.close();
-
                 JOptionPane.showMessageDialog(this, updated ? "Module Updated!" : "New Module Added!");
-
             } catch (IOException ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Critical File Error: " + ex.getMessage());
             }
         }
     }
 
-    // ------------------- 3. Grading Window (KEY-IN MARKS) -------------------
+
     // ------------------- 3. Grading Window (KEY-IN MARKS) -------------------
     public class GradingWindow extends JFrame {
         private JComboBox<String> cmbModule;
@@ -485,20 +473,30 @@ public class LecturerDashboard extends JFrame {
         }
 
         private void saveMarksAndFeedback() {
-            String selectedName = cmbModule.getSelectedItem().toString().trim();
+            String selectedName = (cmbModule.getSelectedItem() != null) ? cmbModule.getSelectedItem().toString().trim() : "";
             String studentId = txtStudentId.getText().trim();
             String markInput = txtGPA.getText().trim();
 
-            if (studentId.isEmpty() || markInput.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please select a student and enter a mark.");
+            // ERROR: Empty Selection
+            if (selectedName.isEmpty() || studentId.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Error: Please select a student from the table first.", "Input Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Conversion Logic Based on your System
+            // ERROR: Number Parsing & Range Validation
             double mark;
-            try { mark = Double.parseDouble(markInput); }
-            catch (Exception e) { JOptionPane.showMessageDialog(this, "Invalid mark!"); return; }
+            try {
+                mark = Double.parseDouble(markInput);
+                if (mark < 0 || mark > 100) {
+                    JOptionPane.showMessageDialog(this, "Error: Marks must be between 0 and 100.", "Range Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Please enter a valid numeric mark (e.g., 85.5).", "Format Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            // Calculation Logic
             String grade, gpa, status;
             if (mark >= 80) { grade = "A+"; gpa = "4.00"; status = "Distinction"; }
             else if (mark >= 75) { grade = "A";  gpa = "3.70"; status = "Distinction"; }
@@ -512,8 +510,15 @@ public class LecturerDashboard extends JFrame {
             else if (mark >= 20) { grade = "F";  gpa = "1.00"; status = "Fail"; }
             else { grade = "F-"; gpa = "0.00"; status = "Fail"; }
 
+            // Identify Target Module ID
             String targetModuleID = "";
-            try (BufferedReader br = new BufferedReader(new FileReader(Resources.Modules))) {
+            File modFile = new File(Resources.Modules);
+            if (!modFile.exists()) {
+                JOptionPane.showMessageDialog(this, "Critical Error: Modules file not found!", "System Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(modFile))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] p = line.split("\\s*;\\s*");
@@ -522,54 +527,178 @@ public class LecturerDashboard extends JFrame {
                         break;
                     }
                 }
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error reading module data: " + e.getMessage());
+                return;
+            }
 
+            // Update File Logic
             List<String> lines = new ArrayList<>();
-            try (BufferedReader br = new BufferedReader(new FileReader(Resources.ClassStudentList))) {
+            File studentFile = new File(Resources.ClassStudentList);
+
+            try (BufferedReader br = new BufferedReader(new FileReader(studentFile))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
                     String[] p = line.split("\\s*;\\s*");
-                    if (p.length >= 7 && p[0].trim().equalsIgnoreCase(targetModuleID) && p[6].trim().equalsIgnoreCase(studentId)) {
-                        // Create 14 columns (Index 0 to 13) to include Status
-                        String[] np = new String[14];
-                        java.util.Arrays.fill(np, "null");
-                        System.arraycopy(p, 0, np, 0, Math.min(p.length, 14));
 
-                        np[7] = markInput;   // Mark
-                        np[8] = grade;       // Grade
-                        np[9] = gpa;         // GPA Points
-                        np[10] = txtFeedback1.getText().trim();
-                        np[11] = txtFeedback2.getText().trim();
-                        np[12] = txtFeedback3.getText().trim();
-                        np[13] = status;     // Achievement Status
+                    // Error check for row length before accessing indices
+                    if (p.length >= 7 && p[0].trim().equalsIgnoreCase(targetModuleID) && p[6].trim().equalsIgnoreCase(studentId)) {
+                        String[] np = new String[13];
+                        System.arraycopy(p, 0, np, 0, Math.min(p.length, 7));
+
+                        np[7] = grade;
+                        np[8] = gpa;
+                        np[9] = (p.length > 9) ? p[9] : "null";
+                        np[10] = txtFeedback1.getText().trim().isEmpty() ? "null" : txtFeedback1.getText().trim();
+                        np[11] = txtFeedback2.getText().trim().isEmpty() ? "null" : txtFeedback2.getText().trim();
+                        np[12] = txtFeedback3.getText().trim().isEmpty() ? "null" : txtFeedback3.getText().trim();
 
                         line = String.join(" ; ", np);
                     }
                     lines.add(line);
                 }
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error accessing student list: " + e.getMessage());
+                return;
+            }
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.ClassStudentList))) {
-                for (String l : lines) { bw.write(l); bw.newLine(); }
-                JOptionPane.showMessageDialog(this, "Grading Successful!\nGrade: " + grade + "\nGPA: " + gpa + "\nStatus: " + status);
+            // Write back to file
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(studentFile))) {
+                for (String l : lines) {
+                    bw.write(l);
+                    bw.newLine();
+                }
+                JOptionPane.showMessageDialog(this, "Success: Student Grade Processed.\nGrade: " + grade + "\nStatus: " + status);
                 loadModulesToTable(selectedName);
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Write Error: Could not save data. Check file permissions.", "Disk Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     // ------------------- 4. Receive Feedback Window -------------------
     private class ReceiveFeedbackWindow extends JFrame {
+        private JComboBox<String> cmbModule;
+        private JTextArea txtFeedbackDisplay;
+
         public ReceiveFeedbackWindow() {
-            setTitle("Reports");
-            setSize(400, 300);
+            setTitle("Feedback from Students");
+            setSize(600, 500);
             setLocationRelativeTo(null);
-            setLayout(new FlowLayout());
-            JButton b = new JButton("Back");
-            b.addActionListener(e -> { dispose(); new LecturerDashboard(lecturer); });
-            add(new JLabel("Report Viewer Module Active"));
-            add(b);
+            setLayout(new BorderLayout(10, 10));
+
+            // TOP PANEL: Header and Filter
+            JPanel topPanel = new JPanel(new GridLayout(2, 1));
+
+            JButton btnBack = new JButton("Back");
+            btnBack.setPreferredSize(new Dimension(80, 25));
+            JPanel navPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            navPanel.add(btnBack);
+
+            JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            filterPanel.add(new JLabel("Select Module:"));
+            cmbModule = new JComboBox<>();
+            fillModuleDropdown();
+            filterPanel.add(cmbModule);
+
+            topPanel.add(navPanel);
+            topPanel.add(filterPanel);
+            add(topPanel, BorderLayout.NORTH);
+
+            // CENTER PANEL: Feedback display
+            txtFeedbackDisplay = new JTextArea();
+            txtFeedbackDisplay.setEditable(false);
+            txtFeedbackDisplay.setFont(new Font("Monospaced", Font.PLAIN, 13));
+            txtFeedbackDisplay.setLineWrap(true);
+            txtFeedbackDisplay.setWrapStyleWord(true);
+
+            JScrollPane scrollPane = new JScrollPane(txtFeedbackDisplay);
+            scrollPane.setBorder(BorderFactory.createTitledBorder("Student Comments & Feedback"));
+            add(scrollPane, BorderLayout.CENTER);
+
+            // --- LISTENERS ---
+
+            // FIX: Pass the 'lecturer' object back to the dashboard
+            btnBack.addActionListener(e -> {
+                dispose();
+                new LecturerDashboard(lecturer);
+            });
+
+            cmbModule.addActionListener(e -> {
+                if (cmbModule.getSelectedItem() != null) {
+                    displayFeedback(cmbModule.getSelectedItem().toString());
+                }
+            });
+
+            // Load initial data
+            if (cmbModule.getItemCount() > 0) {
+                displayFeedback(cmbModule.getSelectedItem().toString());
+            }
+
             setVisible(true);
+        }
+
+        private void fillModuleDropdown() {
+            cmbModule.removeAllItems();
+            // FIX: Use Resources.Modules instead of MODULES_FILE
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.Modules))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] p = line.split("\\s*;\\s*");
+                    if (p.length >= 2) cmbModule.addItem(p[1].trim());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void displayFeedback(String selectedModuleName) {
+            txtFeedbackDisplay.setText("");
+            StringBuilder sb = new StringBuilder();
+            sb.append("FEEDBACK REPORT: ").append(selectedModuleName).append("\n");
+            sb.append("Generated on: ").append(new java.util.Date()).append("\n");
+            sb.append("============================================================\n\n");
+
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.ClassStudentList))) {
+                String line;
+                boolean foundAny = false;
+
+                while ((line = br.readLine()) != null) {
+                    if (line.trim().isEmpty()) continue;
+
+                    // Split by semicolon with surrounding whitespace handling
+                    String[] p = line.split("\\s*;\\s*");
+
+                    // Check if Module Name matches (Index 1) and line has enough columns
+                    if (p.length > 9 && p[1].trim().equalsIgnoreCase(selectedModuleName)) {
+                        foundAny = true;
+                        String studentId = p[6].trim();
+                        String studentFeedback = p[9].trim(); // Your specific index for student feedback
+
+                        sb.append("Student ID: ").append(studentId).append("\n");
+
+                        // Check if feedback is actually present or just a "null" placeholder
+                        if (studentFeedback.equalsIgnoreCase("null") || studentFeedback.isEmpty()) {
+                            sb.append(" > Status: No feedback provided yet.\n");
+                        } else {
+                            sb.append(" > Feedback: \"").append(studentFeedback).append("\"\n");
+                        }
+
+                        sb.append("------------------------------------------------------------\n");
+                    }
+                }
+
+                if (!foundAny) {
+                    sb.append("No student records or enrollment found for this module.");
+                }
+
+            } catch (Exception e) {
+                sb.append("Error accessing data: ").append(e.getMessage());
+            }
+
+            txtFeedbackDisplay.setText(sb.toString());
+            txtFeedbackDisplay.setCaretPosition(0);
         }
     }
 }
