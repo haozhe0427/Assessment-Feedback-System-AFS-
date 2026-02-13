@@ -77,7 +77,7 @@ public class LoginGUI extends JFrame {
                                 );
 
                                 dispose();
-                                StudentDashboard studentDashboard = new StudentDashboard();
+                                StudentDashboard  studentDashboard = new StudentDashboard();
                                 studentDashboard.setVisible(true);
                                 studentDashboard.setLocationRelativeTo(null);
                             }
@@ -289,6 +289,7 @@ public class LoginGUI extends JFrame {
 
 
         // <========= GUI FRAME =========>
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Assessment Feedback System (Login)");
         this.getContentPane().setBackground(new Color(255, 250, 250));
         this.setSize(420,600);
@@ -440,6 +441,7 @@ class SetNewPasswordGUI extends JFrame {
 
 
         // <========= Frame GUI =========>
+        this.setIconImage(Resources.imageIcon.getImage());
         this.setTitle("Set New Password");
         this.getContentPane().setBackground(new Color(255, 250, 250));
         this.setSize(420,600);
