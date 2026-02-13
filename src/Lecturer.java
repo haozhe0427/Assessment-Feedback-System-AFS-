@@ -52,5 +52,3 @@ public class Lecturer {
         this.AcademicLeader = academicLeader;
     }
 }
-
-
