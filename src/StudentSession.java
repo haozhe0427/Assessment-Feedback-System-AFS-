@@ -1,3 +1,4 @@
+// For Student
 public class StudentSession {
     private static String studentId;
     private static String studentName;

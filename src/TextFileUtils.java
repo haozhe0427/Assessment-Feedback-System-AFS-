@@ -72,7 +72,7 @@ public class TextFileUtils {
         // Helper to format for file
         public String toFileString() {
             return code + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " +
-                    a3 + " ; " + loc + " ; " + lec + " ; " + day + " ; " + time + " ; ";
+                    a3 + " ; " + loc + " ; " + lec + " ; " + day + " ; " + time;
         }
     }
 

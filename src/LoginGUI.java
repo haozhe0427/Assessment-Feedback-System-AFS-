@@ -42,7 +42,12 @@ public class LoginGUI extends JFrame {
                     String[] loginInfo = line1.split(" ; ");
                     String storedUserID = loginInfo[0];
                     String storedPassword = loginInfo[1];
+                    String storedEmail = loginInfo[2];
+                    String storedName = loginInfo[3];
                     String userRole = loginInfo[5];
+                    String storedSchool = loginInfo[6];
+                    String storedAcademicLeader = loginInfo[7];
+
 
                     if (storedUserID.equalsIgnoreCase(userID) && storedPassword.equals(password)) {
                         switch (userRole) {
@@ -63,10 +68,17 @@ public class LoginGUI extends JFrame {
                                 dashboardFrame.setLocationRelativeTo(null);
                             }
                             case "Lecturer" -> {
+                                Lecturer lecturer = new Lecturer(
+                                        storedUserID,
+                                        storedName,
+                                        storedEmail,
+                                        storedPassword,
+                                        storedSchool,
+                                        storedAcademicLeader
+                                );
                                 dispose();
-                                LecturerDashboard lecturerDashboard = new LecturerDashboard();
+                                LecturerDashboard lecturerDashboard = new LecturerDashboard(lecturer);
                                 lecturerDashboard.setVisible(true);
-                                lecturerDashboard.setLocationRelativeTo(null);
                             }
                             case "Student" -> {
                                 StudentSession.login(

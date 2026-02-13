@@ -1052,114 +1052,60 @@ class ManageAccountGUI_Admin extends JFrame {
         createButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
         createButton.setFocusable(false);
         createButton.addActionListener(_ -> {
-            String userID = userIDField.getText();
-            String password = passwordField.getText();
-            String name = nameField.getText();
-            String gender = male_rb.isSelected() ? "M" : "F";
+            String userID = userIDField.getText().trim();
+            String password = passwordField.getText().trim();
+            String name = nameField.getText().trim();
+            String gender = male_rb.isSelected() ? "M" : female_rb.isSelected() ? "F" : "";
             String userRole = (String) UserRole_cb.getSelectedItem();
             String area = (String) selectAreas_cb.getSelectedItem();
-            String email = emailField.getText();
+            String email = emailField.getText().trim();
             String course = (String) selectCourse_cb.getSelectedItem();
-            StringBuilder existedAccounts = new StringBuilder();
-            StringBuilder updatedAccount = new StringBuilder();
-            String newAccount = "";
 
-            switch (userRole) {
-                case "Academic Leaders" , "Lecturer" -> {
-                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area == null) {
-                        JOptionPane.showMessageDialog(null,
-                                "Please enter every information",
-                                "Error", JOptionPane.ERROR_MESSAGE);
-
-                        return;
-                    }
-                }
-                case "Student" -> {
-                    if (userID.isEmpty() || !(male_rb.isSelected() || female_rb.isSelected()) || area == null || course == null) {
-                        JOptionPane.showMessageDialog(null,
-                                "Please enter every information",
-                                "Error", JOptionPane.ERROR_MESSAGE);
-
-                        return;
-                    }
-                }
-                case null, default -> {}
+            // ================= VALIDATION =================
+            if (userID.isEmpty() || name.isEmpty() || gender.isEmpty() || userRole == null || area == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Please enter all required information",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            if (userID.isEmpty()) {
+            if (userRole.equals("Student") && (course == null || course.isEmpty())) {
                 JOptionPane.showMessageDialog(null,
-                        "Please click the Create Account button",
+                        "Please select a course for Student",
                         "Error", JOptionPane.ERROR_MESSAGE);
-
                 return;
             }
 
             if (name.matches(".*\\d.*")) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Please enter user name without numbers",
+                JOptionPane.showMessageDialog(null,
+                        "Name cannot contain numbers",
                         "Error", JOptionPane.ERROR_MESSAGE);
-
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
+            // ================= CHECK DUPLICATE =================
+            StringBuilder allAccounts = new StringBuilder();
+            boolean nameExists = false;
 
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] userInfo = line.split(" ; ");
-                    String storedName = userInfo[3];
-                    String storedUserRole = userInfo[5];
 
+                    if (line.trim().isEmpty()) continue;
 
-                    switch (storedUserRole) {
-                        case "Academic Leaders" , "Lecturer" -> {
-                            existedAccounts.append(line).append("\n");
-                            if (name.equals(storedName)) {
-                                JOptionPane.showMessageDialog(null,
-                                        "The user's name has existed",
-                                        "Warning", JOptionPane.WARNING_MESSAGE);
+                    String[] parts = line.split(" ; ");
+                    if (parts.length < 8) continue;
 
-                                return;
-                            } else {
-                                if (Objects.equals(userRole, "Lecturer") || Objects.equals(userRole, "Academic Leaders")) {
-                                    newAccount = userID + " ; " +
-                                            password + " ; " +
-                                            email + " ; " +
-                                            name + " ; " +
-                                            gender + " ; " +
-                                            userRole + " ; " +
-                                            area + " ; NULL";
-                                }
-                            }
-                        }
-                        case "Student" -> {
-                            existedAccounts.append(line).append("\n");
-                            if (name.equals(storedName)) {
-                                JOptionPane.showMessageDialog(null,
-                                        "The user's name has existed",
-                                        "Warning", JOptionPane.WARNING_MESSAGE);
+                    String storedName = parts[3];
 
-                                return;
-                            } else {
-                                if (Objects.equals(userRole, "Student")) {
-                                    newAccount = userID + " ; " +
-                                            password + " ; " +
-                                            email + " ; " +
-                                            name + " ; " +
-                                            gender + " ; " +
-                                            userRole + " ; " +
-                                            area + " ; " +
-                                            course;
-                                }
-                            }
-                        }
+                    if (storedName.equalsIgnoreCase(name)) {
+                        nameExists = true;
+                        break;
                     }
+
+                    allAccounts.append(line).append("\n");
                 }
-                JOptionPane.showMessageDialog(null,
-                        "Account successfully added",
-                        "Success", JOptionPane.INFORMATION_MESSAGE);
-                updatedAccount.append(newAccount).append("\n");
+
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Error reading account file",
@@ -1167,15 +1113,52 @@ class ManageAccountGUI_Admin extends JFrame {
                 return;
             }
 
+            if (nameExists) {
+                JOptionPane.showMessageDialog(null,
+                        "The user's name already exists",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // ================= CREATE NEW ACCOUNT =================
+            String newAccount;
+
+            if (userRole.equals("Student")) {
+                newAccount = userID + " ; " +
+                        password + " ; " +
+                        email + " ; " +
+                        name + " ; " +
+                        gender + " ; " +
+                        userRole + " ; " +
+                        area + " ; " +
+                        course;
+            } else {
+                newAccount = userID + " ; " +
+                        password + " ; " +
+                        email + " ; " +
+                        name + " ; " +
+                        gender + " ; " +
+                        userRole + " ; " +
+                        area + " ; NULL";
+            }
+
+            // ================= WRITE BACK TO FILE =================
             try (FileWriter writer = new FileWriter(Resources.Account)) {
-                writer.write(existedAccounts.toString());
-                writer.write(updatedAccount.toString());
+                writer.write(allAccounts.toString());
+                writer.write(newAccount + "\n");
+
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Error writing account file",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            JOptionPane.showMessageDialog(null,
+                    "Account successfully created",
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // ================= RESET FORM =================
             userIDField.setText("");
             passwordField.setText("");
             nameField.setText("");
@@ -1189,13 +1172,16 @@ class ManageAccountGUI_Admin extends JFrame {
             selectAreas_cb.setSelectedIndex(4);
             selectAreas_cb.setEnabled(false);
             emailField.setText("");
+            emailField.setEditable(false);
             selectCourse_cb.setSelectedIndex(6);
             selectCourse_cb.setEnabled(false);
             updateButton.setEnabled(true);
             deleteButton.setEnabled(true);
+            createButton.setEnabled(true);
             tableModel.setRowCount(0);
             displayAllAccount();
         });
+
         this.add(createButton);
 
 
@@ -1567,14 +1553,26 @@ class ManageAccountGUI_Admin extends JFrame {
 
 
 
-    public void displayAllAccount () {
+    public void displayAllAccount() {
         try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
             String line;
             while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
+
                 String[] accountInfo = line.split(" ; ");
-                String[] categorizedAccount = {accountInfo[0], accountInfo[1],
-                        accountInfo[3], accountInfo[4],
-                        accountInfo[5], accountInfo[6]};
+
+                if (accountInfo.length < 7) continue;
+
+                String[] categorizedAccount = {
+                        accountInfo[0],
+                        accountInfo[1],
+                        accountInfo[3],
+                        accountInfo[4],
+                        accountInfo[5],
+                        accountInfo[6]
+                };
+
                 tableModel.addRow(categorizedAccount);
             }
         } catch (IOException e) {

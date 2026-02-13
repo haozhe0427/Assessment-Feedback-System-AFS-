@@ -8,16 +8,21 @@ import java.util.List;
 
 public class LecturerDashboard extends JFrame {
     
-    private static final String LECTURER_NAME = "Joshua Koroh Pudin";
+    private final Lecturer lecturer;
+    private JLabel title;
 
-    public LecturerDashboard() {
+    public LecturerDashboard(Lecturer Lecturer) {
+        this.lecturer = Lecturer;
+
         setTitle("AFS - Lecturer Dashboard");
         setSize(800, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setVisible(true);
         setLayout(null);
 
-        JLabel title = new JLabel("Welcome, Joshua Koroh Pudin", SwingConstants.CENTER);
+        title = new JLabel("Welcome, " + lecturer.getName(), SwingConstants.CENTER);
+
         title.setFont(new Font("Arial", Font.BOLD, 40));
         title.setBounds(0, 30, 800, 60);
         add(title);
@@ -86,7 +91,7 @@ public class LecturerDashboard extends JFrame {
 
             // Load profile from Account.txt
             try {
-                String lecturerId = "AFS00002"; // later replace with logged-in ID
+                String lecturerId = lecturer.getLecturerID();
                 String[] profile = getLecturerProfile(lecturerId);
 
                 if (profile != null) {
@@ -116,6 +121,11 @@ public class LecturerDashboard extends JFrame {
                             fields[4].getText(), // School
                             fields[5].getText()  // Academic Leader
                     );
+
+                    lecturer.setName(fields[1].getText());
+                    title.setText("Welcome, " + lecturer.getName());
+                    title.setFont(new Font("Arial", Font.BOLD, 40));
+                    title.setBounds(0, 30, 800, 60);
                     JOptionPane.showMessageDialog(this, "Profile Updated!");
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, "Error saving profile: " + ex.getMessage());
@@ -309,7 +319,7 @@ public class LecturerDashboard extends JFrame {
                         String[] p = line.split("\\s*;\\s*");
                         if (p[0].equalsIgnoreCase(id)) {
                             // Replace with new data
-                            line = id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + LECTURER_NAME;
+                            line = id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName();
                             updated = true;
                         }
                         lines.add(line);
@@ -319,7 +329,7 @@ public class LecturerDashboard extends JFrame {
 
                 if (!updated) {
                     // It's a new module, add it to the end
-                    lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + LECTURER_NAME);
+                    lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName());
                 }
 
                 BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Modules));
@@ -421,7 +431,7 @@ public class LecturerDashboard extends JFrame {
                 loadModulesToTable(cmbModule.getSelectedItem().toString());
             }
 
-            btnBack.addActionListener(e -> { dispose(); new LecturerDashboard(); });
+            btnBack.addActionListener(e -> { dispose(); new LecturerDashboard(lecturer); });
             btnSubmit.addActionListener(e -> saveMarksAndFeedback());
 
             setVisible(true);
@@ -556,14 +566,10 @@ public class LecturerDashboard extends JFrame {
             setLocationRelativeTo(null);
             setLayout(new FlowLayout());
             JButton b = new JButton("Back");
-            b.addActionListener(e -> { dispose(); new LecturerDashboard(); });
+            b.addActionListener(e -> { dispose(); new LecturerDashboard(lecturer); });
             add(new JLabel("Report Viewer Module Active"));
             add(b);
             setVisible(true);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(LecturerDashboard::new);
     }
 }
