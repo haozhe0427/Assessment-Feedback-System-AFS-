@@ -8,14 +8,14 @@ import java.util.Objects;
 
 // ADMIN DASHBOARD
 public class AdminDashboard extends JFrame {
-    JButton logOutButton = new JButton("Log Out");
-    JButton manageAccountButton = new JButton("Manage Account");
-    JButton assignLecturersButton = new JButton("Assign Lecturer");
-    JButton gradingSystemButton = new JButton("Grading System");
-    JButton manageClassesButton = new JButton("Manage Classes");
-    JLabel AFSLabel = new JLabel("Assessment Feedback System", JLabel.CENTER);
-    JLabel welcomeLabel = new JLabel();
-    JPanel topPanel = new JPanel();
+    private JButton logOutButton = new JButton("Log Out");
+    private JButton manageAccountButton = new JButton("Manage Account");
+    private JButton assignLecturersButton = new JButton("Assign Lecturer");
+    private JButton gradingSystemButton = new JButton("Grading System");
+    private JButton manageClassesButton = new JButton("Manage Classes");
+    private JLabel AFSLabel = new JLabel("Assessment Feedback System", JLabel.CENTER);
+    private JLabel welcomeLabel = new JLabel();
+    private JPanel topPanel = new JPanel();
 
     public AdminDashboard(Admin admin) {
         // <================== JButton ==================>
@@ -141,18 +141,18 @@ public class AdminDashboard extends JFrame {
 
 // ASSIGN LECTURER
 class AssignLecturerGUI_Admin extends JFrame {
-    DefaultTableModel tableModel;
-    JButton exitButton = new JButton("Exit");
-    JButton assignButton = new JButton("Assign");
-    JButton deleteButton = new JButton("Delete");
-    String[] academicLeaders = new String[15];
-    JComboBox<String> academicLeaders_cb = new JComboBox<>(academicLeaders);
-    JLabel assignLecturerLabel = new JLabel("Assign Lecturer", JLabel.CENTER);
-    JLabel lecturerLabel = new JLabel("Lecturer:");
-    JLabel assignToLabel = new JLabel("Assign to:");
-    JPanel topPanel = new JPanel();
-    JTable lecturersTable;
-    JTextField lecturerField = new JTextField();
+    private DefaultTableModel tableModel;
+    private JButton exitButton = new JButton("Exit");
+    private JButton assignButton = new JButton("Assign");
+    private JButton deleteButton = new JButton("Delete");
+    private String[] academicLeaders = new String[15];
+    private JComboBox<String> academicLeaders_cb = new JComboBox<>(academicLeaders);
+    private JLabel assignLecturerLabel = new JLabel("Assign Lecturer", JLabel.CENTER);
+    private JLabel lecturerLabel = new JLabel("Lecturer:");
+    private JLabel assignToLabel = new JLabel("Assign to:");
+    private JPanel topPanel = new JPanel();
+    private JTable lecturersTable;
+    private JTextField lecturerField = new JTextField();
 
     AssignLecturerGUI_Admin (Admin admin) {
         // <================== JButton ==================>
@@ -445,21 +445,21 @@ class AssignLecturerGUI_Admin extends JFrame {
 // GRADING SYSTEM
 class GradingSystemGUI_Admin extends JFrame {
 
-    DefaultTableModel tableModel;
-    JButton exitButton = new JButton("Exit");
-    JButton clearButton = new JButton("Clear");
-    JButton updateButton = new JButton("Update");
-    JComboBox<String> status_cb;
-    JComboBox<String> grade_cb;
-    JLabel gradingSystemLabel = new JLabel("Grading System", JLabel.CENTER);
-    JLabel marksLabel = new JLabel("Marks:");
-    JLabel gradeLabel = new JLabel("Grade:");
-    JLabel gpaLabel = new JLabel("GPA:");
-    JLabel statusLabel = new JLabel("Status:");
-    JPanel topPanel = new JPanel();
-    JTable gradeTable;
-    JTextField marksField = new JTextField();
-    JTextField gpaField = new JTextField();
+    private DefaultTableModel tableModel;
+    private JButton exitButton = new JButton("Exit");
+    private JButton clearButton = new JButton("Clear");
+    private JButton updateButton = new JButton("Update");
+    private JComboBox<String> status_cb;
+    private JComboBox<String> grade_cb;
+    private JLabel gradingSystemLabel = new JLabel("Grading System", JLabel.CENTER);
+    private JLabel marksLabel = new JLabel("Marks:");
+    private JLabel gradeLabel = new JLabel("Grade:");
+    private JLabel gpaLabel = new JLabel("GPA:");
+    private JLabel statusLabel = new JLabel("Status:");
+    private JPanel topPanel = new JPanel();
+    private JTable gradeTable;
+    private JTextField marksField = new JTextField();
+    private JTextField gpaField = new JTextField();
 
     GradingSystemGUI_Admin (Admin admin) {
         // <================== JButton ==================>
@@ -766,41 +766,41 @@ class GradingSystemGUI_Admin extends JFrame {
 // MANAGE ACCOUNT
 class ManageAccountGUI_Admin extends JFrame {
 
-    DefaultTableModel tableModel;
-    JButton exitButton = new JButton("Exit");
-    JButton clearButton1 = new JButton("Clear");
-    JButton searchButton = new JButton("Search");
-    JButton updateButton = new JButton("Update");
-    JButton deleteButton = new JButton("Delete");
-    JButton createButton = new JButton("Create");
-    JButton createAccountButton = new JButton("Create Account");
-    JButton clearButton2 = new JButton("Clear");
-    JComboBox<String> selectUserRole_cb;
-    JComboBox<String> UserRole_cb;
-    JComboBox<String> selectAreas_cb;
-    JComboBox<String> selectCourse_cb;
-    JLabel manageAccountLabel = new JLabel("Manage Account", JLabel.CENTER);
-    JLabel id_OR_NameLabel = new JLabel("Enter UserID / Name:");
-    JLabel selectUserRoleLabel = new JLabel("Select user role:");
-    JLabel accountInfoLabel = new JLabel("Account info:");
-    JLabel userIDLabel = new JLabel("UserID:");
-    JLabel passwordLabel = new JLabel("Password:");
-    JLabel nameLabel = new JLabel("Name:");
-    JLabel genderLabel = new JLabel("Gender:");
-    JLabel userRoleLabel = new JLabel("User Role:");
-    JLabel areasLabel = new JLabel("Areas:");
-    JLabel otherAccountInfoLabel = new JLabel("Other account info:");
-    JLabel emailLabel = new JLabel("Email:");
-    JLabel courseLabel = new JLabel("Course (student only):");
-    JPanel topPanel = new JPanel();
-    JRadioButton male_rb = new JRadioButton("M");
-    JRadioButton female_rb = new JRadioButton("F");
-    JTable accountTable;
-    JTextField id_OR_NameField = new JTextField();
-    JTextField userIDField = new JTextField();
-    JTextField passwordField = new JTextField();
-    JTextField nameField = new JTextField();
-    JTextField emailField = new JTextField();
+    private DefaultTableModel tableModel;
+    private JButton exitButton = new JButton("Exit");
+    private JButton clearButton1 = new JButton("Clear");
+    private JButton searchButton = new JButton("Search");
+    private JButton updateButton = new JButton("Update");
+    private JButton deleteButton = new JButton("Delete");
+    private JButton createButton = new JButton("Create");
+    private JButton createAccountButton = new JButton("Create Account");
+    private JButton clearButton2 = new JButton("Clear");
+    private JComboBox<String> selectUserRole_cb;
+    private JComboBox<String> UserRole_cb;
+    private JComboBox<String> selectAreas_cb;
+    private JComboBox<String> selectCourse_cb;
+    private JLabel manageAccountLabel = new JLabel("Manage Account", JLabel.CENTER);
+    private JLabel id_OR_NameLabel = new JLabel("Enter UserID / Name:");
+    private JLabel selectUserRoleLabel = new JLabel("Select user role:");
+    private JLabel accountInfoLabel = new JLabel("Account info:");
+    private JLabel userIDLabel = new JLabel("UserID:");
+    private JLabel passwordLabel = new JLabel("Password:");
+    private JLabel nameLabel = new JLabel("Name:");
+    private JLabel genderLabel = new JLabel("Gender:");
+    private JLabel userRoleLabel = new JLabel("User Role:");
+    private JLabel areasLabel = new JLabel("Areas:");
+    private JLabel otherAccountInfoLabel = new JLabel("Other account info:");
+    private JLabel emailLabel = new JLabel("Email:");
+    private JLabel courseLabel = new JLabel("Course (student only):");
+    private JPanel topPanel = new JPanel();
+    private JRadioButton male_rb = new JRadioButton("M");
+    private JRadioButton female_rb = new JRadioButton("F");
+    private JTable accountTable;
+    private JTextField id_OR_NameField = new JTextField();
+    private JTextField userIDField = new JTextField();
+    private JTextField passwordField = new JTextField();
+    private JTextField nameField = new JTextField();
+    private JTextField emailField = new JTextField();
 
     ManageAccountGUI_Admin (Admin admin) {
         // <================== JButton ==================>
@@ -1689,31 +1689,31 @@ class ManageAccountGUI_Admin extends JFrame {
 // MANAGE CLASSES
 class ManageClassesGUI_Admin extends JFrame {
 
-    DefaultTableModel tableModel;
-    JButton exitButton = new JButton("Exit");
-    JButton searchButton = new JButton("Search");
-    JButton refreshButton = new JButton("Refresh");
-    JButton updateButton = new JButton("Update");
-    JButton deleteButton = new JButton("Delete");
-    JComboBox<String> block_cb;
-    JComboBox<String> level_cb;
-    JComboBox<String> roomNumber_cb;
-    JLabel manageAccountLabel = new JLabel("Manage Classes", JLabel.CENTER);
-    JLabel modules_ID_NameLabel = new JLabel("Please enter module ID / module Name:");
-    JLabel moduleInfoLabel = new JLabel("Module Info:");
-    JLabel moduleIDLabel = new JLabel("Module ID:");
-    JLabel moduleNameLabel = new JLabel("Module's Name:");
-    JLabel lecturerLabel = new JLabel("Lecturer:");
-    JLabel blockLabel = new JLabel("Block:");
-    JLabel levelLabel = new JLabel("Level:");
-    JLabel classLabel = new JLabel("Class:");
-    JLabel roomNumberLabel = new JLabel("Room Number:");
-    JPanel topPanel = new JPanel();
-    JTable modulesTable;
-    JTextField modules_ID_NameField = new JTextField();
-    JTextField moduleIDField = new JTextField();
-    JTextField moduleNameField = new JTextField();
-    JTextField lecturerField = new JTextField();
+    private DefaultTableModel tableModel;
+    private JButton exitButton = new JButton("Exit");
+    private JButton searchButton = new JButton("Search");
+    private JButton refreshButton = new JButton("Refresh");
+    private JButton updateButton = new JButton("Update");
+    private JButton deleteButton = new JButton("Delete");
+    private JComboBox<String> block_cb;
+    private JComboBox<String> level_cb;
+    private JComboBox<String> roomNumber_cb;
+    private JLabel manageAccountLabel = new JLabel("Manage Classes", JLabel.CENTER);
+    private JLabel modules_ID_NameLabel = new JLabel("Please enter module ID / module Name:");
+    private JLabel moduleInfoLabel = new JLabel("Module Info:");
+    private JLabel moduleIDLabel = new JLabel("Module ID:");
+    private JLabel moduleNameLabel = new JLabel("Module's Name:");
+    private JLabel lecturerLabel = new JLabel("Lecturer:");
+    private JLabel blockLabel = new JLabel("Block:");
+    private JLabel levelLabel = new JLabel("Level:");
+    private JLabel classLabel = new JLabel("Class:");
+    private JLabel roomNumberLabel = new JLabel("Room Number:");
+    private JPanel topPanel = new JPanel();
+    private JTable modulesTable;
+    private JTextField modules_ID_NameField = new JTextField();
+    private JTextField moduleIDField = new JTextField();
+    private JTextField moduleNameField = new JTextField();
+    private JTextField lecturerField = new JTextField();
 
     ManageClassesGUI_Admin (Admin admin) {
         // <================== JButton ==================>

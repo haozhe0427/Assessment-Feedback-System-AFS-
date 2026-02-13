@@ -35,10 +35,9 @@ public class LoginGUI extends JFrame {
                 return;
             }
 
-            try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Account));
-                 BufferedReader reader2 = new BufferedReader(new FileReader(Resources.AdminAccount))) {
+            try (BufferedReader reader1 = new BufferedReader(new FileReader(Resources.Account))) {
+                String line1;
 
-                String line1, line2;
                 while ((line1 = reader1.readLine()) != null) {
                     String[] loginInfo = line1.split(" ; ");
                     String storedUserID = loginInfo[0];
@@ -58,7 +57,6 @@ public class LoginGUI extends JFrame {
                                 );
 
                                 Session.login(user);
-
                                 dispose();
                                 AcademicLeaderDashboard dashboardFrame = new AcademicLeaderDashboard();
                                 dashboardFrame.setVisible(true);
@@ -71,16 +69,11 @@ public class LoginGUI extends JFrame {
                                 lecturerDashboard.setLocationRelativeTo(null);
                             }
                             case "Student" -> {
-                                String studentID = loginInfo[0].trim();
-                                String studentPassword = loginInfo[1].trim();
-                                String studentEmail = loginInfo[2].trim();
-                                String studentName = loginInfo[3].trim();
-
                                 StudentSession.login(
-                                        studentID,
-                                        studentName,
-                                        studentEmail,
-                                        studentPassword
+                                        loginInfo[0].trim(),
+                                        loginInfo[3].trim(),
+                                        loginInfo[2].trim(),
+                                        loginInfo[1].trim()
                                 );
 
                                 dispose();
@@ -91,36 +84,36 @@ public class LoginGUI extends JFrame {
                         }
                         return;
                     }
+                }
+
+                try (BufferedReader reader2 = new BufferedReader(new FileReader(Resources.AdminAccount))) {
+                    String line2;
                     while ((line2 = reader2.readLine()) != null) {
                         String[] adminInfo = line2.split(" ; ");
                         String adminID = adminInfo[0];
-                        String adminName = adminInfo[2];
                         String adminPassword = adminInfo[1];
+                        String adminName = adminInfo[2];
                         String isAdmin = adminInfo[3];
 
-                        if (adminID.equalsIgnoreCase(userID) && adminPassword.equals(password)) {
-                            if (isAdmin.equals("Admin")) {
-                                Admin admin = new Admin(adminName);
-                                admin.getAdminName();
-
-                                dispose();
-                                new AdminDashboard(admin);
-                            } else {
-                                JOptionPane.showMessageDialog(null,
-                                        "Invalid account. Please try again",
-                                        "Error",JOptionPane.ERROR_MESSAGE);
-                            }
+                        if (adminID.equalsIgnoreCase(userID) && adminPassword.equals(password) && isAdmin.equals("Admin")) {
+                            Admin admin = new Admin(adminName);
+                            dispose();
+                            new AdminDashboard(admin);
                             return;
                         }
                     }
                 }
+
                 JOptionPane.showMessageDialog(null,
                         "Invalid userID / password. Please try again",
-                        "Warning",JOptionPane.WARNING_MESSAGE);
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
                         "Something went wrong. Please contact technician team for support",
-                        "Error",JOptionPane.WARNING_MESSAGE);
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
         this.add(loginButton);
@@ -356,7 +349,6 @@ class SetNewPasswordGUI extends JFrame {
                     String[] userInfo = line.split(" ; ");
                     String userID = userInfo[0];
                     String name = userInfo[3];
-                    String password = userInfo[1];
 
                     if (userID.equals(LoginGUI.userID_OR_name) || name.equals(LoginGUI.userID_OR_name)) {
                         if (!newPassword.equals(confirmNewPassword)) {

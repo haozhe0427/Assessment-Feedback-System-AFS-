@@ -3,10 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextFileUtils {
-    // --- METHOD 1: LOGIN VALIDATION ---
-
-
-    // --- METHOD 2: UPDATE USER (For Edit Profile) ---
+    // --- METHOD 1: UPDATE USER (For Edit Profile) ---
     public static boolean updateUserInFile(User updatedUser) {
         List<String> lines = new ArrayList<>();
         boolean found = false;

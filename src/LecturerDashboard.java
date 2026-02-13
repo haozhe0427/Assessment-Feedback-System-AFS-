@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LecturerDashboard extends JFrame {
-
-    private static final String MODULES_FILE = "D:/intelij save/src/Text File/Modules.txt";
-    private static final String STUDENT_FILE = "src/Text File/ClassStudentList.txt";
+    
     private static final String LECTURER_NAME = "Joshua Koroh Pudin";
 
     public LecturerDashboard() {
@@ -50,7 +48,10 @@ public class LecturerDashboard extends JFrame {
         btnReport.addActionListener(e -> { dispose(); new ReceiveFeedbackWindow(); });
         btnLogout.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(this, "Logout?", "Logout", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) { dispose(); }
+            if (confirm == JOptionPane.YES_OPTION) {
+                dispose();
+                new LoginGUI();
+            }
         });
 
         setVisible(true);
@@ -86,7 +87,7 @@ public class LecturerDashboard extends JFrame {
             // Load profile from Account.txt
             try {
                 String lecturerId = "AFS00002"; // later replace with logged-in ID
-                String[] profile = FileHandler.getLecturerProfile(lecturerId);
+                String[] profile = getLecturerProfile(lecturerId);
 
                 if (profile != null) {
                     fields[0].setText(profile[0]); // ID
@@ -107,7 +108,7 @@ public class LecturerDashboard extends JFrame {
 
             btnUpdate.addActionListener(e -> {
                 try {
-                    FileHandler.saveProfile(
+                    saveProfile(
                             fields[0].getText(), // ID
                             fields[1].getText(), // Name
                             fields[2].getText(), // Email
@@ -122,6 +123,63 @@ public class LecturerDashboard extends JFrame {
             });
 
             setVisible(true);
+        }
+
+        public void saveProfile(String id, String newName, String newEmail,
+                                       String newPassword, String newDept, String newLeader) throws IOException {
+
+            File file = new File(Resources.Account);
+            List<String> lines = new ArrayList<>();
+
+            if (file.exists()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split(" ; ");
+
+                        if (parts.length >= 8 && parts[0].trim().equals(id.trim())) {
+                            // Keep original gender and role
+                            String gender = parts[4].trim();
+                            String role = parts[5].trim();
+
+                            String updatedLine =
+                                    id.trim() + " ; " +
+                                            newPassword.trim() + " ; " +
+                                            newEmail.trim() + " ; " +
+                                            newName.trim() + " ; " +
+                                            gender + " ; " +
+                                            role + " ; " +
+                                            newDept.trim() + " ; " +
+                                            newLeader.trim();
+
+                            lines.add(updatedLine);
+                        } else {
+                            lines.add(line);
+                        }
+                    }
+                }
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (String l : lines) {
+                    writer.write(l);
+                    writer.newLine();
+                }
+            }
+        }
+
+        public String[] getLecturerProfile(String lecturerId) throws IOException {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Account))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(" ; ");
+                    if (parts.length >= 8 && parts[0].equals(lecturerId)) {
+                        return parts;
+                    }
+                }
+            }
+            return null;
         }
     }
 
@@ -213,7 +271,7 @@ public class LecturerDashboard extends JFrame {
         private void loadModulesData() {
             tableModel.setRowCount(0);
             modulesList.clear();
-            try (BufferedReader reader = new BufferedReader(new FileReader(MODULES_FILE))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
@@ -243,7 +301,7 @@ public class LecturerDashboard extends JFrame {
 
             try {
                 // If the file exists, check for existing ID to update
-                File file = new File(MODULES_FILE);
+                File file = new File(Resources.Modules);
                 if (file.exists()) {
                     BufferedReader br = new BufferedReader(new FileReader(file));
                     String line;
@@ -264,7 +322,7 @@ public class LecturerDashboard extends JFrame {
                     lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + LECTURER_NAME);
                 }
 
-                BufferedWriter bw = new BufferedWriter(new FileWriter(MODULES_FILE));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.Modules));
                 for (String l : lines) { bw.write(l); bw.newLine(); }
                 bw.close();
 
@@ -381,7 +439,7 @@ public class LecturerDashboard extends JFrame {
 
         private void fillModuleDropdown() {
             cmbModule.removeAllItems();
-            try (BufferedReader br = new BufferedReader(new FileReader(MODULES_FILE))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] p = line.split("\\s*;\\s*");
@@ -393,7 +451,7 @@ public class LecturerDashboard extends JFrame {
         private void loadModulesToTable(String selectedModuleName) {
             model.setRowCount(0);
             String targetModuleID = "";
-            try (BufferedReader br = new BufferedReader(new FileReader(MODULES_FILE))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] p = line.split("\\s*;\\s*");
@@ -404,7 +462,7 @@ public class LecturerDashboard extends JFrame {
                 }
             } catch (Exception e) { e.printStackTrace(); }
 
-            try (BufferedReader br = new BufferedReader(new FileReader(STUDENT_FILE))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.ClassStudentList))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
@@ -445,7 +503,7 @@ public class LecturerDashboard extends JFrame {
             else { grade = "F-"; gpa = "0.00"; status = "Fail"; }
 
             String targetModuleID = "";
-            try (BufferedReader br = new BufferedReader(new FileReader(MODULES_FILE))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] p = line.split("\\s*;\\s*");
@@ -457,7 +515,7 @@ public class LecturerDashboard extends JFrame {
             } catch (Exception e) { e.printStackTrace(); }
 
             List<String> lines = new ArrayList<>();
-            try (BufferedReader br = new BufferedReader(new FileReader(STUDENT_FILE))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(Resources.ClassStudentList))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
@@ -482,7 +540,7 @@ public class LecturerDashboard extends JFrame {
                 }
             } catch (Exception e) { e.printStackTrace(); }
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(STUDENT_FILE))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(Resources.ClassStudentList))) {
                 for (String l : lines) { bw.write(l); bw.newLine(); }
                 JOptionPane.showMessageDialog(this, "Grading Successful!\nGrade: " + grade + "\nGPA: " + gpa + "\nStatus: " + status);
                 loadModulesToTable(selectedName);

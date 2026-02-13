@@ -1,9 +1,8 @@
 import javax.swing.*;
 
-public class Resources {
-    // STORE PICTURES AND TEXT FILES ONLY
+public class Resources extends JFrame {
     // 1) Account.txt
-    public static final String Account = "D:\\intelij save\\src\\Text File\\Account.txt";
+    public static final String Account = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
     // FORMAT :
     // a) Student:
@@ -26,7 +25,7 @@ public class Resources {
 
 
     // 2) AdminAccount.txt
-    public static final String AdminAccount = "D:\\intelij save\\src\\Text File\\Account.txt";
+    public static final String AdminAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AdminAccount.txt";
     // ------------------------------------------------------------------------------------------------------
     // Format: UserID(Admin) ; Password ; Name ; UserRole
     // example: AD000001 ; 12345 ; Ding Hao Zhe ; Admin
