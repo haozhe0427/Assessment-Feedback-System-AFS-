@@ -30,7 +30,7 @@ public class LecturerDashboard extends JFrame {
         JButton btnProfile = new JButton("Update Profile");
         JButton btnDesign = new JButton("Design Assessment");
         JButton btnGrade = new JButton("Key-in Marks");
-        JButton btnReport = new JButton("View Reports");
+        JButton btnReport = new JButton("View Feedback");
         JButton btnLogout = new JButton("Logout");
         btnLogout.setBackground(Color.PINK);
 
@@ -270,33 +270,45 @@ public class LecturerDashboard extends JFrame {
         private void loadModulesData() {
             tableModel.setRowCount(0);
             modulesList.clear();
+
             try (BufferedReader reader = new BufferedReader(new FileReader(Resources.Modules))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
-                    String[] parts = line.split("\\s*;\\s*");
-                    if (parts.length >= 5) {
+
+                    String[] parts = line.split(" ; ");
+
+                    if (parts.length >= 9) {   // 9 fields
                         modulesList.add(parts);
-                        tableModel.addRow(new Object[]{parts[0], parts[1], parts[2], parts[3], parts[4]});
+
+                        // Only show first 5 columns in table
+                        tableModel.addRow(new Object[]{
+                                parts[0], // ID
+                                parts[1], // Name
+                                parts[2], // A1
+                                parts[3], // A2
+                                parts[4]  // A3
+                        });
                     }
                 }
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         private void saveModuleData() {
+
             String id = txtID.getText().trim();
             String name = txtName.getText().trim();
             String a1 = txtA1.getText().trim();
             String a2 = txtA2.getText().trim();
             String a3 = txtA3.getText().trim();
 
-            // ERROR HANDLING: Field Validation
             if (id.isEmpty() || name.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Module ID and Name are mandatory.");
                 return;
             }
 
-            // Default to "null" if assessments are blank to keep file structure consistent
             if (a1.isEmpty()) a1 = "null";
             if (a2.isEmpty()) a2 = "null";
             if (a3.isEmpty()) a3 = "null";
@@ -306,13 +318,25 @@ public class LecturerDashboard extends JFrame {
 
             try {
                 File file = new File(Resources.Modules);
+
                 if (file.exists()) {
                     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                         String line;
+
                         while ((line = br.readLine()) != null) {
-                            String[] p = line.split("\\s*;\\s*");
-                            if (p.length > 0 && p[0].equalsIgnoreCase(id)) {
-                                line = id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName();
+                            String[] p = line.split(" ; ");
+                            if (p.length >= 9 && p[0].equalsIgnoreCase(id)) {
+                                // KEEP room, lecturer, day, time
+                                line = p[0] + " ; " +
+                                        p[1] + " ; " +
+                                        a1 + " ; " +
+                                        a2 + " ; " +
+                                        a3 + " ; " +
+                                        p[5] + " ; " +
+                                        p[6] + " ; " +
+                                        p[7] + " ; " +
+                                        p[8];
+
                                 updated = true;
                             }
                             lines.add(line);
@@ -320,14 +344,18 @@ public class LecturerDashboard extends JFrame {
                     }
                 }
 
-                if (!updated) lines.add(id + " ; " + name + " ; " + a1 + " ; " + a2 + " ; " + a3 + " ; " + lecturer.getName());
-
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                    for (String l : lines) { bw.write(l); bw.newLine(); }
+                    for (String l : lines) {
+                        bw.write(l);
+                        bw.newLine();
+                    }
                 }
-                JOptionPane.showMessageDialog(this, updated ? "Module Updated!" : "New Module Added!");
+                JOptionPane.showMessageDialog(this,
+                        updated ? "Module Updated!" : "Module Not Found!");
+
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Critical File Error: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this,
+                        "Critical File Error: " + ex.getMessage());
             }
         }
     }

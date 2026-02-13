@@ -4,7 +4,7 @@ import javax.swing.*;
 public class Resources {
     // STORE PICTURES AND TEXT FILES ONLY
     // 1) Account.txt
-    public static final String Account = "D:\\intelij save\\src\\Text File\\Account.txt";
+    public static final String Account = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Account.txt";
     // -------------------------------------------------------------------------------------------------------------------------------
     // FORMAT :
     // a) Student:
@@ -27,7 +27,7 @@ public class Resources {
 
 
     // 2) AdminAccount.txt
-    public static final String AdminAccount = "D:\\intelij save\\src\\Text File\\AdminAccount.txt";
+    public static final String AdminAccount = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\AdminAccount.txt";
     // ------------------------------------------------------------------------------------------------------
     // Format: UserID(Admin) ; Password ; Name ; UserRole
     // example: AD000001 ; 12345 ; Ding Hao Zhe ; Admin
@@ -43,7 +43,7 @@ public class Resources {
 
 
     // 3) Modules.txt
-    public static final String Modules = "D:\\intelij save\\src\\Text File\\Modules.txt";
+    public static final String Modules = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\Modules.txt";
     // -----------------------------------------------------------------------------------------------------------------------------------
     // Format: ModuleID ; ModuleName ; Assessment 1 ; Assessment 2 ; Assessment 3 ; Classroom ; Lecturer's name ; Day ; Time
     // example : MD0001 ; Object-Oriented Development ; NULL ; NULL ; NULL ; A-1-4 ; Joshua Koroh Pudin ; Monday ; 10:30 - 12:30
@@ -58,7 +58,7 @@ public class Resources {
 
 
     // 4) ClassStudentList.txt
-    public static final String ClassStudentList = "D:\\intelij save\\src\\Text File\\ClassStudentList.txt";
+    public static final String ClassStudentList = "C:\\Users\\User\\Java\\Projects\\AssessmentFeedbackSystem\\src\\Text File\\ClassStudentList.txt";
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // FORMAT : ModuleID ; ModuleName ; Assessment 1 ; Assessment 2 ; Assessment 3 ; Location ; Account ID (Student ID) ; GPA ; Grade ; Feedback ; Assessment 1 feedback ; Assessment 2 feedback ; Assessment 3 feedback
     // example:
